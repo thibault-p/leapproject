@@ -42,6 +42,7 @@ namespace RopeMaster
         {
             if (this.fixeddiv > 1)
             {
+                Console.WriteLine("UP !");
                 this.fixeddiv--;
             }
 
@@ -52,6 +53,7 @@ namespace RopeMaster
         {
             if (this.fixeddiv < this.div - 1)
             {
+                Console.WriteLine("DOWN ! ");
                 this.fixeddiv++;
             }
 

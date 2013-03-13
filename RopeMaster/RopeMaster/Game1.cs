@@ -9,6 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Leap;
+using Glitch.Engine.Core;
+using System.Reflection;
+using RopeMaster.Graphics;
+using RopeMaster.Core;
 
 
 
@@ -19,7 +23,7 @@ namespace RopeMaster
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game1 : RopeApplication
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -27,14 +31,13 @@ namespace RopeMaster
         Texture2D tex;
         KeyboardState prevKey;
         Controller controller;
-
-        Texture2D bg0;
+        Parallax parallax;
         Rectangle screen;
 
-        int parallaxfactor = 0;
 
         Camera2D camera;
-        public Game1()
+        public Game1():
+            base("Rope Master","Content","1.0")
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -53,9 +56,10 @@ namespace RopeMaster
             graphics.PreferredBackBufferWidth = 800;
             graphics.ApplyChanges();
             base.Initialize();
+            this.Screen = new Rectangle(0, 0, 800, 600);
+            
 
-
-            controller = new Controller();
+            //controller = new Controller();
             camera = new Camera2D();
         }
 
@@ -70,11 +74,12 @@ namespace RopeMaster
 
             // TODO: use this.Content to load your game content here
             tex = Content.Load<Texture2D>("gfx/point");
-            rope = new VerletRope(20, 200, new Vector2(50, 50), tex);
             screen = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            bg0 = Content.Load<Texture2D>("gfx/background_0");
+            rope = new VerletRope(20, 200, Vector2.Zero, tex);
+            
 
-
+            base.LoadContent();
+            parallax = new Parallax();
         }
 
         /// <summary>
@@ -93,9 +98,9 @@ namespace RopeMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            base.Update(gameTime);
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
             KeyboardState k = Keyboard.GetState();
             if (k.IsKeyDown(Keys.PageUp) && prevKey.IsKeyUp(Keys.PageUp))
             {
@@ -107,20 +112,37 @@ namespace RopeMaster
             }
             if (k.IsKeyDown(Keys.Left))
             {
-                parallaxfactor--;
+                parallax.moveHorizontal(-1);
             }
             if (k.IsKeyDown(Keys.Right))
             {
-                parallaxfactor++;
+                parallax.moveHorizontal(1);
             }
+            if (k.IsKeyDown(Keys.Up))
+            {
+                parallax.moveVertical(-1);
+            }
+            if (k.IsKeyDown(Keys.Down))
+            {
+                parallax.moveVertical(1);
+            }
+            parallax.Update(gameTime);
             prevKey = k;
+
+            if (Game1.Instance.inputManager.getState(InputManager.Commands.Down) == InputManager.State.JustOn)
+            {
+                rope.down();
+            }
+            if (Game1.Instance.inputManager.getState(InputManager.Commands.Up) == InputManager.State.JustOn)
+            {
+                rope.up();
+            }
 
             var m = Mouse.GetState();
             rope.setOrigin(m.X, m.Y);
 
             rope.Update(gameTime);
 
-            base.Update(gameTime);
         }
 
         /// <summary>
@@ -133,14 +155,7 @@ namespace RopeMaster
             Microsoft.Xna.Framework.Matrix m = camera.get_transformation(GraphicsDevice);
 
             //paralax background wrapping
-            spriteBatch.Begin(SpriteSortMode.BackToFront,
-                        BlendState.AlphaBlend, SamplerState.LinearWrap,
-                        null,
-                        null,
-                        null, Microsoft.Xna.Framework.Matrix.Identity);
-            //
-            spriteBatch.Draw(bg0,screen,new Rectangle(parallaxfactor,0,400,300),Color.White);
-            spriteBatch.End();
+            parallax.Draw(spriteBatch);
 
             spriteBatch.Begin(SpriteSortMode.BackToFront,
                         BlendState.AlphaBlend,null,
@@ -164,6 +179,12 @@ namespace RopeMaster
 
 
             base.Draw(gameTime);
+        }
+
+
+        protected override Assembly[] GameAssemblies
+        {
+            get { return new Assembly[] { typeof(Game1).Assembly }; }
         }
     }
 }
