@@ -110,8 +110,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\InputManager.cs" />
     <Compile Include="Core\RopeApplication.cs" />
+    <Compile Include="Core\Shot.cs" />
+    <Compile Include="Core\ShotManager.cs" />
     <Compile Include="Graphics\Camera2D.cs" />
     <Compile Include="Content\ContentAttribute.cs" />
     <Compile Include="Content\ContentItem.cs" />

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using RopeMaster.Core;
+using RopeMaster;
 
 namespace Glitch.Engine.Core
 {
@@ -20,13 +21,13 @@ namespace Glitch.Engine.Core
 
 
         public MagicContentManager magicContentManager;
-
+        public ShotManager shotManager;
         private string _name;
         private string _version;
         private bool _isdebugMode;
         public Rectangle Screen { get; set; }
         public InputManager inputManager;
-
+        public Camera2D Camera;
 
         /// <summary>
         /// Constructor
@@ -50,6 +51,7 @@ namespace Glitch.Engine.Core
             magicContentManager = new MagicContentManager(GameAssemblies, Content);
 
             inputManager = new InputManager();
+            shotManager = new ShotManager();
             //Xbox Live
 #if XBOX
             this.Components.Add(new GamerServicesComponent(this));
@@ -59,8 +61,9 @@ namespace Glitch.Engine.Core
         protected override void LoadContent()
         {
             magicContentManager.Initialize();
-            
             base.LoadContent();
+            shotManager.Initialize();
+
         }
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace Glitch.Engine.Core
         protected override void Update(GameTime gameTime)
         {
             inputManager.Update(gameTime);
-
+            shotManager.Update(gameTime);
             base.Update(gameTime);
 
 
@@ -83,7 +86,7 @@ namespace Glitch.Engine.Core
         /// <param name="gameTime">Time passed since the last call to Draw.</param>
         protected override void Draw(GameTime gameTime)
         {
-  
+    
 
             base.Draw(gameTime);
         }

@@ -49,13 +49,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="gfx\background_0.png">
-      <Name>background_0</Name>
+    <Compile Include="gfx\shot.png">
+      <Name>shot</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Compile Include="gfx\background\background_0.png">
       <Name>background_0</Name>
@@ -67,6 +66,9 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="gfx\misc\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

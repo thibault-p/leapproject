@@ -35,7 +35,7 @@ namespace RopeMaster
         Rectangle screen;
 
 
-        Camera2D camera;
+
         public Game1():
             base("Rope Master","Content","1.0")
         {
@@ -52,15 +52,16 @@ namespace RopeMaster
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
             graphics.ApplyChanges();
             base.Initialize();
-            this.Screen = new Rectangle(0, 0, 800, 600);
+            this.Screen = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             
 
             //controller = new Controller();
-            camera = new Camera2D();
+            Camera = new Camera2D();
         }
 
         /// <summary>
@@ -100,15 +101,16 @@ namespace RopeMaster
         {
 
             base.Update(gameTime);
+            parallax.moveHorizontal(1);
             // Allows the game to exit
             KeyboardState k = Keyboard.GetState();
             if (k.IsKeyDown(Keys.PageUp) && prevKey.IsKeyUp(Keys.PageUp))
             {
-                camera.Zoom += 0.1f;
+                Camera.Zoom += 0.1f;
             }
             if (k.IsKeyDown(Keys.PageDown) && prevKey.IsKeyUp(Keys.PageDown))
             {
-                camera.Zoom -= 0.1f;
+                Camera.Zoom -= 0.1f;
             }
             if (k.IsKeyDown(Keys.Left))
             {
@@ -116,7 +118,7 @@ namespace RopeMaster
             }
             if (k.IsKeyDown(Keys.Right))
             {
-                parallax.moveHorizontal(1);
+                
             }
             if (k.IsKeyDown(Keys.Up))
             {
@@ -137,6 +139,17 @@ namespace RopeMaster
             {
                 rope.up();
             }
+            if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.JustOn)
+            {
+                shotManager.playerFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
+            }
+            else if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.On)
+            {
+                shotManager.playerFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
+
+            }
+            
+
 
             var m = Mouse.GetState();
             rope.setOrigin(m.X, m.Y);
@@ -152,7 +165,7 @@ namespace RopeMaster
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            Microsoft.Xna.Framework.Matrix m = camera.get_transformation(GraphicsDevice);
+            Microsoft.Xna.Framework.Matrix m = Camera.get_transformation(GraphicsDevice);
 
             //paralax background wrapping
             parallax.Draw(spriteBatch);
@@ -164,7 +177,7 @@ namespace RopeMaster
                         null, m);
 
             rope.Draw(spriteBatch);
-
+            shotManager.Draw(spriteBatch);
 
 
 
@@ -174,7 +187,7 @@ namespace RopeMaster
             spriteBatch.End();
 
             spriteBatch.Begin();
-            //get rid of camera
+            //get rid of Camera
             spriteBatch.End();
 
 

@@ -16,7 +16,7 @@ namespace RopeMaster
     public class VerletRope
     {
         public Stick[] sticks;
-        public static float gravity = 9.8f ;
+        public static float gravity = 9.8f;
         public static float pm = 1;
         private int div;
         private int delta;
@@ -42,7 +42,7 @@ namespace RopeMaster
         {
             if (this.fixeddiv > 1)
             {
-                Console.WriteLine("UP !");
+                // Console.WriteLine("UP !");
                 this.fixeddiv--;
             }
 
@@ -53,7 +53,7 @@ namespace RopeMaster
         {
             if (this.fixeddiv < this.div - 1)
             {
-                Console.WriteLine("DOWN ! ");
+                //Console.WriteLine("DOWN ! ");
                 this.fixeddiv++;
             }
 
@@ -73,28 +73,28 @@ namespace RopeMaster
             float dt = 1 / 60f;
             for (int i = 0; i < this.div; i++)
             {
-                int weight = (i==this.div-1)? 1000:100;
-                sticks[i].setAcc(0, gravity*(weight));
+                int weight = (i == this.div - 1) ? 1000 : 100;
+                sticks[i].setAcc(0, gravity * (weight));
                 sticks[i].verlet(dt);
             }
             for (int i = 1; i < this.div; i++)
             {
                 var s1 = sticks[i];
                 var s2 = sticks[i - 1];
-                var dx = (s1.getPosition().X - s2.getPosition().X) / pm;
-                var dy = (s1.getPosition().Y - s2.getPosition().Y) / pm;
+                var dx = (s1.getPosition().X - s2.getPosition().X);
+                var dy = (s1.getPosition().Y - s2.getPosition().Y);
                 var d = (float)Math.Sqrt((dx * dx) + (dy * dy));
                 var diff = d - delta;
                 var x1 = s1.getPosition().X;
                 var y1 = s1.getPosition().Y;
                 var x2 = s2.getPosition().X;
                 var y2 = s2.getPosition().Y;
-
-
-                x1 -= (dx / d) * 0.5f * pm * diff;
-                y1 -= (dy / d) * 0.5f * pm * diff;
-                x2 += (dx / d) * 0.5f * pm * diff;
-                y2 += (dy / d) * 0.5f * pm * diff;
+                var offx = (dx / d) * 0.5f * diff;
+                var offy = (dy / d) * 0.5f * diff;
+                x1 -= offx;
+                y1 -= offy;
+                x2 += offx;
+                y2 += offy;
                 s1.setPosition(x1, y1);
                 s2.setPosition(x2, y2);
             }
@@ -108,9 +108,9 @@ namespace RopeMaster
             {
                 var x = sticks[i].getPosition().X;
                 var y = sticks[i].getPosition().Y;
-                x = Math.Min(800-8, Math.Max(x, 0));
+                x = Math.Min(800 - 8, Math.Max(x, 0));
 
-                y = Math.Min(600-8, Math.Max(y, 0));
+                y = Math.Min(600 - 8, Math.Max(y, 0));
                 sticks[i].setPosition(x, y);
             }
         }
@@ -123,6 +123,33 @@ namespace RopeMaster
             }
 
         }
+
+        public Vector2 getAttachPosition()
+        {
+            return sticks[div - 1].getPosition();
+        }
+
+        public Vector2 getAttachAngle()
+        {
+
+            //var r = sticks[div - 1].getRotation();
+            var dx = sticks[div - 1].getPosition().X - sticks[fixeddiv].getPosition().X;
+            var dy = sticks[div - 1].getPosition().Y - sticks[fixeddiv].getPosition().Y;
+
+
+
+            var r = Math.Atan2(dx, dy);
+
+            return new Vector2((float)Math.Cos(r), -(float)Math.Sin(r));
+
+
+
+
+
+        }
+
+
+
 
         public class Stick
         {
@@ -164,12 +191,22 @@ namespace RopeMaster
             public void verlet(float dt)
             {
                 var tmp = curpos;
-                curpos.X += (0.99f * curpos.X - 0.99f * oldpos.X) + (acc.X * pm * dt * dt);
-                curpos.Y += (0.99f * curpos.Y - 0.99f * oldpos.Y) + (acc.Y * pm * dt * dt);
+                //curpos.X += (0.99f * curpos.X - 0.99f * oldpos.X) + (acc.X * pm * dt * dt);
+                //curpos.Y += (0.99f * curpos.Y - 0.99f * oldpos.Y) + (acc.Y * pm * dt * dt);
+                curpos = (2 * curpos - oldpos) + (acc * dt * dt);
                 oldpos = tmp;
+
+            }
+            public float getRotation()
+            {
+                var dx = oldpos.X - curpos.X;
+                var dy = oldpos.Y - curpos.Y;
+                return (float)Math.Atan2(dy, dx);
             }
 
         }
+
+
 
 
     }
