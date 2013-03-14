@@ -77,27 +77,30 @@ namespace RopeMaster
                 sticks[i].setAcc(0, gravity * (weight));
                 sticks[i].verlet(dt);
             }
-            for (int i = 1; i < this.div; i++)
-            {
-                var s1 = sticks[i];
-                var s2 = sticks[i - 1];
-                var dx = (s1.getPosition().X - s2.getPosition().X);
-                var dy = (s1.getPosition().Y - s2.getPosition().Y);
-                var d = (float)Math.Sqrt((dx * dx) + (dy * dy));
-                var diff = d - delta;
-                var x1 = s1.getPosition().X;
-                var y1 = s1.getPosition().Y;
-                var x2 = s2.getPosition().X;
-                var y2 = s2.getPosition().Y;
-                var offx = (dx / d) * 0.5f * diff;
-                var offy = (dy / d) * 0.5f * diff;
-                x1 -= offx;
-                y1 -= offy;
-                x2 += offx;
-                y2 += offy;
-                s1.setPosition(x1, y1);
-                s2.setPosition(x2, y2);
-            }
+            for (int j = 0; j < div; j++)
+                for (int i = 1; i < this.div; i++)
+                {
+                    var s1 = sticks[i];
+                    var s2 = sticks[i - 1];
+                    var dx = (s1.getPosition().X - s2.getPosition().X);
+                    var dy = (s1.getPosition().Y - s2.getPosition().Y);
+                    var d = (float)Math.Sqrt((dx * dx) + (dy * dy));
+                    var diff = d - delta;
+                    var x1 = s1.getPosition().X;
+                    var y1 = s1.getPosition().Y;
+                    var x2 = s2.getPosition().X;
+                    var y2 = s2.getPosition().Y;
+                    var offx = (dx / d) * 0.5f * diff;
+                    var offy = (dy / d) * 0.5f * diff;
+ 
+                        x1 -= offx;
+                        y1 -= offy;
+                        x2 += offx;
+                        y2 += offy;
+                        s1.setPosition(x1, y1);
+                        s2.setPosition(x2, y2);
+                    
+                }
             checkColl();
 
         }
@@ -191,9 +194,10 @@ namespace RopeMaster
             public void verlet(float dt)
             {
                 var tmp = curpos;
-                //curpos.X += (0.99f * curpos.X - 0.99f * oldpos.X) + (acc.X * pm * dt * dt);
-                //curpos.Y += (0.99f * curpos.Y - 0.99f * oldpos.Y) + (acc.Y * pm * dt * dt);
-                curpos = (2 * curpos - oldpos) + (acc * dt * dt);
+                curpos += (0.99f * curpos - 0.99f * oldpos) + (acc * dt * dt);
+
+
+                //curpos = (2 * curpos - oldpos) + (acc * dt * dt);
                 oldpos = tmp;
 
             }
