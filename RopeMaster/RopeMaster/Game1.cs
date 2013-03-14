@@ -52,9 +52,9 @@ namespace RopeMaster
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            graphics.PreferredBackBufferHeight = 600;
-            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 578;
+            graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             base.Initialize();
             this.Screen = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
