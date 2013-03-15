@@ -50,7 +50,7 @@ namespace RopeMaster.Core
                 fire = true;
                 fireCooldown = 0;
             }
-            if (autofireCooldown > 350)
+            if (autofireCooldown > 250)
             {
                 autofire = true;
                 autofireCooldown = 0;

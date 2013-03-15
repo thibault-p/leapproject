@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using RopeMaster.Core;
 using RopeMaster;
+using RopeMaster.gameplay;
 
 namespace Glitch.Engine.Core
 {
@@ -28,6 +29,8 @@ namespace Glitch.Engine.Core
         public Rectangle Screen { get; set; }
         public InputManager inputManager;
         public Camera2D Camera;
+        public Player player;
+
 
         /// <summary>
         /// Constructor

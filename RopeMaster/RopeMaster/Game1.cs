@@ -13,6 +13,7 @@ using Glitch.Engine.Core;
 using System.Reflection;
 using RopeMaster.Graphics;
 using RopeMaster.Core;
+using RopeMaster.gameplay;
 
 
 
@@ -33,6 +34,7 @@ namespace RopeMaster
         Controller controller;
         Parallax parallax;
         Rectangle screen;
+        Player player;
 
 
 
@@ -77,10 +79,11 @@ namespace RopeMaster
             tex = Content.Load<Texture2D>("gfx/point");
             screen = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             rope = new VerletRope(20, 200, Vector2.Zero, tex);
-            
+           
 
             base.LoadContent();
             parallax = new Parallax();
+            player = new Player();
         }
 
         /// <summary>
@@ -116,9 +119,9 @@ namespace RopeMaster
             {
                 parallax.moveHorizontal(-1);
             }
-            if (k.IsKeyDown(Keys.Right))
+            if (k.IsKeyDown(Keys.Space))
             {
-                
+                shotManager.playerFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
             }
             if (k.IsKeyDown(Keys.Up))
             {
@@ -145,14 +148,15 @@ namespace RopeMaster
             }
             else if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.On)
             {
-                shotManager.playerFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
+                shotManager.playerAutoFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
 
             }
             
 
 
             var m = Mouse.GetState();
-            rope.setOrigin(m.X, m.Y);
+            player.setPosition(m.X, m.Y);
+            rope.setOrigin(m.X+33, m.Y+76);
 
             rope.Update(gameTime);
 
@@ -170,19 +174,19 @@ namespace RopeMaster
             //paralax background wrapping
             parallax.Draw(spriteBatch);
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront,
+            spriteBatch.Begin(SpriteSortMode.Immediate,
                         BlendState.AlphaBlend,null,
                         null,
                         null,
                         null, m);
 
-            rope.Draw(spriteBatch);
+           
             shotManager.Draw(spriteBatch);
 
+           
+            rope.Draw(spriteBatch);
 
-
-
-
+            player.Draw(spriteBatch);
 
             spriteBatch.End();
 

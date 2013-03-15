@@ -101,7 +101,7 @@ namespace RopeMaster
                         s2.setPosition(x2, y2);
                     
                 }
-            checkColl();
+            //checkColl();
 
         }
 

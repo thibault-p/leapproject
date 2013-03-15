@@ -20,7 +20,7 @@ namespace RopeMaster.Core
             Down
         }
 
-        private Buttons[] defaultconfig ={ Buttons.A, Buttons.B, Buttons.RightTrigger, Buttons.A, Buttons.X}; 
+        private Buttons[] defaultconfig = { Buttons.A, Buttons.B, Buttons.RightTrigger, Buttons.A, Buttons.X };
 
 
         public enum State
@@ -40,7 +40,11 @@ namespace RopeMaster.Core
             commandState = new State[5];
             keyMapping = new Buttons[5];
             keyMapping = defaultconfig;
-     }
+            for (int i = 0; i < 5; i++)
+            {
+                commandState[i] = State.Off;
+            }
+        }
 
         public void Update(GameTime gameTime)
         {
@@ -52,13 +56,16 @@ namespace RopeMaster.Core
                     if (g.IsButtonDown(keyMapping[i]) && previousState.IsButtonDown(keyMapping[i]))
                     {
                         commandState[i] = State.On;
-                    }else if (g.IsButtonUp(keyMapping[i]) && previousState.IsButtonDown(keyMapping[i]))
+                    }
+                    else if (g.IsButtonUp(keyMapping[i]) && previousState.IsButtonDown(keyMapping[i]))
                     {
                         commandState[i] = State.JustOff;
-                    }else if (g.IsButtonDown(keyMapping[i]) && previousState.IsButtonUp(keyMapping[i]))
+                    }
+                    else if (g.IsButtonDown(keyMapping[i]) && previousState.IsButtonUp(keyMapping[i]))
                     {
                         commandState[i] = State.JustOn;
-                    }else if (g.IsButtonUp(keyMapping[i]) && previousState.IsButtonUp(keyMapping[i]))
+                    }
+                    else if (g.IsButtonUp(keyMapping[i]) && previousState.IsButtonUp(keyMapping[i]))
                     {
                         commandState[i] = State.Off;
                     }

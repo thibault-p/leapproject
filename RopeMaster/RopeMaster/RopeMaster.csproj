@@ -117,6 +117,7 @@
     <Compile Include="Core\ShotManager.cs" />
     <Compile Include="gameplay\Level.cs" />
     <Compile Include="gameplay\Obstacle.cs" />
+    <Compile Include="gameplay\Player.cs" />
     <Compile Include="Graphics\Camera2D.cs" />
     <Compile Include="Content\ContentAttribute.cs" />
     <Compile Include="Content\ContentItem.cs" />
