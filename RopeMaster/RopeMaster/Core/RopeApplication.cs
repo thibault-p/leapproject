@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Media;
 using RopeMaster.Core;
 using RopeMaster;
 using RopeMaster.gameplay;
+using Glitch.Engine.Particules;
+using Glitch.Engine.Util;
 
 namespace Glitch.Engine.Core
 {
@@ -28,9 +30,10 @@ namespace Glitch.Engine.Core
         private bool _isdebugMode;
         public Rectangle Screen { get; set; }
         public InputManager inputManager;
+        public ParticuleManager particuleManager;
         public Camera2D Camera;
         public Player player;
-
+        public RandomMachine randomizator;
 
         /// <summary>
         /// Constructor
@@ -52,9 +55,10 @@ namespace Glitch.Engine.Core
             //_graphics = new GraphicsDeviceManager(this);
             // Initialize the resolution
             magicContentManager = new MagicContentManager(GameAssemblies, Content);
-
+            particuleManager = new ParticuleManager();
             inputManager = new InputManager();
             shotManager = new ShotManager();
+            randomizator = new RandomMachine(1337);
             //Xbox Live
 #if XBOX
             this.Components.Add(new GamerServicesComponent(this));
@@ -66,7 +70,7 @@ namespace Glitch.Engine.Core
             magicContentManager.Initialize();
             base.LoadContent();
             shotManager.Initialize();
-
+            particuleManager.Initialize();
         }
 
         /// <summary>
@@ -77,6 +81,7 @@ namespace Glitch.Engine.Core
         {
             inputManager.Update(gameTime);
             shotManager.Update(gameTime);
+            particuleManager.Update(gameTime);
             base.Update(gameTime);
 
 
@@ -89,7 +94,6 @@ namespace Glitch.Engine.Core
         /// <param name="gameTime">Time passed since the last call to Draw.</param>
         protected override void Draw(GameTime gameTime)
         {
-    
 
             base.Draw(gameTime);
         }

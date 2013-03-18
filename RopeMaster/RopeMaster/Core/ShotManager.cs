@@ -21,7 +21,7 @@ namespace RopeMaster.Core
         private float autofireCooldown = 0;
 
         private bool fire = false;
-        private bool autofire = false; 
+        private bool autofire = false;
 
 
         private Texture2D texture;
@@ -45,27 +45,29 @@ namespace RopeMaster.Core
         {
             var d = gameTime.ElapsedGameTime.Milliseconds;
             fireCooldown += d;
+            autofireCooldown += d;
             if (fireCooldown > 125)
             {
                 fire = true;
                 fireCooldown = 0;
             }
-            if (autofireCooldown > 250)
+            if (autofireCooldown > 300)
             {
                 autofire = true;
                 autofireCooldown = 0;
             }
             Rectangle r = Game1.Instance.Camera.ScreenVisible;
-      
+
             foreach (Shot s in playerShots)
             {
                 s.Update(gameTime);
-         
 
-                if(!r.Contains((int)s.getPosition().X,(int)s.getPosition().Y)){
+
+                if (!r.Contains((int)s.getPosition().X, (int)s.getPosition().Y))
+                {
                     s.Exterminate = true;
                 }
-                
+
             }
             playerShots.RemoveAll(c => c.Exterminate);
         }
@@ -75,7 +77,7 @@ namespace RopeMaster.Core
 
             foreach (Shot s in playerShots)
             {
-                spriteBatch.Draw(texture,s.getPosition(), Color.White);
+                spriteBatch.Draw(texture, s.getPosition(), Color.White);
 
 
             }
@@ -86,13 +88,14 @@ namespace RopeMaster.Core
         {
             if (fire)
             {
-                fireShot(p, v, dmg,true);
+                fireShot(p, v, dmg, true);
                 fire = autofire = false;
             }
         }
 
         public void playerAutoFire(Vector2 p, Vector2 v, int dmg)
         {
+
             if (autofire)
             {
                 fireShot(p, v, dmg, true);
@@ -102,8 +105,8 @@ namespace RopeMaster.Core
 
         private void fireShot(Vector2 p, Vector2 v, int dmg, bool player)
         {
-            playerShots.Add ( new Shot(p,v,dmg, player));
-     
+            playerShots.Add(new Shot(p, v, dmg, player));
+
         }
 
     }

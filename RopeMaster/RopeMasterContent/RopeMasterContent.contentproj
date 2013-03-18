@@ -67,9 +67,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="gfx\misc\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="gfx\background\background_2.png">
       <Name>background_2</Name>
@@ -87,6 +85,13 @@
   <ItemGroup>
     <Compile Include="gfx\sprites\Player1.png">
       <Name>Player1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gfx\misc\particules.png">
+      <Name>particules</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -121,7 +121,7 @@ namespace RopeMaster
             }
             if (k.IsKeyDown(Keys.Space))
             {
-                shotManager.playerFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
+                shotManager.playerAutoFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
             }
             if (k.IsKeyDown(Keys.Up))
             {
@@ -137,10 +137,12 @@ namespace RopeMaster
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Down) == InputManager.State.JustOn)
             {
                 rope.down();
+                player.steerRope();
             }
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Up) == InputManager.State.JustOn)
             {
                 rope.up();
+                player.steerRope();
             }
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.JustOn)
             {
@@ -156,8 +158,8 @@ namespace RopeMaster
 
             var m = Mouse.GetState();
             player.setPosition(m.X, m.Y);
+            player.Update(gameTime);
             rope.setOrigin(m.X+33, m.Y+76);
-
             rope.Update(gameTime);
 
         }
@@ -188,6 +190,7 @@ namespace RopeMaster
 
             player.Draw(spriteBatch);
 
+            particuleManager.Draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin();

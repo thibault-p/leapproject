@@ -92,11 +92,17 @@ namespace RopeMaster
                     var y2 = s2.getPosition().Y;
                     var offx = (dx / d) * 0.5f * diff;
                     var offy = (dy / d) * 0.5f * diff;
- 
+
+
+
+                    
                         x1 -= offx;
                         y1 -= offy;
                         x2 += offx;
                         y2 += offy;
+                    
+                    
+
                         s1.setPosition(x1, y1);
                         s2.setPosition(x2, y2);
                     
