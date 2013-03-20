@@ -18,12 +18,32 @@ namespace RopeMaster.gameplay
         private Vector2 smokeLoc = new Vector2(2, 53);
         private long time;
         private int burst = 0;
+        private bool iscatched= false;
+        private Radar radar;
+
+
         public Player()
             : base()
         {
             texture = Game1.Instance.magicContentManager.GetTexture("player");
             source = new Rectangle(0, 0, 92, 128);
             time = 0;
+            radar = new Radar();
+        }
+
+
+        public void setIsCatched(bool state)
+        {
+            if (state != iscatched)
+                radar.resetAnim();
+
+            this.iscatched = state;
+        }
+
+        public void setPosition(int x, int y)
+        {
+            base.setPosition(x, y);
+            radar.setPosition(x+40, y+30);
         }
 
 
@@ -47,7 +67,10 @@ namespace RopeMaster.gameplay
 
                 time = 0;
             }
-
+            if (!iscatched)
+            {
+                radar.Update(gameTime);
+            }
         }
 
 
@@ -59,6 +82,11 @@ namespace RopeMaster.gameplay
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (!iscatched)
+            {
+                radar.Draw(spriteBatch);
+            }
+
             spriteBatch.Draw(texture, this.getPosition(), source, Color.White);
         }
     }

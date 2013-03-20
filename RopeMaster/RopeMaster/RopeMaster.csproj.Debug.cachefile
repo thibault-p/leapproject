@@ -1,10 +1,11 @@
 Content\gfx\point.xnb
-Content\gfx\shot.xnb
 Content\gfx\background\background_0.xnb
 Content\gfx\background\background_1.xnb
+Content\gfx\shot.xnb
 Content\gfx\background\background_2.xnb
-Content\gfx\sprites\Player1.xnb
 Content\font\default.xnb
+Content\gfx\sprites\Player1.xnb
 Content\gfx\misc\particules.xnb
+Content\gfx\sprites\radar.xnb
 Leap.dll
 Leapd.dll

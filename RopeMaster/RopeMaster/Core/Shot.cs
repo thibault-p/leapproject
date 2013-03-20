@@ -33,7 +33,7 @@ namespace RopeMaster.Core
 
         }
 
-        public bool exterminate()
+         public bool exterminate()
         {
             return false;
         }

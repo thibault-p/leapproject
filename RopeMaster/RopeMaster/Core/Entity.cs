@@ -8,8 +8,8 @@ namespace RopeMaster.Core
 {
     public abstract class Entity
     {
-        private Vector2 position;
-        private Vector2 velocity;
+        protected Vector2 position;
+        protected Vector2 velocity;
 
 
 
@@ -30,18 +30,18 @@ namespace RopeMaster.Core
             this.velocity = velo * 500;
         }
 
-        public void Update(GameTime gameTime)
+         public void Update(GameTime gameTime)
         {
             var d = gameTime.ElapsedGameTime.Milliseconds / 1000f;
             position += velocity * d;
         }
 
-        public Vector2 getPosition()
+         public Vector2 getPosition()
         {
             return position;
         }
 
-        public void setPosition(int x, int y)
+         public void setPosition(int x, int y)
         {
             this.position.X = x;
             this.position.Y = y;
