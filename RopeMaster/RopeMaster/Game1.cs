@@ -35,7 +35,7 @@ namespace RopeMaster
         Parallax parallax;
         Rectangle screen;
         Player player;
-
+        LeapControl leapControl;
 
 
         public Game1():
@@ -64,6 +64,7 @@ namespace RopeMaster
 
             //controller = new Controller();
             Camera = new Camera2D();
+            leapControl = new LeapControl();
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace RopeMaster
             tex = Content.Load<Texture2D>("gfx/point");
             screen = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             rope = new VerletRope(20, 200, Vector2.Zero, tex);
-           
+            rope.setOrigin( 33, 76);
 
             base.LoadContent();
             parallax = new Parallax();
@@ -105,6 +106,7 @@ namespace RopeMaster
 
             base.Update(gameTime);
             parallax.moveHorizontal(1);
+            leapControl.Update(gameTime);
             // Allows the game to exit
             KeyboardState k = Keyboard.GetState();
             if (k.IsKeyDown(Keys.PageUp) && prevKey.IsKeyUp(Keys.PageUp))
@@ -153,13 +155,24 @@ namespace RopeMaster
                 shotManager.playerAutoFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
 
             }
-            
 
 
-            var m = Mouse.GetState();
-            player.setPosition(m.X, m.Y);
+            if (leapControl.Is)
+            {
+                var p = leapControl.getPosition();
+                player.setPosition((int) p.X, (int)p.Y);
+                rope.setOrigin((int)p.X + 33, (int)p.Y + 76);
+                player.setIsCatched(true);
+            }
+            else
+            {
+                var m = Mouse.GetState();
+                player.setIsCatched(false);
+                //player.setPosition(m.X, m.Y);
+                //rope.setOrigin(m.X + 33, m.Y + 76);
+            } 
             player.Update(gameTime);
-            rope.setOrigin(m.X+33, m.Y+76);
+
             rope.Update(gameTime);
 
         }

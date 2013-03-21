@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\InputManager.cs" />
+    <Compile Include="Core\LeapControl.cs" />
     <Compile Include="Core\RandomMachine.cs" />
     <Compile Include="Core\RopeApplication.cs" />
     <Compile Include="Core\Shot.cs" />
