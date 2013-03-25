@@ -79,8 +79,6 @@ namespace RopeMaster
             // TODO: use this.Content to load your game content here
             tex = Content.Load<Texture2D>("gfx/point");
             screen = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            rope = new VerletRope(20, 200, Vector2.Zero, tex);
-            rope.setOrigin( 33, 76);
 
             base.LoadContent();
             parallax = new Parallax();
@@ -138,13 +136,11 @@ namespace RopeMaster
 
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Down) == InputManager.State.JustOn)
             {
-                rope.down();
-                player.steerRope();
+                player.steerRope(1);
             }
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Up) == InputManager.State.JustOn)
             {
-                rope.up();
-                player.steerRope();
+                player.steerRope(-1);
             }
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.JustOn)
             {
@@ -161,7 +157,6 @@ namespace RopeMaster
             {
                 var p = leapControl.getPosition();
                 player.setPosition((int) p.X, (int)p.Y);
-                rope.setOrigin((int)p.X + 33, (int)p.Y + 76);
                 player.setIsCatched(true);
             }
             else
@@ -172,8 +167,6 @@ namespace RopeMaster
                 //rope.setOrigin(m.X + 33, m.Y + 76);
             } 
             player.Update(gameTime);
-
-            rope.Update(gameTime);
 
         }
 
@@ -198,9 +191,6 @@ namespace RopeMaster
            
             shotManager.Draw(spriteBatch);
 
-           
-            rope.Draw(spriteBatch);
-
             player.Draw(spriteBatch);
 
             particuleManager.Draw(spriteBatch);
@@ -208,6 +198,10 @@ namespace RopeMaster
 
             spriteBatch.Begin();
             //get rid of Camera
+            if(!leapControl.Is)
+            leapControl.Draw(spriteBatch);
+
+
             spriteBatch.End();
 
 

@@ -22,6 +22,7 @@ namespace RopeMaster
         private int delta;
         private Texture2D tex;
         private int fixeddiv = 1;
+        private Vector2 lastorigin;
 
 
         public VerletRope(int _div, int _length, Vector2 _pos, Texture2D _tex)

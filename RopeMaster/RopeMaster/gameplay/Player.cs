@@ -11,6 +11,7 @@ using Glitch.Graphics.particules;
 namespace RopeMaster.gameplay
 {
     [TextureContent(AssetName = "player", AssetPath = "gfx/sprites/Player1")]
+    [TextureContent(AssetName = "point", AssetPath = "gfx/point")]
     public class Player : Entity
     {
         private Rectangle source;
@@ -21,6 +22,7 @@ namespace RopeMaster.gameplay
         private bool iscatched= false;
         private Radar radar;
 
+        private VerletRope rope;
 
         public Player()
             : base()
@@ -29,6 +31,8 @@ namespace RopeMaster.gameplay
             source = new Rectangle(0, 0, 92, 128);
             time = 0;
             radar = new Radar();
+            rope = new VerletRope(20, 200, Vector2.Zero, Game1.Instance.magicContentManager.GetTexture("point"));
+            rope.setOrigin( 33, 76);
         }
 
 
@@ -71,12 +75,24 @@ namespace RopeMaster.gameplay
             {
                 radar.Update(gameTime);
             }
+
+            rope.setOrigin((int)this.position.X+33, (int)this.position.Y+76);
+            rope.Update(gameTime);
+
+
         }
 
 
-        public void steerRope()
+
+
+
+        public void steerRope(int way)
         {
             burst = 1;
+            if (way < 0)
+                rope.up();
+            else
+                rope.down();
         }
 
 
@@ -85,8 +101,9 @@ namespace RopeMaster.gameplay
             if (!iscatched)
             {
                 radar.Draw(spriteBatch);
-            }
 
+            }
+            rope.Draw(spriteBatch);
             spriteBatch.Draw(texture, this.getPosition(), source, Color.White);
         }
     }
