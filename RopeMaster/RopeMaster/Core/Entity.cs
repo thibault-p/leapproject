@@ -30,25 +30,25 @@ namespace RopeMaster.Core
             this.velocity = velo * 500;
         }
 
-         public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             var d = gameTime.ElapsedGameTime.Milliseconds / 1000f;
             position += velocity * d;
         }
 
-         public Vector2 getPosition()
+         public virtual Vector2 getPosition()
         {
             return position;
         }
 
-         public void setPosition(int x, int y)
+         public virtual void setPosition(int x, int y)
         {
             this.position.X = x;
             this.position.Y = y;
         }
 
 
-        public bool exterminate()
+        public virtual bool exterminate()
         {
             return false;
         }

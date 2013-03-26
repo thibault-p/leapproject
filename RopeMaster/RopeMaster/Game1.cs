@@ -37,6 +37,7 @@ namespace RopeMaster
         Player player;
         LeapControl leapControl;
 
+        BonusMaster bonusmaster;
 
         public Game1():
             base("Rope Master","Content","1.0")
@@ -65,6 +66,7 @@ namespace RopeMaster
             //controller = new Controller();
             Camera = new Camera2D();
             leapControl = new LeapControl();
+      
         }
 
         /// <summary>
@@ -83,6 +85,7 @@ namespace RopeMaster
             base.LoadContent();
             parallax = new Parallax();
             player = new Player();
+            bonusmaster = new BonusMaster();
         }
 
         /// <summary>
@@ -119,9 +122,9 @@ namespace RopeMaster
             {
                 parallax.moveHorizontal(-1);
             }
-            if (k.IsKeyDown(Keys.Space))
+            if (k.IsKeyDown(Keys.LeftShift))
             {
-                shotManager.playerAutoFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
+                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50);
             }
             if (k.IsKeyDown(Keys.Up))
             {
@@ -134,6 +137,28 @@ namespace RopeMaster
             parallax.Update(gameTime);
             prevKey = k;
 
+            if (k.IsKeyDown(Keys.NumPad1))
+            {
+                bonusmaster.playAnim(0);
+            }
+
+            if (k.IsKeyDown(Keys.NumPad2))
+            {
+                bonusmaster.playAnim(1);
+            }
+
+            if (k.IsKeyDown(Keys.NumPad3))
+            {
+                bonusmaster.playAnim(2);
+            }
+
+            if (k.IsKeyDown(Keys.NumPad4))
+            {
+                bonusmaster.playAnim(3);
+            }
+
+
+
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Down) == InputManager.State.JustOn)
             {
                 player.steerRope(1);
@@ -144,11 +169,11 @@ namespace RopeMaster
             }
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.JustOn)
             {
-                shotManager.playerFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
+                shotManager.playerFire(player.getShotSource(), player.getShotAngle(), 50);
             }
             else if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.On)
             {
-                shotManager.playerAutoFire(rope.getAttachPosition(), rope.getAttachAngle(), 50);
+                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50);
 
             }
 
@@ -198,9 +223,11 @@ namespace RopeMaster
 
             spriteBatch.Begin();
             //get rid of Camera
-            if(!leapControl.Is)
-            leapControl.Draw(spriteBatch);
-
+            if (!leapControl.Is)
+            {
+                leapControl.Draw(spriteBatch);
+            }
+            bonusmaster.Draw(spriteBatch);
 
             spriteBatch.End();
 

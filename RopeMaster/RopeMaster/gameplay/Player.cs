@@ -50,7 +50,15 @@ namespace RopeMaster.gameplay
             radar.setPosition(x+40, y+30);
         }
 
+        public Vector2 getShotSource()
+        {
+            return rope.getAttachPosition();
+        }
 
+        public Vector2 getShotAngle()
+        {
+            return rope.getAttachAngle();
+        }
 
         public void Update(GameTime gameTime)
         {
