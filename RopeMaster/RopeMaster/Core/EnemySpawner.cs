@@ -20,6 +20,8 @@ namespace RopeMaster.Core
 
         public void Update(GameTime gameTime)
         {
+
+
             
 
 
@@ -32,7 +34,7 @@ namespace RopeMaster.Core
 
 
 
-        public bool exterminate()
+        public override  bool exterminate()
         {
             return load <= 0;
         }
@@ -41,7 +43,7 @@ namespace RopeMaster.Core
 
         public void fire()
         {
-            
+            Game1.Instance.enemyManager.Add(typeof(T));
 
         }
 

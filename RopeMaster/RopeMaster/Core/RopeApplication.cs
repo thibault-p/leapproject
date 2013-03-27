@@ -31,9 +31,11 @@ namespace Glitch.Engine.Core
         public Rectangle Screen { get; set; }
         public InputManager inputManager;
         public ParticuleManager particuleManager;
+        public EnemyManager enemyManager;
         public Camera2D Camera;
         public Player player;
         public RandomMachine randomizator;
+        public int difficulty=1;
 
         /// <summary>
         /// Constructor
@@ -58,6 +60,7 @@ namespace Glitch.Engine.Core
             particuleManager = new ParticuleManager();
             inputManager = new InputManager();
             shotManager = new ShotManager();
+            enemyManager = new EnemyManager();
             randomizator = new RandomMachine(1337);
             //Xbox Live
 #if XBOX
@@ -71,6 +74,8 @@ namespace Glitch.Engine.Core
             base.LoadContent();
             shotManager.Initialize();
             particuleManager.Initialize();
+            enemyManager.Initialize();
+
         }
 
         /// <summary>
@@ -82,6 +87,7 @@ namespace Glitch.Engine.Core
             inputManager.Update(gameTime);
             shotManager.Update(gameTime);
             particuleManager.Update(gameTime);
+            enemyManager.Update(gameTime);
             base.Update(gameTime);
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Glitch.Engine.Core;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace RopeMaster.Core
 {
@@ -28,15 +29,28 @@ namespace RopeMaster.Core
 
 
 
-
+        public void Add(Enemy e)
+        {
+            enemies.Add(e);
+        }
 
         public void Update(GameTime gameTime){
-
+            foreach (Enemy e in enemies)
+            {
+                e.Update(gameTime);
+            }
             //delete all useless enemies
             enemies.RemoveAll(e => e.exterminate());
 
         }
 
+        public void Draw(SpriteBatch spritebatch)
+        {
+            foreach (Enemy e in enemies)
+            {
+                e.Draw(spritebatch);
+            }
+        }
 
     }
 }

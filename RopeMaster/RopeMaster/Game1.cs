@@ -192,6 +192,7 @@ namespace RopeMaster
                 //rope.setOrigin(m.X + 33, m.Y + 76);
             } 
             player.Update(gameTime);
+            bonusmaster.Update(gameTime);
 
         }
 
