@@ -114,6 +114,7 @@
     <Compile Include="Core\EnemyManager.cs" />
     <Compile Include="Core\EnemySpawner.cs" />
     <Compile Include="Core\Entity.cs" />
+    <Compile Include="Core\EnemyBogus.cs" />
     <Compile Include="Core\InputManager.cs" />
     <Compile Include="Core\LeapControl.cs" />
     <Compile Include="Core\RandomMachine.cs" />
@@ -121,6 +122,8 @@
     <Compile Include="Core\Shot.cs" />
     <Compile Include="Core\ShotManager.cs" />
     <Compile Include="gameplay\BonusMaster.cs" />
+    <Compile Include="gameplay\Helpers\SinTrajectory.cs" />
+    <Compile Include="gameplay\MovingFunctions.cs" />
     <Compile Include="gameplay\Level.cs" />
     <Compile Include="gameplay\Obstacle.cs" />
     <Compile Include="gameplay\Player.cs" />
@@ -143,6 +146,7 @@
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <Compile Include="gameplay\Helpers\Trajectory.cs" />
     <None Include="Leap.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

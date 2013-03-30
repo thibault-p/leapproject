@@ -40,7 +40,7 @@ namespace RopeMaster.Core
                 e.Update(gameTime);
             }
             //delete all useless enemies
-            enemies.RemoveAll(e => e.exterminate());
+            enemies.RemoveAll(e => e.Exterminate());
 
         }
 

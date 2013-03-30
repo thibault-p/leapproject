@@ -3,48 +3,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using RopeMaster.gameplay.Helpers;
 
 namespace RopeMaster.Core
 {
-    public class EnemySpawner<T> : Entity
-    {
+    public class EnemySpawner<T>  : Entity where T: Enemy , new()
+     {
         private int load;
+        private int cooldown;
+        private bool ready;
+        private int time;
+        private Trajectory trajectoty;
 
 
 
-        public EnemySpawner(Vector2 _pos, int _load):base(_pos,Vector2.Zero)
+        public EnemySpawner(Vector2 _pos, int _load, int _cooldown, Trajectory traj)
+            : base(_pos, Vector2.Zero)
         {
             load = _load;
+            cooldown = _cooldown;
+            ready = true;
+            trajectoty = traj;
         }
 
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-
-
+         
+                time += gameTime.ElapsedGameTime.Milliseconds;
+                if (time > cooldown)
+                {
+                    fire();
+                    time = 0;
+                }
             
-
-
-
-
-
-
-
         }
 
 
 
-        public override  bool exterminate()
+        public override bool exterminate()
         {
             return load <= 0;
         }
 
-        
+
 
         public void fire()
         {
-            Game1.Instance.enemyManager.Add(typeof(T));
-
+            load--;  
+            T tmp = new T();
+            var p = this.getPosition();
+            tmp.setPosition(p);
+            tmp.setTrajectory(trajectoty.compute);
+            Game1.Instance.enemyManager.Add( tmp );
         }
 
 
@@ -52,7 +63,7 @@ namespace RopeMaster.Core
 
 
 
-        
+
 
 
 

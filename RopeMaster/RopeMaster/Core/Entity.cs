@@ -47,6 +47,12 @@ namespace RopeMaster.Core
             this.position.Y = y;
         }
 
+         public virtual void setPosition(Vector2 pos)
+         {
+             this.position = pos;
+         }
+
+
 
         public virtual bool exterminate()
         {

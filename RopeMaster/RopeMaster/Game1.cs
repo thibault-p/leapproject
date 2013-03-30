@@ -14,6 +14,7 @@ using System.Reflection;
 using RopeMaster.Graphics;
 using RopeMaster.Core;
 using RopeMaster.gameplay;
+using RopeMaster.gameplay.Helpers;
 
 
 
@@ -28,16 +29,15 @@ namespace RopeMaster
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        VerletRope rope;
         Texture2D tex;
         KeyboardState prevKey;
-        Controller controller;
+   
         Parallax parallax;
         Rectangle screen;
-        Player player;
         LeapControl leapControl;
 
         BonusMaster bonusmaster;
+        EnemySpawner<EnemyBogus> spawner;
 
         public Game1():
             base("Rope Master","Content","1.0")
@@ -86,6 +86,8 @@ namespace RopeMaster
             parallax = new Parallax();
             player = new Player();
             bonusmaster = new BonusMaster();
+
+            spawner = new EnemySpawner<EnemyBogus>(Vector2.One * 500,100,1000, new SinTrajectory(0.05f,0,2*(float)Math.PI));
         }
 
         /// <summary>
@@ -193,6 +195,7 @@ namespace RopeMaster
             } 
             player.Update(gameTime);
             bonusmaster.Update(gameTime);
+            spawner.Update(gameTime);
 
         }
 
@@ -218,8 +221,9 @@ namespace RopeMaster
             shotManager.Draw(spriteBatch);
 
             player.Draw(spriteBatch);
-
+            enemyManager.Draw(spriteBatch);
             particuleManager.Draw(spriteBatch);
+
             spriteBatch.End();
 
             spriteBatch.Begin();
