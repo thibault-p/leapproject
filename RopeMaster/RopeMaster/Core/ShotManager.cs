@@ -6,6 +6,7 @@ using Glitch.Engine.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Glitch.Engine.Content;
+using RopeMaster.gameplay.Enemies;
 
 namespace RopeMaster.Core
 {
@@ -25,10 +26,12 @@ namespace RopeMaster.Core
 
 
         private Texture2D texture;
+        private Rectangle srcRectPlayer;
 
         public ShotManager()
         {
             playerShots = new List<Shot>();
+            srcRectPlayer = new Rectangle(0, 0, 10, 10);
             ennemiesShots = new List<Shot>();
         }
 
@@ -61,15 +64,34 @@ namespace RopeMaster.Core
             foreach (Shot s in playerShots)
             {
                 s.Update(gameTime);
-
-
                 if (!r.Contains((int)s.getPosition().X, (int)s.getPosition().Y))
                 {
                     s.Exterminate = true;
                 }
+                else
+                {
+                    foreach (Enemy e in Game1.Instance.enemyManager.enemies)
+                    {
+
+                        if (e.collideWith(s.getPosition(), 5))
+                        {
+                            e.hit(9000);
+                            s.Exterminate = true;
+                        }
+                    }
+
+
+                }
 
             }
             playerShots.RemoveAll(c => c.Exterminate);
+
+   
+
+
+
+
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -77,35 +99,35 @@ namespace RopeMaster.Core
 
             foreach (Shot s in playerShots)
             {
-                spriteBatch.Draw(texture, s.getPosition(), Color.White);
+                spriteBatch.Draw(texture,s.getPosition(), srcRectPlayer, Color.White,0f,s.getOrigin(),1,SpriteEffects.None,0f);
 
 
             }
         }
 
 
-        public void playerFire(Vector2 p, Vector2 v, int dmg)
+        public void playerFire(Vector2 p, Vector2 v, int dmg, int point)
         {
             if (fire)
             {
-                fireShot(p, v, dmg, true);
+                fireShot(p, v, dmg, point ,true);
                 fire = autofire = false;
             }
         }
 
-        public void playerAutoFire(Vector2 p, Vector2 v, int dmg)
+        public void playerAutoFire(Vector2 p, Vector2 v, int dmg, int point)
         {
 
             if (autofire)
             {
-                fireShot(p, v, dmg, true);
+                fireShot(p, v, dmg,point, true);
                 autofire = false;
             }
         }
 
-        private void fireShot(Vector2 p, Vector2 v, int dmg, bool player)
+        private void fireShot(Vector2 p, Vector2 v, int dmg,int point, bool player)
         {
-            playerShots.Add(new Shot(p, v, dmg, player));
+            playerShots.Add(new Shot(p, v, dmg, point, player));
 
         }
 

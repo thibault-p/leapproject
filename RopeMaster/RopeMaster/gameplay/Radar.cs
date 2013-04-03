@@ -16,9 +16,6 @@ using RopeMaster.Core;
 
 namespace RopeMaster.gameplay
 {
-
-
-
     [TextureContent(AssetName = "radar", AssetPath = "gfx/sprites/radar")]
     public class Radar : Entity
     {
@@ -38,12 +35,29 @@ namespace RopeMaster.gameplay
             var c = texture.Bounds.Center;
             center = new Vector2(64, 64);
             rdrsrc = new Rectangle(0, 0, 128, 128);
-            txtsrc = new Rectangle(0, 128, 128, 52);
-            txtpos = new Vector2(center.X, center.Y + txtsrc.Height);
+            txtsrc = new Rectangle(0, 128, 128, 36);
+            txtpos = new Vector2(-128, -17);
         }
 
 
 
+        public override void setPosition(int x, int y)
+        {
+            base.setPosition(x, y);
+            if (x < 192)
+            {
+                //right
+                txtpos.X = 64;
+                txtsrc.Y = 128 + 36;
+            }
+            else
+            {
+                //left
+                txtpos.X = -64 - 128;
+                txtsrc.Y = 128;
+            }
+
+        }
 
         public void resetAnim()
         {
@@ -51,11 +65,7 @@ namespace RopeMaster.gameplay
             alpha = 1;
             time = 0;
         }
-
-
-
-
-        public void Update(GameTime gametime)
+        public override void Update(GameTime gametime)
         {
             time += gametime.ElapsedGameTime.Milliseconds;
             if (time > 500)
@@ -69,7 +79,7 @@ namespace RopeMaster.gameplay
         public void Draw(SpriteBatch spritebatch)
         {
             spritebatch.Draw(texture, this.position, rdrsrc, Color.White * alpha, 0, center, scale, SpriteEffects.None, 0);
-            spritebatch.Draw(texture, this.position-txtpos, txtsrc, Color.White);
+            spritebatch.Draw(texture, this.position + txtpos, txtsrc, Color.White);
         }
 
 

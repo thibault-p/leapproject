@@ -16,11 +16,14 @@ namespace RopeMaster.gameplay
     {
         private Rectangle source;
         private Texture2D texture;
-        private Vector2 smokeLoc = new Vector2(2, 53);
+        private Vector2 smokeLoc = new Vector2(-38, 23);
         private long time;
         private int burst = 0;
-        private bool iscatched= false;
+        private bool iscatched = false;
         private Radar radar;
+        protected Hitbox hitboxbig;
+
+
 
         private VerletRope rope;
 
@@ -32,7 +35,9 @@ namespace RopeMaster.gameplay
             time = 0;
             radar = new Radar();
             rope = new VerletRope(20, 200, Vector2.Zero, Game1.Instance.magicContentManager.GetTexture("point"));
-            rope.setOrigin( 33, 76);
+            rope.setOrigin(40, 46);
+            origin = new Vector2(40, 30);
+            hitboxbig = new SphereBox(this.position, 25);
         }
 
 
@@ -44,10 +49,11 @@ namespace RopeMaster.gameplay
             this.iscatched = state;
         }
 
-        public void setPosition(int x, int y)
+        public override void setPosition(int x, int y)
         {
             base.setPosition(x, y);
-            radar.setPosition(x+40, y+30);
+            radar.setPosition(x, y);
+            hitboxbig.setPosition(this.position);
         }
 
         public Vector2 getShotSource()
@@ -60,7 +66,7 @@ namespace RopeMaster.gameplay
             return rope.getAttachAngle();
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             time += gameTime.ElapsedGameTime.Milliseconds;
             if (time > 300)
@@ -84,12 +90,23 @@ namespace RopeMaster.gameplay
                 radar.Update(gameTime);
             }
 
-            rope.setOrigin((int)this.position.X+33, (int)this.position.Y+76);
+            rope.setOrigin((int)this.position.X, (int)this.position.Y + 36);
             rope.Update(gameTime);
 
 
         }
 
+
+
+        public int getPointShot()
+        {
+            float p = 0;
+            var d = rope.getOrigin().Y - rope.getAttachPosition().Y;
+            if (d > 0)
+                p =d/rope.length;
+            Console.WriteLine(100*p);
+            return (int)(100 * p)+1;
+        }
 
 
 
@@ -112,7 +129,7 @@ namespace RopeMaster.gameplay
 
             }
             rope.Draw(spriteBatch);
-            spriteBatch.Draw(texture, this.getPosition(), source, Color.White);
+            spriteBatch.Draw(texture, this.getPosition(), source, Color.White, 0, origin, 1, SpriteEffects.None, 0);
         }
     }
 }

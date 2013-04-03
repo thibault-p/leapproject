@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using RopeMaster.gameplay.Helpers;
+using RopeMaster.Core;
 
-namespace RopeMaster.Core
+namespace RopeMaster.gameplay.Enemies
 {
-    public class EnemySpawner<T>  : Entity where T: Enemy , new()
-     {
+    public class EnemySpawner<T> : Entity where T : Enemy, new()
+    {
         private int load;
         private int cooldown;
         private bool ready;
@@ -29,16 +30,16 @@ namespace RopeMaster.Core
 
         public override void Update(GameTime gameTime)
         {
-         
+            if (load > 0)
+            {
                 time += gameTime.ElapsedGameTime.Milliseconds;
                 if (time > cooldown)
                 {
                     fire();
                     time = 0;
                 }
-            
+            }
         }
-
 
 
         public override bool exterminate()
@@ -50,12 +51,12 @@ namespace RopeMaster.Core
 
         public void fire()
         {
-            load--;  
+            load--;
             T tmp = new T();
             var p = this.getPosition();
             tmp.setPosition(p);
             tmp.setTrajectory(trajectoty.compute);
-            Game1.Instance.enemyManager.Add( tmp );
+            Game1.Instance.enemyManager.Add(tmp);
         }
 
 

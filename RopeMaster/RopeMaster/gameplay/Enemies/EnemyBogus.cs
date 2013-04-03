@@ -14,7 +14,7 @@ using RopeMaster.gameplay;
 
 
 
-namespace RopeMaster.Core
+namespace RopeMaster.gameplay.Enemies
 {
     [TextureContent(AssetName = "bogus", AssetPath = "gfx/sprites/bogus")]
     public class EnemyBogus : Enemy
@@ -32,6 +32,7 @@ namespace RopeMaster.Core
             base.nbFrame = new int[] { 1, 2, 3 };
             base.velocity = Vector2.UnitX * -100;
             texture = Game1.Instance.magicContentManager.GetTexture("bogus");
+            srcBox = new Rectangle(0, 0, 64, 64);
         }
 
      

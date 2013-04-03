@@ -6,12 +6,12 @@ using Glitch.Engine.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RopeMaster.Core
+namespace RopeMaster.gameplay.Enemies
 {
     public class EnemyManager : Manager
     {
 
-        private List<Enemy> enemies; 
+        public List<Enemy> enemies; 
 
         public EnemyManager()
         {
@@ -19,6 +19,7 @@ namespace RopeMaster.Core
 
         }
 
+        
 
 
         public void Initialize()

@@ -22,11 +22,13 @@ namespace RopeMaster
         private int delta;
         private Texture2D tex;
         private int fixeddiv = 1;
-        private Vector2 lastorigin;
-
+        protected Vector2 origin;
+        protected Rectangle srcRect;
+        public int length;
 
         public VerletRope(int _div, int _length, Vector2 _pos, Texture2D _tex)
         {
+            length = _length;
             this.div = _div;
             this.tex = _tex;
             sticks = new Stick[div];
@@ -36,6 +38,8 @@ namespace RopeMaster
                 sticks[i] = new Stick(new Vector2(50, 50 + delta * i));
             }
 
+            origin = new Vector2(5, 5);
+            srcRect = new Rectangle(0, 0, 10, 10);
         }
 
 
@@ -61,6 +65,10 @@ namespace RopeMaster
         }
 
 
+        public Vector2 getOrigin()
+        {
+            return sticks[fixeddiv].getPosition();
+        }
 
         public void setOrigin(int x, int y)
         {
@@ -129,7 +137,7 @@ namespace RopeMaster
         {
             for (int i = fixeddiv; i < this.div; i++)
             {
-                spriteBatch.Draw(this.tex, sticks[i].getPosition(), Color.White);
+                spriteBatch.Draw(this.tex, sticks[i].getPosition(), srcRect, Color.White,0,origin,1,SpriteEffects.None,0);
             }
 
         }

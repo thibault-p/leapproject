@@ -10,7 +10,7 @@ namespace RopeMaster.Core
     {
         protected Vector2 position;
         protected Vector2 velocity;
-
+        protected Vector2 origin;
 
 
         public Entity()
@@ -28,6 +28,7 @@ namespace RopeMaster.Core
         {
             this.position = pos;
             this.velocity = velo * 500;
+            this.origin = Vector2.Zero;
         }
 
         public virtual void Update(GameTime gameTime)
@@ -52,6 +53,10 @@ namespace RopeMaster.Core
              this.position = pos;
          }
 
+         public Vector2 getOrigin()
+         {
+             return origin;
+         }
 
 
         public virtual bool exterminate()

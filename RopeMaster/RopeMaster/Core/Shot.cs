@@ -12,28 +12,26 @@ namespace RopeMaster.Core
 
     public class Shot : Entity
     {
+        public static int shotWidth = 4;
+
 
         public bool PlayerShot { get; set; }
         public int  damage;
         public bool Exterminate = false;
+        protected int point;
 
-        public Shot(Vector2 pos, Vector2 velo, int dmg, bool isPlayer) :
+        public Shot(Vector2 pos, Vector2 velo, int dmg, int pts, bool isPlayer) :
             base(pos, velo)
         {
             damage = dmg;
             PlayerShot = isPlayer;
+            this.origin = new Vector2(5, 5);
+            this.point = pts;
         }
 
-        public void Update(GameTime gameTime)
-        {
-
-            base.Update(gameTime);
 
 
-
-        }
-
-         public bool exterminate()
+        public override bool exterminate()
         {
             return false;
         }

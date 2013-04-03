@@ -12,6 +12,7 @@ using RopeMaster;
 using RopeMaster.gameplay;
 using Glitch.Engine.Particules;
 using Glitch.Engine.Util;
+using RopeMaster.gameplay.Enemies;
 
 namespace Glitch.Engine.Core
 {

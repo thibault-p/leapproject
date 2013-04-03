@@ -110,11 +110,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Enemy.cs" />
-    <Compile Include="Core\EnemyManager.cs" />
-    <Compile Include="Core\EnemySpawner.cs" />
+    <Compile Include="Core\SphereBox.cs" />
+    <Compile Include="gameplay\Enemies\OnyxEnemy.cs" />
+    <Compile Include="gameplay\Enemies\Enemy.cs" />
+    <Compile Include="gameplay\Enemies\EnemyManager.cs" />
+    <Compile Include="gameplay\Enemies\EnemySpawner.cs" />
     <Compile Include="Core\Entity.cs" />
-    <Compile Include="Core\EnemyBogus.cs" />
+    <Compile Include="gameplay\Enemies\EnemyBogus.cs" />
     <Compile Include="Core\InputManager.cs" />
     <Compile Include="Core\LeapControl.cs" />
     <Compile Include="Core\RandomMachine.cs" />
@@ -147,6 +149,7 @@
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Compile Include="gameplay\Helpers\Trajectory.cs" />
+    <Compile Include="Core\Hitbox.cs" />
     <None Include="Leap.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

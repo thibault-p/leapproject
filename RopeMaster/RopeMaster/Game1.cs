@@ -15,6 +15,7 @@ using RopeMaster.Graphics;
 using RopeMaster.Core;
 using RopeMaster.gameplay;
 using RopeMaster.gameplay.Helpers;
+using RopeMaster.gameplay.Enemies;
 
 
 
@@ -31,16 +32,16 @@ namespace RopeMaster
         SpriteBatch spriteBatch;
         Texture2D tex;
         KeyboardState prevKey;
-   
+
         Parallax parallax;
         Rectangle screen;
         LeapControl leapControl;
 
         BonusMaster bonusmaster;
-        EnemySpawner<EnemyBogus> spawner;
+        EnemySpawner<OnyxEnemy> spawner;
 
-        public Game1():
-            base("Rope Master","Content","1.0")
+        public Game1() :
+            base("Rope Master", "Content", "1.0")
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -61,12 +62,12 @@ namespace RopeMaster
             graphics.ApplyChanges();
             base.Initialize();
             this.Screen = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
-            
+
 
             //controller = new Controller();
             Camera = new Camera2D();
             leapControl = new LeapControl();
-      
+
         }
 
         /// <summary>
@@ -87,13 +88,13 @@ namespace RopeMaster
             player = new Player();
             bonusmaster = new BonusMaster();
 
-            spawner = new EnemySpawner<EnemyBogus>(Vector2.One * 500,100,1000, new SinTrajectory(0.05f,0,2*(float)Math.PI));
+            spawner = new EnemySpawner<OnyxEnemy>(Vector2.One * 500, 10, 2000, new SinTrajectory(0.5f, 0, 2 * (float)Math.PI));
         }
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
-        /// </summary>
+        /// </summary> 
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
@@ -126,7 +127,7 @@ namespace RopeMaster
             }
             if (k.IsKeyDown(Keys.LeftShift))
             {
-                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50);
+                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50, player.getPointShot());
             }
             if (k.IsKeyDown(Keys.Up))
             {
@@ -171,11 +172,11 @@ namespace RopeMaster
             }
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.JustOn)
             {
-                shotManager.playerFire(player.getShotSource(), player.getShotAngle(), 50);
+                shotManager.playerFire(player.getShotSource(), player.getShotAngle(), 50, player.getPointShot());
             }
             else if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.On)
             {
-                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50);
+                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50, player.getPointShot());
 
             }
 
@@ -183,16 +184,14 @@ namespace RopeMaster
             if (leapControl.Is)
             {
                 var p = leapControl.getPosition();
-                player.setPosition((int) p.X, (int)p.Y);
+                player.setPosition((int)p.X, (int)p.Y);
                 player.setIsCatched(true);
             }
             else
             {
                 var m = Mouse.GetState();
                 player.setIsCatched(false);
-                //player.setPosition(m.X, m.Y);
-                //rope.setOrigin(m.X + 33, m.Y + 76);
-            } 
+            }
             player.Update(gameTime);
             bonusmaster.Update(gameTime);
             spawner.Update(gameTime);
@@ -212,12 +211,12 @@ namespace RopeMaster
             parallax.Draw(spriteBatch);
 
             spriteBatch.Begin(SpriteSortMode.Immediate,
-                        BlendState.AlphaBlend,null,
+                        BlendState.AlphaBlend, null,
                         null,
                         null,
                         null, m);
 
-           
+
             shotManager.Draw(spriteBatch);
 
             player.Draw(spriteBatch);

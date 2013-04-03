@@ -5,10 +5,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RopeMaster.gameplay.Helpers;
+using RopeMaster.Core;
 
-namespace RopeMaster.Core
+namespace RopeMaster.gameplay.Enemies
 {
-    public abstract class Enemy : Entity
+    public class Enemy : Entity
     {
 
         public static long animRate = 100;
@@ -26,14 +27,33 @@ namespace RopeMaster.Core
         private bool ready2Die = false;
         private long timer;
         protected Texture2D texture;
+        protected Hitbox hitbox;
+        protected float rotation;
+
+
+
+        public Enemy()
+            : base(Vector2.Zero, Vector2.Zero)
+        {
+            initialize(1);
+        }
+
+
 
         public Enemy(Vector2 _pos, int _hp)
             : base(_pos, Vector2.Zero)
         {
+            initialize(_hp);
+        }
+
+        private void initialize(int _hp)
+        {
             hp = Game1.Instance.difficulty * _hp;
             d = 1;
             currentAnim = Anim.idle;
+            rotation = 0;
         }
+
 
         public void setTrajectory(Func<float, float> traj)
         {
@@ -49,18 +69,38 @@ namespace RopeMaster.Core
 
         }
 
+        public bool collideWith(Vector2 v, int r)
+        {
+            return hitbox.collide(v, r);
+        }
+
+
         public bool Exterminate()
         {
             return this.exterminate();
         }
 
+
+        public void hit(int damage)
+        {
+            this.hp -= damage;
+            if (this.hp <= 0) this.currentAnim = Anim.die;
+        }
+
+
         public override void Update(GameTime gameTime)
         {
-
+            var prev = this.position;
             base.Update(gameTime);
-            var x = position.X / Game1.Instance.Screen.Width;
-            var y = trajectory.Invoke(x);
-            position.Y = y * Game1.Instance.Screen.Height;
+            if (trajectory != null)
+            {
+                var x = position.X / Game1.Instance.Screen.Width;
+                var y = trajectory.Invoke(x);
+                position.Y = y * Game1.Instance.Screen.Height;
+            }
+            var d = position - prev;
+            rotation =(float)Math.Atan2(d.Y, d.X);
+
             //animation
             timer += gameTime.ElapsedGameTime.Milliseconds;
             if (timer >= animRate)
@@ -85,15 +125,13 @@ namespace RopeMaster.Core
                 }
                 srcBox.X = srcBox.Width * currentFrame;
                 srcBox.Y = srcBox.Height * (int)currentAnim;
-
             }
-
+            hitbox.setPosition(this.position);
         }
 
         public void Draw(SpriteBatch spritebatch)
         {
-            spritebatch.Draw(texture, position, srcBox, Color.White);
+            spritebatch.Draw(texture, position, srcBox, Color.White, rotation, origin, 1, SpriteEffects.None, 0);
         }
-
     }
 }
