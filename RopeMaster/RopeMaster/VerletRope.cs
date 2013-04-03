@@ -56,7 +56,7 @@ namespace RopeMaster
 
         public void down()
         {
-            if (this.fixeddiv < this.div - 1)
+            if (this.fixeddiv < this.div - 6)
             {
                 //Console.WriteLine("DOWN ! ");
                 this.fixeddiv++;
@@ -101,20 +101,16 @@ namespace RopeMaster
                     var y2 = s2.getPosition().Y;
                     var offx = (dx / d) * 0.5f * diff;
                     var offy = (dy / d) * 0.5f * diff;
+                    x1 -= offx;
+                    y1 -= offy;
+                    x2 += offx;
+                    y2 += offy;
 
 
 
-                    
-                        x1 -= offx;
-                        y1 -= offy;
-                        x2 += offx;
-                        y2 += offy;
-                    
-                    
+                    s1.setPosition(x1, y1);
+                    s2.setPosition(x2, y2);
 
-                        s1.setPosition(x1, y1);
-                        s2.setPosition(x2, y2);
-                    
                 }
             //checkColl();
 
@@ -133,11 +129,15 @@ namespace RopeMaster
             }
         }
 
+
+        
+
+
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = fixeddiv; i < this.div; i++)
             {
-                spriteBatch.Draw(this.tex, sticks[i].getPosition(), srcRect, Color.White,0,origin,1,SpriteEffects.None,0);
+                spriteBatch.Draw(this.tex, sticks[i].getPosition(), srcRect, Color.White, 0, origin, 1, SpriteEffects.None, 0);
             }
 
         }
@@ -160,13 +160,24 @@ namespace RopeMaster
 
             return new Vector2((float)Math.Cos(r), -(float)Math.Sin(r));
 
-
-
-
-
         }
 
 
+
+        public float getAttachAngleF()
+        {
+
+            //var r = sticks[div - 1].getRotation();
+            var dx = sticks[div - 1].getPosition().X - sticks[fixeddiv].getPosition().X;
+            var dy = sticks[div - 1].getPosition().Y - sticks[fixeddiv].getPosition().Y;
+
+
+
+            float r = (float)Math.Atan2(dx, dy);
+
+            return r;
+
+        }
 
 
         public class Stick

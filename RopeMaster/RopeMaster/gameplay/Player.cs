@@ -14,7 +14,8 @@ namespace RopeMaster.gameplay
     [TextureContent(AssetName = "point", AssetPath = "gfx/point")]
     public class Player : Entity
     {
-        private Rectangle source;
+        private Rectangle sourcep1;
+        private Rectangle sourcep2;
         private Texture2D texture;
         private Vector2 smokeLoc = new Vector2(-38, 23);
         private long time;
@@ -22,8 +23,8 @@ namespace RopeMaster.gameplay
         private bool iscatched = false;
         private Radar radar;
         protected Hitbox hitboxbig;
-
-
+        private Vector2 originp2;
+        private Vector2 gunsrc;
 
         private VerletRope rope;
 
@@ -31,13 +32,19 @@ namespace RopeMaster.gameplay
             : base()
         {
             texture = Game1.Instance.magicContentManager.GetTexture("player");
-            source = new Rectangle(0, 0, 92, 128);
+            sourcep1 = new Rectangle(0, 0, 92, 128);
+            sourcep2 = new Rectangle(0, 128, 92, 128);
             time = 0;
             radar = new Radar();
             rope = new VerletRope(20, 200, Vector2.Zero, Game1.Instance.magicContentManager.GetTexture("point"));
             rope.setOrigin(40, 46);
             origin = new Vector2(40, 30);
+            originp2 = new Vector2(29, 11);
+            gunsrc = new Vector2(12, 50);
             hitboxbig = new SphereBox(this.position, 25);
+
+
+
         }
 
 
@@ -58,7 +65,14 @@ namespace RopeMaster.gameplay
 
         public Vector2 getShotSource()
         {
-            return rope.getAttachPosition();
+            var r= rope.getAttachAngleF();
+            Vector2 v =gunsrc;
+            v.X *= (float)Math.Sin(r);
+            v.Y*= (float)Math.Cos(r);
+
+
+
+            return rope.getAttachPosition()+v;
         }
 
         public Vector2 getShotAngle()
@@ -109,6 +123,8 @@ namespace RopeMaster.gameplay
         }
 
 
+    
+
 
 
         public void steerRope(int way)
@@ -128,8 +144,10 @@ namespace RopeMaster.gameplay
                 radar.Draw(spriteBatch);
 
             }
+            var rotation = rope.getAttachAngle();
             rope.Draw(spriteBatch);
-            spriteBatch.Draw(texture, this.getPosition(), source, Color.White, 0, origin, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, this.getPosition(), sourcep1, Color.White, 0, origin, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, this.rope.getAttachPosition(), sourcep2, Color.White,rope.getAttachAngleF(), originp2, 1, SpriteEffects.None, 0);
         }
     }
 }

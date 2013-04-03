@@ -57,7 +57,7 @@ namespace RopeMaster
         {
             // TODO: Add your initialization logic here
             graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 578;
+            graphics.PreferredBackBufferHeight = 768;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             base.Initialize();
@@ -217,12 +217,13 @@ namespace RopeMaster
                         null, m);
 
 
-            shotManager.Draw(spriteBatch);
+           
 
             player.Draw(spriteBatch);
             enemyManager.Draw(spriteBatch);
-            particuleManager.Draw(spriteBatch);
 
+            particuleManager.Draw(spriteBatch);
+            shotManager.Draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin();
