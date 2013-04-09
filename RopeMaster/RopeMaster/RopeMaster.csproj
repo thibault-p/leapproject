@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\SphereBox.cs" />
+    <Compile Include="gameplay\Enemies\Gojira.cs" />
     <Compile Include="gameplay\Enemies\OnyxEnemy.cs" />
     <Compile Include="gameplay\Enemies\Enemy.cs" />
     <Compile Include="gameplay\Enemies\EnemyManager.cs" />

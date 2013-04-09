@@ -19,7 +19,7 @@ namespace RopeMaster.gameplay.Enemies
         {
             base.nbFrame = new int[] { 1, 2, 3 };
             base.velocity = Vector2.UnitX * -50;
-            texture = Game1.Instance.magicContentManager.GetTexture("onyx");
+            texture1 = Game1.Instance.magicContentManager.GetTexture("onyx");
             srcBox = new Rectangle(0, 0, 128, 128);
             base.hitbox = new SphereBox(this.position, 62);
             base.origin = new Vector2(64,64);

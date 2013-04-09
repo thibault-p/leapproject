@@ -182,7 +182,7 @@ namespace Glitch.Engine.Content
 
                 if (string.IsNullOrEmpty(item.AssetPath))
                 {
-                    throw new ArgumentException("A texture with an empty path cannot be loaded!");
+                    throw new ArgumentException("A texture1 with an empty path cannot be loaded!");
                 }
 
                 textItem.Texture = _contentManager.Load<Texture2D>(@item.AssetPath);
@@ -226,10 +226,10 @@ namespace Glitch.Engine.Content
         }
 
         /// <summary>
-        /// External texture add (Ogmo for example)
+        /// External texture1 add (Ogmo for example)
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="texture"></param>
+        /// <param name="texture1"></param>
         /// <returns></returns>
         public void AddTexture(string id, Texture2D texture)
         {
@@ -257,7 +257,7 @@ namespace Glitch.Engine.Content
         }
 
         /// <summary>
-        /// Retrieve a texture from its ID
+        /// Retrieve a texture1 from its ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -268,7 +268,7 @@ namespace Glitch.Engine.Content
             if (item is Texture2DContentItem)
                 return ((Texture2DContentItem)item).Texture;
 
-            throw new ArgumentException(id + " is not a texture content item ?!");
+            throw new ArgumentException(id + " is not a texture1 content item ?!");
         }
 
         /// <summary>
@@ -354,7 +354,7 @@ namespace Glitch.Engine.Content
         }
 
         /// <summary>
-        /// Empty texture
+        /// Empty texture1
         /// </summary>
         private Texture2D m_emptyTexture;
         public Texture2D EmptyTexture

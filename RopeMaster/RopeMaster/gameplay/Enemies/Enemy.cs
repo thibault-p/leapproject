@@ -26,7 +26,7 @@ namespace RopeMaster.gameplay.Enemies
         protected int currentFrame;
         private bool ready2Die = false;
         private long timer;
-        protected Texture2D texture;
+        protected Texture2D texture1;
         protected Hitbox hitbox;
         protected float rotation;
 
@@ -129,9 +129,9 @@ namespace RopeMaster.gameplay.Enemies
             hitbox.setPosition(this.position);
         }
 
-        public void Draw(SpriteBatch spritebatch)
+        public virtual void Draw(SpriteBatch spritebatch)
         {
-            spritebatch.Draw(texture, position, srcBox, Color.White, rotation, origin, 1, SpriteEffects.None, 0);
+            spritebatch.Draw(texture1, position, srcBox, Color.White, rotation, origin, 1, SpriteEffects.None, 0);
         }
     }
 }

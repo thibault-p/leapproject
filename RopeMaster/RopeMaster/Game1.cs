@@ -40,6 +40,10 @@ namespace RopeMaster
         BonusMaster bonusmaster;
         EnemySpawner<OnyxEnemy> spawner;
 
+        Gojira gojira;
+
+
+
         public Game1() :
             base("Rope Master", "Content", "1.0")
         {
@@ -56,8 +60,8 @@ namespace RopeMaster
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             base.Initialize();
@@ -87,7 +91,7 @@ namespace RopeMaster
             parallax = new Parallax();
             player = new Player();
             bonusmaster = new BonusMaster();
-
+            gojira = new Gojira();
             spawner = new EnemySpawner<OnyxEnemy>(Vector2.One * 500, 10, 2000, new SinTrajectory(0.5f, 0, 2 * (float)Math.PI));
         }
 
@@ -221,7 +225,7 @@ namespace RopeMaster
 
             player.Draw(spriteBatch);
             enemyManager.Draw(spriteBatch);
-
+            gojira.Draw(spriteBatch);
             particuleManager.Draw(spriteBatch);
             shotManager.Draw(spriteBatch);
             spriteBatch.End();
