@@ -45,6 +45,7 @@ namespace RopeMaster.gameplay.Enemies
             gojPos = new Vector2(10, 42);
             texture1 = Game1.Instance.magicContentManager.GetTexture("gojira");
             texture2 = Game1.Instance.magicContentManager.GetTexture("boat");
+            this.position = new Vector2(400,250);
         }
 
 
