@@ -9,7 +9,7 @@ using RopeMaster.Core;
 
 namespace RopeMaster.gameplay.Enemies
 {
-    public class Enemy : Entity
+    public class EnemyAnim : Enemy
     {
 
         public static long animRate = 100;
@@ -32,30 +32,28 @@ namespace RopeMaster.gameplay.Enemies
 
 
 
-        public Enemy()
-            : base(Vector2.Zero, Vector2.Zero)
+        public EnemyAnim()
+            : base(Vector2.Zero, 1)
         {
-            initialize(1);
+            initialize();
         }
 
 
 
-        public Enemy(Vector2 _pos, int _hp)
-            : base(_pos, Vector2.Zero)
+        public EnemyAnim(Vector2 _pos, int _hp)
+            : base(_pos, _hp)
         {
-            initialize(_hp);
+            initialize();
         }
 
-        private void initialize(int _hp)
+        private void initialize()
         {
-            hp = Game1.Instance.difficulty * _hp;
+            d = 1;
+            currentAnim = Anim.idle;
+            rotation = 0;
         }
 
 
-        public void setTrajectory(Func<float, float> traj)
-        {
-            trajectory = traj;
-        }
 
 
         public override bool exterminate()
@@ -78,12 +76,6 @@ namespace RopeMaster.gameplay.Enemies
         }
 
 
-        public void hit(int damage)
-        {
-            this.hp -= damage;
-            if (this.hp <= 0) this.currentAnim = Anim.die;
-        }
-
 
         public override void Update(GameTime gameTime)
         {
@@ -95,8 +87,34 @@ namespace RopeMaster.gameplay.Enemies
                 var y = trajectory.Invoke(x);
                 position.Y = y * Game1.Instance.Screen.Height;
             }
+            var d = position - prev;
+            rotation =(float)Math.Atan2(d.Y, d.X);
 
-            
+            //animation
+            timer += gameTime.ElapsedGameTime.Milliseconds;
+            if (timer >= animRate)
+            {
+                timer = 0;
+                currentFrame++;
+                if (currentFrame >= nbFrame[(int)currentAnim])
+                {
+                    if (currentAnim == Anim.idle)
+                    {
+                        currentFrame = 0; //*loop
+                    }
+                    else if (currentAnim == Anim.fire)
+                    {
+                        currentFrame = 0;
+                        currentAnim = Anim.idle;
+                    }
+                    else
+                    {
+                        ready2Die = true;
+                    }
+                }
+                srcBox.X = srcBox.Width * currentFrame;
+                srcBox.Y = srcBox.Height * (int)currentAnim;
+            }
             if(hitbox!=null)
                 hitbox.setPosition(this.position);
         }

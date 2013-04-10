@@ -115,6 +115,9 @@ namespace RopeMaster
             base.Update(gameTime);
             parallax.moveHorizontal(1);
             leapControl.Update(gameTime);
+            gojira.Update(gameTime);
+
+
             // Allows the game to exit
             KeyboardState k = Keyboard.GetState();
             if (k.IsKeyDown(Keys.PageUp) && prevKey.IsKeyUp(Keys.PageUp))
