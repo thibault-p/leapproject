@@ -19,6 +19,7 @@ namespace RopeMaster.gameplay.Enemies
         private Color color;
         private bool moving;
         private long timerhit;
+        private bool droping = false;
 
         public Bubble(Vector2 pos, int maxX, Vector2 dir)
             : base()
@@ -34,7 +35,11 @@ namespace RopeMaster.gameplay.Enemies
 
         }
 
-
+        public void drop(float speed)
+        {
+            velocity = Vector2.UnitY * speed;
+            droping = true;
+        }
 
         protected void Initialyze(Vector2 pos , Vector2 dir, int maxX)
         {
@@ -51,21 +56,46 @@ namespace RopeMaster.gameplay.Enemies
         }
         public override void Update(GameTime gameTime)
         {
-            if (moving) base.Update(gameTime);
-            moving = !(this.position.X <= maxX);
-            this.hitbox.setPosition(this.position + origin);
+            if (droping)
+            {
+                base.Update(gameTime);
+                this.hitbox.setPosition(this.position + origin);
 
+            }
+            else if (moving)
+            {
+                base.Update(gameTime);
+                
+                foreach (Enemy e in Game1.Instance.enemyManager.enemies)
+                {
+                    if (e is Bubble)
+                    {
+                        var b = (Bubble)e;
+                        if (!b.moving && this.hitbox.collide(b.getHitBox()))
+                        {
+                            this.moving = false;
+                            //Console.WriteLine("colide");
+                            this.position.X = e.getPosition().X + 32;
+                            this.hitbox.setPosition(this.position + origin);
+                        }
+                        
+                    }
 
-
-
-
-
+                }
+                if (position.Y <= 32 || position.Y >= (Game1.Instance.Screen.Height)) velocity.Y *= -1;
+            }
+            moving = !(this.position.X <= 32);
+           
+            
 
         }
 
 
 
-
+        public override bool exterminate()
+        {
+            return position.Y - 32 > Game1.Instance.Screen.Height;
+        }
 
         public override void Draw(SpriteBatch spritebatch)
         {

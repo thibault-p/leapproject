@@ -34,22 +34,27 @@ namespace RopeMaster.gameplay.Enemies
         private Texture2D texture1, texture2;
         private long timersmoke;
 
+        private Vector2 bubbleSpawner;
+
 
         private int shootPhase = 1;
         private float rotation = 0f;
-
+        private List<Bubble> bubbleList;
         private bool wheelmoving;
         private float nextangle;
         private int wheelway = 1;
         private int nbBubbles=0;
         private int nbBubblesphase;
-
+        private long bubbleCD;
+       
         private long idletimer=0; 
 
         public Gojira()
             : base()
         {
-            nbBubblesphase = 5;
+            nbBubblesphase = 20;
+            bubbleList = new List<Bubble>(nbBubblesphase+1);
+         
             srcbody = new Rectangle(0, 0, 172, 172);
             srcEye = new Rectangle(172, 119, 57, 65);
             srcboat = new Rectangle(0, 0, 300, 260);
@@ -65,6 +70,9 @@ namespace RopeMaster.gameplay.Enemies
             texture1 = Game1.Instance.magicContentManager.GetTexture("gojira");
             texture2 = Game1.Instance.magicContentManager.GetTexture("boat");
             this.position = new Vector2(400,250);
+
+            this.bubbleSpawner = new Vector2(30, 249);
+        
         }
 
 
@@ -101,19 +109,25 @@ namespace RopeMaster.gameplay.Enemies
             idletimer+=gameTime.ElapsedGameTime.Milliseconds;
             if(idletimer>= 3000-Game1.Instance.difficulty*300){
                 changePhase();
-                idletimer=0;
+                
+                
             }
 
         }
 
         public void ShootBubble(GameTime gameTime)
         {
+            
             if (!wheelmoving)
             {
-                var rand = Game1.Instance.randomizator;
-                nextangle = rand.GetRandomFloat( 0,Math.PI);
-                wheelmoving = true;
-                wheelway =(rotation > nextangle) ? -1 : 1;
+                bubbleCD += gameTime.ElapsedGameTime.Milliseconds;
+                if (bubbleCD > 200)
+                {
+                    var rand = Game1.Instance.randomizator;
+                    nextangle = rand.GetRandomFloat(0 + Math.PI / 64, Math.PI + Math.PI / 64);
+                    wheelmoving = true;
+                    wheelway = (rotation > nextangle) ? -1 : 1;
+                }
             }
             else
             {
@@ -122,11 +136,17 @@ namespace RopeMaster.gameplay.Enemies
                 {
                     wheelmoving = false;
                     nbBubbles++;
+                    Vector2 v = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
+                    var p= this.position + bubbleSpawner;
+                    
+                    Bubble b = new Bubble(p, 0, v*-500);
+                    Game1.Instance.enemyManager.Add(b);
+                    this.bubbleList.Add(b);
+                    bubbleCD = 0;
                     if (nbBubbles >= nbBubblesphase)
                     {
                         nbBubbles = 0;
                         changePhase();
-
                     }
                 }
                 else
@@ -135,7 +155,7 @@ namespace RopeMaster.gameplay.Enemies
                 }
             }
 
-
+            
 
 
 
@@ -146,7 +166,15 @@ namespace RopeMaster.gameplay.Enemies
 
         private void changePhase(){
             shootPhase= (shootPhase+1)%2;
-
+            if (shootPhase==0)
+            {
+                //drop bubble
+                foreach (Bubble b in bubbleList)
+                {
+                    b.drop(500);
+                }
+                bubbleList.Clear();
+            }
             Console.WriteLine("changePhase " + shootPhase);
 
         }

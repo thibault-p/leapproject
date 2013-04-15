@@ -92,7 +92,7 @@ namespace RopeMaster
             player = new Player();
             bonusmaster = new BonusMaster();
             gojira = new Gojira();
-            spawner = new EnemySpawner<Bubble>(Vector2.One * 500, 10, 2000, new SinTrajectory(0.5f, 0, 2 * (float)Math.PI));
+            //spawner = new EnemySpawner<Bubble>(Vector2.One * 500, 10, 2000, new SinTrajectory(0.5f, 0, 2 * (float)Math.PI));
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace RopeMaster
             }
             player.Update(gameTime);
             bonusmaster.Update(gameTime);
-            spawner.Update(gameTime);
+            //spawner.Update(gameTime);
 
         }
 

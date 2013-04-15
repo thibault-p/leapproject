@@ -71,6 +71,12 @@ namespace RopeMaster.gameplay.Enemies
             return hitbox.collide(v, r);
         }
 
+        public Hitbox getHitBox()
+        {
+            return this.hitbox;
+        }
+
+
 
         public bool Exterminate()
         {

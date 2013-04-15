@@ -24,12 +24,18 @@ namespace RopeMaster.Core
         public override bool collide(Vector2 p2, int r)
         {
             var d = Vector2.Distance(this.position, p2);
+            //Console.WriteLine("Colide ? " + (d <= r + rayon));
             return (d <= r + rayon);
         }
 
 
         public override bool collide(Hitbox h)
         {
+            if (h is SphereBox)
+            {
+                SphereBox s = (SphereBox)h;
+                return collide(s.position, s.rayon);
+            }
             return false;
         }
     }

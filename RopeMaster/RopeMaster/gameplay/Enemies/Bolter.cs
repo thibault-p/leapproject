@@ -38,12 +38,6 @@ namespace RopeMaster.gameplay.Enemies
 
         class  Bolt{
 
-            private List<>
-
-            public Bolt(Vector2 start , Vector2 end){
-
-            }
-
 
 
 
