@@ -78,7 +78,7 @@ namespace RopeMaster.gameplay.Enemies
         }
 
 
-        public void hit(int damage)
+        public virtual void hit(int damage)
         {
             this.hp -= damage;
             if (this.hp <= 0) this.currentAnim = Anim.die;

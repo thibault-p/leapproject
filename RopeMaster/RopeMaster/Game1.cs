@@ -38,7 +38,7 @@ namespace RopeMaster
         LeapControl leapControl;
 
         BonusMaster bonusmaster;
-        EnemySpawner<OnyxEnemy> spawner;
+        EnemySpawner<Bubble> spawner;
 
         Gojira gojira;
 
@@ -62,7 +62,7 @@ namespace RopeMaster
             // TODO: Add your initialization logic here
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             base.Initialize();
             this.Screen = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
@@ -92,7 +92,7 @@ namespace RopeMaster
             player = new Player();
             bonusmaster = new BonusMaster();
             gojira = new Gojira();
-            spawner = new EnemySpawner<OnyxEnemy>(Vector2.One * 500, 10, 2000, new SinTrajectory(0.5f, 0, 2 * (float)Math.PI));
+            spawner = new EnemySpawner<Bubble>(Vector2.One * 500, 10, 2000, new SinTrajectory(0.5f, 0, 2 * (float)Math.PI));
         }
 
         /// <summary>

@@ -113,6 +113,7 @@
     <Compile Include="Core\SphereBox.cs" />
     <Compile Include="gameplay\Enemies\Bolter.cs" />
     <Compile Include="gameplay\Enemies\EnemyAnim.cs" />
+    <Compile Include="gameplay\Enemies\Bubble.cs" />
     <Compile Include="gameplay\Enemies\Gojira.cs" />
     <Compile Include="gameplay\Enemies\OnyxEnemy.cs" />
     <Compile Include="gameplay\Enemies\Enemy.cs" />
