@@ -27,17 +27,18 @@ namespace RopeMaster.gameplay.Enemies
 
 
 
-        private Rectangle srcbody, srcboat, srcsmoker, srcmast, srcwheel;
+        private Rectangle srcbody, srcboat, srcsmoker, srcmast, srcwheel, srcmouth;
         private Rectangle srcEye;
 
-        private Vector2 eyePos, mastPos, gojPos, smokePos, wheelPos, wheelOrg;
+        private Vector2 eyePos, mastPos, gojPos, smokePos, wheelPos, wheelOrg, mouthPos;
         private Texture2D texture1, texture2;
         private long timersmoke;
 
-        private long fireCD=0;
-        private int firephase=0;
-
-
+        private long fireCD = 0;
+        private int firephase = 0;
+        private bool animfire = false;
+        private long mouthAnim = 0;
+        private int mouthphase = 0;
 
         private int shootPhase = 1;
         private float rotation = 0f;
@@ -52,31 +53,37 @@ namespace RopeMaster.gameplay.Enemies
         private Vector2 bubbleSpawner;
 
         private long idletimer = 0;
+        private Vector2 mouthShot;
 
+        private int eyephase;
+        private long eyeCD;
+        private int eyefrm=0;
         public Gojira()
             : base()
         {
-            nbBubblesphase = 20;
+            nbBubblesphase = 2;
             bubbleList = new List<Bubble>(nbBubblesphase + 1);
-
             srcbody = new Rectangle(0, 0, 172, 172);
-            srcEye = new Rectangle(172, 119, 57, 65);
+            srcEye = new Rectangle(340, 119, 57, 65);
             srcboat = new Rectangle(0, 0, 300, 260);
             srcmast = new Rectangle(307, 0, 12, 213);
             srcwheel = new Rectangle(0, 260, 49, 79);
-            eyePos = new Vector2(56, 25);
+            eyePos = new Vector2(50, 25);
             mastPos = new Vector2(140, 0);
             gojPos = new Vector2(10, 42);
             srcsmoker = new Rectangle(60, 260, 64, 12);
             smokePos = new Vector2(140, 215);
             wheelPos = new Vector2(34, 247);
             wheelOrg = new Vector2(24, 54);
+            srcmouth = new Rectangle(172, 0, 68, 60);
+            mouthPos = new Vector2(27, 53);
+            mouthShot = new Vector2(32, 78);
             texture1 = Game1.Instance.magicContentManager.GetTexture("gojira");
             texture2 = Game1.Instance.magicContentManager.GetTexture("boat");
             this.position = new Vector2(800, 250);
-
             this.bubbleSpawner = new Vector2(30, 249);
-
+            hp = 50;
+            eyeCD = 0;
         }
 
 
@@ -84,6 +91,28 @@ namespace RopeMaster.gameplay.Enemies
         public override void Update(GameTime gametime)
         {
             base.Update(gametime);
+
+            eyeCD += gametime.ElapsedGameTime.Milliseconds;
+            if (eyeCD > 200)
+            {
+                if (eyephase == 0)
+                { //crying
+                    eyefrm=(eyefrm+1)%3;
+                    srcEye.X =172+ eyefrm * 57;
+
+                }
+                if (eyephase == 1)
+                {
+                    eyefrm = (eyefrm+1)%2; 
+                    srcEye.X =343 + eyefrm*57;
+                }
+                if (eyephase == 2)
+                {
+                 
+                    srcEye.X =  457;
+                }
+                eyeCD = 0;
+            }
 
             timersmoke += gametime.ElapsedGameTime.Milliseconds;
             if (timersmoke % 60 == 0) smokePos.X++;
@@ -94,24 +123,62 @@ namespace RopeMaster.gameplay.Enemies
                 timersmoke = 0;
                 smokePos.X = 66;
             }
-
             switch (shootPhase)
             {
                 case 1: ShootBubble(gametime);
                     break;
                 case 2: breathFire(gametime);
                     break;
-
                 default: Idle(gametime);
                     break;
             }
-
         }
-
 
         private void breathFire(GameTime gameTime)
         {
+
+            if (animfire)
+            {
+                mouthAnim += gameTime.ElapsedGameTime.Milliseconds;
+                if (mouthAnim > 100)
+                {
+                    var rand = Game1.Instance.randomizator;
+                    Game1.Instance.particuleManager.AddParticule(new Smoke(this.position + this.mouthShot+this.gojPos, rand.GetRandomTrajectory(200, MathHelper.ToRadians(200), MathHelper.ToRadians(240)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
+                    mouthAnim = 0;
+                    srcmouth.X += 68 * ((mouthphase % 2 == 0) ? 1 : -1);
+                    if ((mouthphase > 0 & mouthphase < 6 &  srcmouth.X == 308) ||(srcmouth.X == 444)) mouthphase++;
+                    if (mouthphase > 6 & srcmouth.X == 172) animfire = false;
+                    firephase = 0;
+
+                }
+                return;
+            }
+
             fireCD += gameTime.ElapsedGameTime.Milliseconds;
+            if (fireCD > 400)
+            {
+         
+                var nb = (int)(firephase / 8) + 3;
+                if (nb == 5)
+                {
+                    changePhase();
+                    return;
+                }
+                var offset = (2f * Math.PI / 3) / (float)(nb - 1);
+                var angle = Math.PI / 2 + Math.PI / 6;
+                var rand = Game1.Instance.randomizator;
+                var v = Vector2.One * 10;
+                for (int i = 0; i < nb; i++)
+                {
+                    Game1.Instance.particuleManager.AddParticule(new Smoke(this.position + this.mouthShot + this.gojPos+v, rand.GetRandomTrajectory(200, MathHelper.ToRadians(200), MathHelper.ToRadians(240)), rand.GetRandomFloat(0.7f, 1f), Color.White, false));
+                    Game1.Instance.shotManager.AddShotEnemy(new Shot(this.position+gojPos+mouthShot, new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle))*0.5f, 200,0, false, 1, 1));
+                    angle += offset;
+                }
+                firephase++;
+             
+                fireCD = 0;
+
+            }
 
         }
 
@@ -162,23 +229,42 @@ namespace RopeMaster.gameplay.Enemies
                     rotation += wheelway * 0.05f;
                 }
             }
-
         }
 
 
 
         private void changePhase()
         {
-            shootPhase = (shootPhase + 1) % 2;
+            shootPhase = (shootPhase + 1) % 3;
             if (shootPhase == 0)
             {
                 //drop bubble
+                eyephase = 2;
                 foreach (Bubble b in bubbleList)
                 {
                     b.drop(500);
                 }
                 bubbleList.Clear();
             }
+            else if (shootPhase == 1)
+            {
+
+                wheelmoving = false;
+                nbBubbles = 0;
+            }
+            else if (shootPhase == 2)
+            {
+                //reinit phase
+                eyephase = 1;
+                animfire = true;
+                mouthAnim = 0;
+                mouthphase = 0;
+                srcmouth.X = 172;
+                mouthphase = 0;
+                fireCD = 0;
+            }
+
+   
             Console.WriteLine("changePhase " + shootPhase);
 
         }
@@ -186,14 +272,13 @@ namespace RopeMaster.gameplay.Enemies
 
         public override void Draw(SpriteBatch spritebatch)
         {
-
             spritebatch.Draw(texture2, this.position + mastPos, srcmast, Color.White);
             spritebatch.Draw(texture1, this.position + gojPos, srcbody, Color.White);
-            spritebatch.Draw(texture1, this.position + gojPos + eyePos, srcEye, Color.White);
             spritebatch.Draw(texture2, this.position, srcboat, Color.White);
             spritebatch.Draw(texture2, this.position + smokePos, srcsmoker, Color.White);
             spritebatch.Draw(texture2, this.position + wheelPos, srcwheel, Color.White, -rotation, wheelOrg, 1, SpriteEffects.None, 0);
-
+            if (animfire) spritebatch.Draw(texture1, this.position + gojPos + mouthPos, srcmouth, Color.White);
+            spritebatch.Draw(texture1, this.position + gojPos + eyePos, srcEye, Color.White);
         }
 
 

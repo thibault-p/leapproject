@@ -17,7 +17,7 @@ namespace RopeMaster.gameplay.Enemies
         protected enum Anim { idle = 0, fire, die };
 
 
-        protected int hp;
+        public int hp;
         protected float d;
         protected Func<float, float> trajectory;
         protected Rectangle srcBox;
@@ -77,7 +77,7 @@ namespace RopeMaster.gameplay.Enemies
         }
 
 
-
+       
         public bool Exterminate()
         {
             return this.exterminate();

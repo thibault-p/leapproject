@@ -237,7 +237,9 @@ namespace RopeMaster
             //get rid of Camera
             if (!leapControl.Is)
             {
+                this.lifeBar.Draw(spriteBatch);
                 leapControl.Draw(spriteBatch);
+              
             }
             bonusmaster.Draw(spriteBatch);
 

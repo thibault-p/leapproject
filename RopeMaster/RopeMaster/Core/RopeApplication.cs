@@ -38,6 +38,9 @@ namespace Glitch.Engine.Core
         public RandomMachine randomizator;
         public int difficulty=1;
 
+        protected LifeBar lifeBar;
+
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -76,7 +79,7 @@ namespace Glitch.Engine.Core
             shotManager.Initialize();
             particuleManager.Initialize();
             enemyManager.Initialize();
-
+            lifeBar = new LifeBar(new Vector2(Screen.Width-400,50), 500);
         }
 
         /// <summary>
@@ -103,6 +106,8 @@ namespace Glitch.Engine.Core
         {
 
             base.Draw(gameTime);
+
+
         }
 
         public static void Quit()

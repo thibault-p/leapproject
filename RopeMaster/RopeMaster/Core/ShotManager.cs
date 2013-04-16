@@ -27,11 +27,14 @@ namespace RopeMaster.Core
 
         private Texture2D texture;
         private Rectangle srcRectPlayer;
+        private Rectangle srcFire;
+
 
         public ShotManager()
         {
             playerShots = new List<Shot>();
             srcRectPlayer = new Rectangle(0, 0, 10, 10);
+            srcFire = new Rectangle(0, 10, 16, 16);
             ennemiesShots = new List<Shot>();
         }
 
@@ -86,22 +89,47 @@ namespace RopeMaster.Core
             }
             playerShots.RemoveAll(c => c.Exterminate);
 
-   
 
+            foreach (Shot s in ennemiesShots)
+            {
+                s.Update(gameTime);
+                if (!r.Contains((int)s.getPosition().X, (int)s.getPosition().Y))
+                {
+                    s.Exterminate = true;
+                }
+            }
 
-
+            ennemiesShots.RemoveAll(c => c.Exterminate);
 
 
         }
+
+        public void AddShotEnemy(Shot s)
+        {
+            ennemiesShots.Add(s);
+        }
+
+
 
         public void Draw(SpriteBatch spriteBatch)
         {
 
             foreach (Shot s in playerShots)
             {
-                spriteBatch.Draw(texture,s.getPosition(), srcRectPlayer, Color.White,0f,s.getOrigin(),1,SpriteEffects.None,0f);
+                spriteBatch.Draw(texture, s.getPosition(), srcRectPlayer, Color.White, 0f, s.getOrigin(), 1, SpriteEffects.None, 0f);
+            }
 
-
+            foreach (Shot s in ennemiesShots)
+            {
+                switch (s.type)
+                {
+                    case 0:
+                        spriteBatch.Draw(texture, s.getPosition(), srcFire, Color.White, 0f, s.getOrigin(), 1, SpriteEffects.None, 0f);
+                        break;
+                    case 1:
+                        spriteBatch.Draw(texture, s.getPosition(), srcFire, Color.White, 0, s.getOrigin(), 1, SpriteEffects.None, 0f);
+                        break;
+                }
             }
         }
 
@@ -110,7 +138,7 @@ namespace RopeMaster.Core
         {
             if (fire)
             {
-                fireShot(p, v, dmg, point ,true);
+                fireShot(p, v, dmg, point, true);
                 fire = autofire = false;
             }
         }
@@ -120,14 +148,14 @@ namespace RopeMaster.Core
 
             if (autofire)
             {
-                fireShot(p, v, dmg,point, true);
+                fireShot(p, v, dmg, point, true);
                 autofire = false;
             }
         }
 
-        private void fireShot(Vector2 p, Vector2 v, int dmg,int point, bool player)
+        private void fireShot(Vector2 p, Vector2 v, int dmg, int point, bool player)
         {
-            playerShots.Add(new Shot(p, v, dmg, point, player));
+            playerShots.Add(new Shot(p, v, dmg, point, player, 0, 1));
 
         }
 

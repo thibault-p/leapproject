@@ -128,6 +128,7 @@
     <Compile Include="Core\Shot.cs" />
     <Compile Include="Core\ShotManager.cs" />
     <Compile Include="gameplay\BonusMaster.cs" />
+    <Compile Include="gameplay\LifeBar.cs" />
     <Compile Include="gameplay\Helpers\SinTrajectory.cs" />
     <Compile Include="gameplay\MovingFunctions.cs" />
     <Compile Include="gameplay\Level.cs" />

@@ -19,14 +19,18 @@ namespace RopeMaster.Core
         public int  damage;
         public bool Exterminate = false;
         protected int point;
+        public int type;
+        public int nbAnim;
 
-        public Shot(Vector2 pos, Vector2 velo, int dmg, int pts, bool isPlayer) :
+        public Shot(Vector2 pos, Vector2 velo, int dmg, int pts, bool isPlayer, int _type, int nb_anim) :
             base(pos, velo)
         {
             damage = dmg;
             PlayerShot = isPlayer;
             this.origin = new Vector2(5, 5);
             this.point = pts;
+            type = _type;
+            nbAnim = nbAnim;
         }
 
 
