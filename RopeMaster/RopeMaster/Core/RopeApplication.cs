@@ -62,7 +62,7 @@ namespace Glitch.Engine.Core
             inputManager = new InputManager();
             shotManager = new ShotManager();
             enemyManager = new EnemyManager();
-            randomizator = new RandomMachine(1337);
+            randomizator = new RandomMachine(new System.DateTime().Millisecond);
             //Xbox Live
 #if XBOX
             this.Components.Add(new GamerServicesComponent(this));

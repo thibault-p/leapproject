@@ -53,6 +53,7 @@ namespace RopeMaster.gameplay.Enemies
             color = Color.White;
             this.hitbox = new SphereBox(this.origin + position, 32);
             timerhit = 0;
+            this.moving = true;
         }
         public override void Update(GameTime gameTime)
         {
@@ -65,26 +66,40 @@ namespace RopeMaster.gameplay.Enemies
             else if (moving)
             {
                 base.Update(gameTime);
-                
+                if (position.X <= 32)
+                {
+                    this.moving = false;
+                    this.velocity = Vector2.Zero;
+                    position.Y = (int)Math.Floor(position.Y / 64) * 64 + 32;
+                    this.hitbox.setPosition(this.position + origin);
+                    return;
+                }
                 foreach (Enemy e in Game1.Instance.enemyManager.enemies)
                 {
+
                     if (e is Bubble)
                     {
                         var b = (Bubble)e;
                         if (!b.moving && this.hitbox.collide(b.getHitBox()))
                         {
                             this.moving = false;
+                            this.velocity = Vector2.Zero;
                             //Console.WriteLine("colide");
-                            this.position.X = e.getPosition().X + 32;
+                            this.position.X = e.getPosition().X + ((e.getPosition().X<=position.X) ? 1 : 0) * 54;
+
+
+                            position.Y = e.getPosition().Y+ ((position.Y>=e.getPosition().Y)?32:-32);
                             this.hitbox.setPosition(this.position + origin);
+                            return;
                         }
                         
                     }
+                   
 
                 }
                 if (position.Y <= 32 || position.Y >= (Game1.Instance.Screen.Height)) velocity.Y *= -1;
             }
-            moving = !(this.position.X <= 32);
+
            
             
 
