@@ -20,7 +20,7 @@ namespace RopeMaster.gameplay
     {
 
         private Vector2 position,posbar;
-        private Rectangle srcbar;
+        private Rectangle srcbar,srcback,srcfor;
         private int max;
         private float current;
         private Texture2D texture;
@@ -28,10 +28,12 @@ namespace RopeMaster.gameplay
         public LifeBar(Vector2 pos, int maxhp)
         {
             this.position = pos;
-            this.posbar = Vector2.Zero;
+            this.posbar = new Vector2(26,41);
             max = maxhp;
             setHP(max);
             srcbar = new Rectangle(0, 0, 20, 600);
+            srcback = new Rectangle(20, 0, 77, 667);
+            srcfor = new Rectangle(97, 0, 57, 667);
             texture = Game1.Instance.magicContentManager.GetTexture("lifebar");
 
         }
@@ -44,7 +46,7 @@ namespace RopeMaster.gameplay
             current = div * hp;
             srcbar.Height = (int)Math.Floor(current);
             srcbar.Y = 600 - srcbar.Height;
-            posbar.Y = srcbar.Y;
+            posbar.Y = srcbar.Y+41;
         }
 
 
@@ -54,7 +56,9 @@ namespace RopeMaster.gameplay
 
         public void Draw(SpriteBatch spritebatch)
         {
+            spritebatch.Draw(texture, position , srcback, Color.White);
             spritebatch.Draw(texture, position+posbar, srcbar, Color.White);
+            spritebatch.Draw(texture, position, srcfor, Color.White);
         }
 
 
