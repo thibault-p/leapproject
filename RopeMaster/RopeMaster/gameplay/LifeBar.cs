@@ -15,11 +15,11 @@ using Glitch.Engine.Content;
 
 namespace RopeMaster.gameplay
 {
-    [TextureContent(AssetName = "lifebar", AssetPath = "gfx/lifebar")]
+    [TextureContent(AssetName = "lifebar", AssetPath = "gfx/sprites/lifebar")]
     public class LifeBar
     {
 
-        private Vector2 position;
+        private Vector2 position,posbar;
         private Rectangle srcbar;
         private int max;
         private float current;
@@ -28,6 +28,9 @@ namespace RopeMaster.gameplay
         public LifeBar(Vector2 pos, int maxhp)
         {
             this.position = pos;
+            this.posbar = Vector2.Zero;
+            max = maxhp;
+            setHP(max);
             srcbar = new Rectangle(0, 0, 20, 600);
             texture = Game1.Instance.magicContentManager.GetTexture("lifebar");
 
@@ -36,8 +39,12 @@ namespace RopeMaster.gameplay
 
         public void setHP(int hp)
         {
-            current = hp;
-            float div = 600/ max;
+            float div = 600f/ max;
+            Console.WriteLine(div);
+            current = div * hp;
+            srcbar.Height = (int)Math.Floor(current);
+            srcbar.Y = 600 - srcbar.Height;
+            posbar.Y = srcbar.Y;
         }
 
 
@@ -47,7 +54,7 @@ namespace RopeMaster.gameplay
 
         public void Draw(SpriteBatch spritebatch)
         {
-            spritebatch.Draw(texture, position, srcbar, Color.White);
+            spritebatch.Draw(texture, position+posbar, srcbar, Color.White);
         }
 
 

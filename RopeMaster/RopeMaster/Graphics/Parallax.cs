@@ -14,11 +14,12 @@ namespace RopeMaster.Graphics
     class Parallax
     {
         const int NB_LAYERS = 3;
-        float[] layerspeed = { 1,2, 3 };
+        float[] layerspeed = { 0.1f, 0.2f, 0.3f };
         Texture2D[] textures;
         Rectangle[] source;
-
+        Vector2[] sourceloc;
         Vector2 move;
+        private int stuck = 0;
 
         public float Speed { get; set; }
 
@@ -27,36 +28,52 @@ namespace RopeMaster.Graphics
         public Parallax()
         {
             textures = new Texture2D[NB_LAYERS];
-
+            sourceloc = new Vector2[NB_LAYERS];
             source = new Rectangle[NB_LAYERS];
             for (int i = 0; i < NB_LAYERS; i++)
             {
-                textures[i] = Game1.Instance.magicContentManager.GetTexture("background_"+i);
-                source[i] = new Rectangle(0, 0, 400, (int)(400/1.77f));
+                textures[i] = Game1.Instance.magicContentManager.GetTexture("background_" + i);
+                source[i] = new Rectangle(0, 0, 400, (int)(400 / 1.77f));
+                sourceloc[i] = Vector2.Zero;
             }
             move = Vector2.Zero;
-            Speed = 1;
+            Speed = 8;
         }
 
 
         public void Update(GameTime gameTime)
         {
+            stuck = 0;
             for (int i = 0; i < NB_LAYERS; i++)
             {
-        
-                source[i].X += (int)(move.X * layerspeed[i] * Speed);
+                sourceloc[i].X += move.X * layerspeed[i] * Speed;
+                source[i].X = (int)(sourceloc[i].X);
+
                 if (move.Y != 0)
                 {
-                    source[i].Y += (int)(move.Y * layerspeed[i] * Speed);
-                    source[i].Y = (int)Math.Min(textures[i].Height - source[i].Height - 1, Math.Max(0, source[i].Y ));
+                    sourceloc[i].Y += move.Y * layerspeed[i] * Speed;
+                    if (sourceloc[i].Y < 0)
+                    {
+                        sourceloc[i].Y = 0;
+                        stuck=-1;
+                    }
+                    else if(sourceloc[i].Y>(textures[i].Height - source[i].Height - 1)){
+                            stuck=1;
+                            sourceloc[i].Y =(textures[i].Height - source[i].Height - 1 );
+                    }
+
+                    source[i].Y = (int)(sourceloc[i].Y);
+
                 }
-   
+
             }
             move = Vector2.Zero;
         }
 
         public void moveVertical(int way)
         {
+
+            if (stuck == way) way = 0;
             move.Y = way;
         }
 

@@ -79,7 +79,7 @@ namespace Glitch.Engine.Core
             shotManager.Initialize();
             particuleManager.Initialize();
             enemyManager.Initialize();
-            lifeBar = new LifeBar(new Vector2(Screen.Width-400,50), 500);
+            lifeBar = new LifeBar(new Vector2(1240,50), 20);
         }
 
         /// <summary>

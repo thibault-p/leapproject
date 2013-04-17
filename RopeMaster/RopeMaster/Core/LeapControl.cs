@@ -28,13 +28,14 @@ namespace RopeMaster.Core
         {
             Is = false;
             position = last = Vector2.Zero;
-            controller = new Controller();
+            //controller = new Controller();
             points = new List<Vector2>();
         }
 
 
         public void Update(GameTime gameTime)
         {
+            if (controller == null) return;
             Is = false;
             points.Clear();
             if (controller.CalibratedScreens.Empty)
@@ -65,7 +66,7 @@ namespace RopeMaster.Core
 
                 var px = controller.CalibratedScreens[0].WidthPixels * v2.x;
                 var py = controller.CalibratedScreens[0].HeightPixels - controller.CalibratedScreens[0].HeightPixels * v2.y;
-                points.Add(new Vector2(px,py));
+                points.Add(new Vector2(px, py));
                 var d = Math.Sqrt((px - last.X) * (px - last.X) + (py - last.Y) * (py - last.Y));
                 if (d < 100)
                 {
@@ -82,7 +83,8 @@ namespace RopeMaster.Core
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            if (controller == null) return;
+        
             foreach (Vector2 v in points)
                 spriteBatch.Draw(Game1.Instance.magicContentManager.GetTexture("point"), v, Color.Red);
 

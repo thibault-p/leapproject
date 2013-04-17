@@ -124,10 +124,11 @@ namespace RopeMaster.Core
                 switch (s.type)
                 {
                     case 0:
-                        spriteBatch.Draw(texture, s.getPosition(), srcFire, Color.White, 0f, s.getOrigin(), 1, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(texture, s.getPosition(), srcFire, Color.White, s.angle, s.getOrigin(), 1, SpriteEffects.None, 0f);
                         break;
                     case 1:
-                        spriteBatch.Draw(texture, s.getPosition(), srcFire, Color.White, 0, s.getOrigin(), 1, SpriteEffects.None, 0f);
+                        srcFire.X = srcFire.Width * s.current;
+                        spriteBatch.Draw(texture, s.getPosition(), srcFire, Color.White, s.angle, s.getOrigin(), 1, SpriteEffects.None, 0f);
                         break;
                 }
             }

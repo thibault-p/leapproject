@@ -122,11 +122,12 @@ namespace RopeMaster
             KeyboardState k = Keyboard.GetState();
             if (k.IsKeyDown(Keys.PageUp) && prevKey.IsKeyUp(Keys.PageUp))
             {
-                Camera.Zoom += 0.1f;
+
+                lifeBar.setHP(10);
             }
             if (k.IsKeyDown(Keys.PageDown) && prevKey.IsKeyUp(Keys.PageDown))
             {
-                Camera.Zoom -= 0.1f;
+                lifeBar.setHP(20);
             }
             if (k.IsKeyDown(Keys.Left))
             {
@@ -201,6 +202,7 @@ namespace RopeMaster
             }
             player.Update(gameTime);
             bonusmaster.Update(gameTime);
+            
             //spawner.Update(gameTime);
 
         }

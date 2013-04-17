@@ -171,7 +171,9 @@ namespace RopeMaster.gameplay.Enemies
                 for (int i = 0; i < nb; i++)
                 {
                     Game1.Instance.particuleManager.AddParticule(new Smoke(this.position + this.mouthShot + this.gojPos+v, rand.GetRandomTrajectory(200, MathHelper.ToRadians(200), MathHelper.ToRadians(240)), rand.GetRandomFloat(0.7f, 1f), Color.White, false));
-                    Game1.Instance.shotManager.AddShotEnemy(new Shot(this.position+gojPos+mouthShot, new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle))*0.5f, 200,0, false, 1, 1));
+                    var s =new Shot(this.position+gojPos+mouthShot, new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle))*0.5f, 200,0, false, 1, 2);
+                    s.angle = (float)(angle-Math.PI);
+                    Game1.Instance.shotManager.AddShotEnemy( s);
                     angle += offset;
                 }
                 firephase++;
