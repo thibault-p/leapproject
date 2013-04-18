@@ -68,6 +68,7 @@ namespace RopeMaster.gameplay.Enemies
 
         public bool collideWith(Vector2 v, int r)
         {
+            if (hitbox == null) return false;
             return hitbox.collide(v, r);
         }
 

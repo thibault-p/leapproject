@@ -92,6 +92,7 @@ namespace RopeMaster
             player = new Player();
             bonusmaster = new BonusMaster();
             gojira = new Gojira();
+            enemyManager.Add(gojira);
             //spawner = new EnemySpawner<Bubble>(Vector2.One * 500, 10, 2000, new SinTrajectory(0.5f, 0, 2 * (float)Math.PI));
         }
 
@@ -115,7 +116,7 @@ namespace RopeMaster
             base.Update(gameTime);
             parallax.moveHorizontal(1);
             leapControl.Update(gameTime);
-            gojira.Update(gameTime);
+        
 
 
             // Allows the game to exit
@@ -213,6 +214,7 @@ namespace RopeMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            gojira.DrawCollider(spriteBatch);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             Microsoft.Xna.Framework.Matrix m = Camera.get_transformation(GraphicsDevice);
 
@@ -230,7 +232,6 @@ namespace RopeMaster
 
             player.Draw(spriteBatch);
             enemyManager.Draw(spriteBatch);
-            gojira.Draw(spriteBatch);
             particuleManager.Draw(spriteBatch);
             shotManager.Draw(spriteBatch);
             spriteBatch.End();

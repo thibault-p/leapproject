@@ -42,7 +42,6 @@ namespace RopeMaster.gameplay
         public void setHP(int hp)
         {
             float div = 600f/ max;
-            Console.WriteLine(div);
             current = div * hp;
             srcbar.Height = (int)Math.Floor(current);
             srcbar.Y = 600 - srcbar.Height;

@@ -11,8 +11,8 @@ namespace RopeMaster.gameplay.Enemies
     public class EnemyManager : Manager
     {
 
-        public List<Enemy> enemies; 
-
+        public List<Enemy> enemies;
+        public List<Enemy> enemiestoAdd; 
         public EnemyManager()
         {
 
@@ -25,7 +25,7 @@ namespace RopeMaster.gameplay.Enemies
         public void Initialize()
         {
             enemies = new List<Enemy>();
-
+            enemiestoAdd = new List<Enemy>();
         }
 
 
@@ -42,6 +42,8 @@ namespace RopeMaster.gameplay.Enemies
             }
             //delete all useless enemies
             enemies.RemoveAll(e => e.Exterminate());
+            enemies.AddRange(enemiestoAdd);
+            enemiestoAdd.Clear();
 
         }
 

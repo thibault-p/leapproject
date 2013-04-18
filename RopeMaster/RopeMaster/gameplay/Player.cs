@@ -118,7 +118,6 @@ namespace RopeMaster.gameplay
             var d = rope.getOrigin().Y - rope.getAttachPosition().Y;
             if (d > 0)
                 p =d/rope.length;
-            Console.WriteLine(100*p);
             return (int)(100 * p)+1;
         }
 

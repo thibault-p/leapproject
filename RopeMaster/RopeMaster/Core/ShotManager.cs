@@ -81,6 +81,12 @@ namespace RopeMaster.Core
                             e.hit(9000);
                             s.Exterminate = true;
                         }
+                        if (e is Gojira)
+                        {
+                            var g = (Gojira)e;
+                            s.Exterminate=g.IsPointPerfectColliding(s.getPosition());
+
+                        }
                     }
 
 

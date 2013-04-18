@@ -55,6 +55,12 @@ namespace RopeMaster.gameplay.Enemies
         private long idletimer = 0;
         private Vector2 mouthShot;
 
+        private RenderTarget2D collider_tgt;
+        private Color[] collider;
+        private Rectangle rectcollider;
+
+
+
         private int eyephase;
         private long eyeCD;
         private int eyefrm=0;
@@ -84,6 +90,10 @@ namespace RopeMaster.gameplay.Enemies
             this.bubbleSpawner = new Vector2(30, 249);
             hp = 50;
             eyeCD = 0;
+
+            collider_tgt = new RenderTarget2D(Game1.Instance.GraphicsDevice,300,260);
+            collider = new Color[300* 260];
+            rectcollider = new Rectangle((int)this.position.X,(int)this.position.Y,300,260);
         }
 
 
@@ -185,6 +195,17 @@ namespace RopeMaster.gameplay.Enemies
         }
 
 
+
+        public bool IsPointPerfectColliding(Vector2 p)
+        {
+            if(rectcollider.Contains((int)p.X,(int)p.Y)){
+                var x = p.X - rectcollider.X;
+                var y = p.Y - rectcollider.Y;
+                return collider[(int)(x + y*300)]!=Color.Green;
+            }
+            return false;
+        }
+
         public void Idle(GameTime gameTime)
         {
             idletimer += gameTime.ElapsedGameTime.Milliseconds;
@@ -217,7 +238,7 @@ namespace RopeMaster.gameplay.Enemies
                     var p = this.position + bubbleSpawner;
 
                     Bubble b = new Bubble(p, 0, v * -500);
-                    Game1.Instance.enemyManager.Add(b);
+                    Game1.Instance.enemyManager.enemiestoAdd.Add(b);
                     this.bubbleList.Add(b);
                     bubbleCD = 0;
                     if (nbBubbles >= nbBubblesphase)
@@ -233,7 +254,18 @@ namespace RopeMaster.gameplay.Enemies
             }
         }
 
-
+        public override void setPosition(int x, int y)
+        {
+            base.setPosition(x, y);
+            this.rectcollider.X = (int)this.position.X;
+            this.rectcollider.Y = (int)this.position.Y;
+        }
+        public override void setPosition(Vector2 pos)
+        {
+            base.setPosition(pos);
+            this.rectcollider.X = (int)this.position.X;
+            this.rectcollider.Y = (int)this.position.Y;
+        }
 
         private void changePhase()
         {
@@ -273,7 +305,7 @@ namespace RopeMaster.gameplay.Enemies
 
 
         public override void Draw(SpriteBatch spritebatch)
-        {
+        {            
             spritebatch.Draw(texture2, this.position + mastPos, srcmast, Color.White);
             spritebatch.Draw(texture1, this.position + gojPos, srcbody, Color.White);
             spritebatch.Draw(texture2, this.position, srcboat, Color.White);
@@ -281,7 +313,25 @@ namespace RopeMaster.gameplay.Enemies
             spritebatch.Draw(texture2, this.position + wheelPos, srcwheel, Color.White, -rotation, wheelOrg, 1, SpriteEffects.None, 0);
             if (animfire) spritebatch.Draw(texture1, this.position + gojPos + mouthPos, srcmouth, Color.White);
             spritebatch.Draw(texture1, this.position + gojPos + eyePos, srcEye, Color.White);
+            spritebatch.Draw(collider_tgt, rectcollider, Color.White);
         }
+
+        public void DrawCollider(     SpriteBatch spritebatch){
+            //draw colider
+            Game1.Instance.GraphicsDevice.SetRenderTarget(collider_tgt);
+            Game1.Instance.GraphicsDevice.Clear(Color.Green);
+            spritebatch.Begin();
+            spritebatch.Draw(texture2,  mastPos, srcmast, Color.White);
+            spritebatch.Draw(texture1, gojPos, srcbody, Color.White);
+            spritebatch.Draw(texture2, Vector2.Zero, srcboat, Color.White);
+            if (animfire) spritebatch.Draw(texture1, gojPos + mouthPos, srcmouth, Color.White);
+            spritebatch.End();
+            Game1.Instance.GraphicsDevice.SetRenderTarget(null);
+            collider_tgt.GetData(collider);
+
+        }
+
+
 
 
 
