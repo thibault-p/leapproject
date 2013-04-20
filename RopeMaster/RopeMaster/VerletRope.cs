@@ -21,7 +21,7 @@ namespace RopeMaster
         private int div;
         private int delta;
         private Texture2D tex;
-        private int fixeddiv = 1;
+        public int fixeddiv = 1;
         protected Vector2 origin;
         protected Rectangle srcRect;
         public int length;

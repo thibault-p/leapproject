@@ -69,11 +69,10 @@ namespace RopeMaster.gameplay
             Vector2 v =gunsrc;
             v.X *= (float)Math.Sin(r);
             v.Y*= (float)Math.Cos(r);
-
-
-
             return rope.getAttachPosition()+v;
         }
+
+
 
         public Vector2 getShotAngle()
         {
@@ -126,17 +125,19 @@ namespace RopeMaster.gameplay
 
 
 
-        public void steerRope(int way)
+        public bool steerRope(int way)
         {
+            var l =rope.fixeddiv;
             burst = 1;
             if (way < 0)
                 rope.up();
             else
                 rope.down();
+            return l != rope.fixeddiv;
         }
 
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (!iscatched)
             {

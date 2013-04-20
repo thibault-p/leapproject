@@ -35,7 +35,7 @@ namespace RopeMaster.Core
         public virtual void Update(GameTime gameTime)
         {
             var d = gameTime.ElapsedGameTime.Milliseconds / 1000f;
-            position += velocity * d;
+            position += velocity * d ;
         }
 
          public virtual Vector2 getPosition()

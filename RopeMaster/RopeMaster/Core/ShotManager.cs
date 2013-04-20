@@ -17,7 +17,7 @@ namespace RopeMaster.Core
 
         private List<Shot> playerShots;
         private List<Shot> ennemiesShots;
-        
+
 
         private float fireCooldown = 0;
         private float autofireCooldown = 0;
@@ -30,6 +30,8 @@ namespace RopeMaster.Core
         private Rectangle srcRectPlayer;
         private Rectangle srcFire;
 
+        private Color[] mapCollshot;
+
 
         public ShotManager()
         {
@@ -37,6 +39,7 @@ namespace RopeMaster.Core
             srcRectPlayer = new Rectangle(0, 0, 10, 10);
             srcFire = new Rectangle(0, 10, 16, 16);
             ennemiesShots = new List<Shot>();
+            mapCollshot = new Color[srcRectPlayer.Width * srcRectPlayer.Height];
         }
 
 
@@ -44,7 +47,7 @@ namespace RopeMaster.Core
         public void Initialize()
         {
             texture = Game1.Instance.magicContentManager.GetTexture("shotsheet");
-
+            texture.GetData(0, srcRectPlayer, mapCollshot, 0, srcRectPlayer.Height * srcRectPlayer.Width);
         }
 
 
@@ -64,6 +67,7 @@ namespace RopeMaster.Core
                 autofireCooldown = 0;
             }
             Rectangle r = Game1.Instance.Camera.ScreenVisible;
+            Rectangle hitb = new Rectangle(0, 0, 10, 10);
 
             foreach (Shot s in playerShots)
             {
@@ -85,9 +89,14 @@ namespace RopeMaster.Core
                         if (e is Gojira)
                         {
                             var g = (Gojira)e;
-                            if (s.Exterminate = g.IsPointPerfectColliding(s.getPosition()))
+                            float rot = 42;
+                            Vector2 i_p=Vector2.Zero;
+                            hitb.X = (int)s.getPosition().X - 5;
+                            hitb.Y = (int)s.getPosition().Y - 5;
+                            if (g.IsPointPerfectColliding(hitb, mapCollshot, ref rot, ref i_p))
                             {
-                                Game1.Instance.stuffManager.Add(new Impact(s.getPosition()));
+                                s.Exterminate = true;
+                                Game1.Instance.stuffManager.Add(new Impact(i_p, rot));
                             }
 
                         }

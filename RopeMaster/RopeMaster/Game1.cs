@@ -41,7 +41,7 @@ namespace RopeMaster
         EnemySpawner<Bubble> spawner;
 
         Gojira gojira;
-
+        Combobar combobar;
 
 
         public Game1() :
@@ -93,6 +93,7 @@ namespace RopeMaster
             bonusmaster = new BonusMaster();
             gojira = new Gojira();
             enemyManager.Add(gojira);
+            combobar = new Combobar(20);
             //spawner = new EnemySpawner<Bubble>(Vector2.One * 500, 10, 2000, new SinTrajectory(0.5f, 0, 2 * (float)Math.PI));
         }
 
@@ -116,7 +117,7 @@ namespace RopeMaster
             base.Update(gameTime);
             parallax.moveHorizontal(1);
             leapControl.Update(gameTime);
-        
+
 
 
             // Allows the game to exit
@@ -136,7 +137,7 @@ namespace RopeMaster
             }
             if (k.IsKeyDown(Keys.LeftShift))
             {
-                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle()*0.5f, 50, player.getPointShot());
+                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50, player.getPointShot());
             }
             if (k.IsKeyDown(Keys.Up))
             {
@@ -158,6 +159,17 @@ namespace RopeMaster
             {
                 bonusmaster.playAnim(1);
             }
+            if (k.IsKeyDown(Keys.Up))
+            {
+                var p = gojira.getPosition();
+                gojira.setPosition(p - Vector2.UnitY);
+            }
+            if (k.IsKeyDown(Keys.Down))
+            {
+                var p = gojira.getPosition();
+                gojira.setPosition(p + Vector2.UnitY);
+            }
+
 
             if (k.IsKeyDown(Keys.NumPad3))
             {
@@ -173,11 +185,14 @@ namespace RopeMaster
 
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Down) == InputManager.State.JustOn)
             {
-                player.steerRope(1);
+                if (player.steerRope(1))
+                    combobar.RemoveLenght();
+
             }
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Up) == InputManager.State.JustOn)
             {
-                player.steerRope(-1);
+                if (player.steerRope(-1))
+                    combobar.AddLength();
             }
             if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.State.JustOn)
             {
@@ -203,7 +218,8 @@ namespace RopeMaster
             }
             player.Update(gameTime);
             bonusmaster.Update(gameTime);
-            
+            combobar.Update(gameTime);
+
             //spawner.Update(gameTime);
 
         }
@@ -214,7 +230,6 @@ namespace RopeMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            gojira.DrawCollider(spriteBatch);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             Microsoft.Xna.Framework.Matrix m = Camera.get_transformation(GraphicsDevice);
 
@@ -228,7 +243,7 @@ namespace RopeMaster
                         null, m);
 
 
-           
+
 
             player.Draw(spriteBatch);
             enemyManager.Draw(spriteBatch);
@@ -243,10 +258,10 @@ namespace RopeMaster
             {
                 this.lifeBar.Draw(spriteBatch);
                 leapControl.Draw(spriteBatch);
-              
+
             }
             bonusmaster.Draw(spriteBatch);
-
+            combobar.Draw(spriteBatch);
             spriteBatch.End();
 
 

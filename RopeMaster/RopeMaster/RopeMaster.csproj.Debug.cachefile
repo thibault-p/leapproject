@@ -14,5 +14,9 @@ Content\gfx\sprites\gojira.xnb
 Content\gfx\sprites\boat.xnb
 Content\gfx\sprites\bubble.xnb
 Content\gfx\sprites\lifebar.xnb
+Content\gfx\sprites\gojira_hitbox.xnb
+Content\gfx\sprites\impact.xnb
+Content\gfx\sprites\gojira_normalmap.xnb
+Content\gfx\sprites\combobar.xnb
 Leap.dll
 Leapd.dll
