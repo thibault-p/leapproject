@@ -17,7 +17,7 @@ using Glitch.Graphics.particules;
 
 namespace RopeMaster.gameplay.Enemies
 {
-
+     [TextureContent(AssetName = "gojira_hitbox", AssetPath = "gfx/sprites/gojira_hitbox")]
     [TextureContent(AssetName = "gojira", AssetPath = "gfx/sprites/gojira")]
     [TextureContent(AssetName = "boat", AssetPath = "gfx/sprites/boat")]
     public class Gojira : Enemy
@@ -31,7 +31,7 @@ namespace RopeMaster.gameplay.Enemies
         private Rectangle srcEye;
 
         private Vector2 eyePos, mastPos, gojPos, smokePos, wheelPos, wheelOrg, mouthPos;
-        private Texture2D texture1, texture2;
+        private Texture2D texture1, texture2, maphitbox;
         private long timersmoke;
 
         private long fireCD = 0;
@@ -86,14 +86,15 @@ namespace RopeMaster.gameplay.Enemies
             mouthShot = new Vector2(32, 78);
             texture1 = Game1.Instance.magicContentManager.GetTexture("gojira");
             texture2 = Game1.Instance.magicContentManager.GetTexture("boat");
-            this.position = new Vector2(800, 250);
+            maphitbox = Game1.Instance.magicContentManager.GetTexture("gojira_hitbox");
+            this.position = new Vector2(800, 150);
             this.bubbleSpawner = new Vector2(30, 249);
             hp = 50;
             eyeCD = 0;
-
-            collider_tgt = new RenderTarget2D(Game1.Instance.GraphicsDevice,300,260);
-            collider = new Color[300* 260];
-            rectcollider = new Rectangle((int)this.position.X,(int)this.position.Y,300,260);
+           
+            collider = new Color[300* 256];
+            generateMap(true);
+            rectcollider = new Rectangle((int)this.position.X,(int)this.position.Y,300,256);
         }
 
 
@@ -143,6 +144,13 @@ namespace RopeMaster.gameplay.Enemies
                     break;
             }
         }
+
+        private void generateMap(bool open)
+        {
+            var src = new Rectangle((open)?0:300, 0, 300, 256);
+            maphitbox.GetData(0, src, collider, 0, 300 * 256);
+        }
+
 
         private void breathFire(GameTime gameTime)
         {
@@ -199,9 +207,9 @@ namespace RopeMaster.gameplay.Enemies
         public bool IsPointPerfectColliding(Vector2 p)
         {
             if(rectcollider.Contains((int)p.X,(int)p.Y)){
-                var x = p.X - rectcollider.X;
-                var y = p.Y - rectcollider.Y;
-                return collider[(int)(x + y*300)]!=Color.Green;
+                p -= position;
+                //Console.WriteLine(collider[(int)(p.X + p.Y * 172)].A);
+                return collider[(int)(p.X + p.Y*300)].A!=0;
             }
             return false;
         }
@@ -305,7 +313,8 @@ namespace RopeMaster.gameplay.Enemies
 
 
         public override void Draw(SpriteBatch spritebatch)
-        {            
+        {
+            spritebatch.Draw(maphitbox, this.position , , Color.White);
             spritebatch.Draw(texture2, this.position + mastPos, srcmast, Color.White);
             spritebatch.Draw(texture1, this.position + gojPos, srcbody, Color.White);
             spritebatch.Draw(texture2, this.position, srcboat, Color.White);
@@ -313,12 +322,12 @@ namespace RopeMaster.gameplay.Enemies
             spritebatch.Draw(texture2, this.position + wheelPos, srcwheel, Color.White, -rotation, wheelOrg, 1, SpriteEffects.None, 0);
             if (animfire) spritebatch.Draw(texture1, this.position + gojPos + mouthPos, srcmouth, Color.White);
             spritebatch.Draw(texture1, this.position + gojPos + eyePos, srcEye, Color.White);
-            spritebatch.Draw(collider_tgt, rectcollider, Color.White);
+            //spritebatch.Draw(collider_tgt, rectcollider, Color.White);
         }
 
         public void DrawCollider(     SpriteBatch spritebatch){
             //draw colider
-            Game1.Instance.GraphicsDevice.SetRenderTarget(collider_tgt);
+          /*  Game1.Instance.GraphicsDevice.SetRenderTarget(collider_tgt);
             Game1.Instance.GraphicsDevice.Clear(Color.Green);
             spritebatch.Begin();
             spritebatch.Draw(texture2,  mastPos, srcmast, Color.White);
@@ -328,7 +337,7 @@ namespace RopeMaster.gameplay.Enemies
             spritebatch.End();
             Game1.Instance.GraphicsDevice.SetRenderTarget(null);
             collider_tgt.GetData(collider);
-
+            */
         }
 
 

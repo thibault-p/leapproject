@@ -33,6 +33,7 @@ namespace Glitch.Engine.Core
         public InputManager inputManager;
         public ParticuleManager particuleManager;
         public EnemyManager enemyManager;
+        public StuffManager stuffManager;
         public Camera2D Camera;
         public Player player;
         public RandomMachine randomizator;
@@ -64,6 +65,7 @@ namespace Glitch.Engine.Core
             particuleManager = new ParticuleManager();
             inputManager = new InputManager();
             shotManager = new ShotManager();
+            stuffManager = new StuffManager();
             enemyManager = new EnemyManager();
             randomizator = new RandomMachine(new System.DateTime().Millisecond);
             //Xbox Live
@@ -89,9 +91,11 @@ namespace Glitch.Engine.Core
         protected override void Update(GameTime gameTime)
         {
             inputManager.Update(gameTime);
-            shotManager.Update(gameTime);
-            particuleManager.Update(gameTime);
             enemyManager.Update(gameTime);
+            shotManager.Update(gameTime);
+            stuffManager.Update(gameTime);
+            particuleManager.Update(gameTime);
+
             base.Update(gameTime);
 
 

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Glitch.Engine.Content;
 using RopeMaster.gameplay.Enemies;
+using RopeMaster.gameplay;
 
 namespace RopeMaster.Core
 {
@@ -16,7 +17,7 @@ namespace RopeMaster.Core
 
         private List<Shot> playerShots;
         private List<Shot> ennemiesShots;
-
+        
 
         private float fireCooldown = 0;
         private float autofireCooldown = 0;
@@ -84,7 +85,10 @@ namespace RopeMaster.Core
                         if (e is Gojira)
                         {
                             var g = (Gojira)e;
-                            s.Exterminate=g.IsPointPerfectColliding(s.getPosition());
+                            if (s.Exterminate = g.IsPointPerfectColliding(s.getPosition()))
+                            {
+                                Game1.Instance.stuffManager.Add(new Impact(s.getPosition()));
+                            }
 
                         }
                     }

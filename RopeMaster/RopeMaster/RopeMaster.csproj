@@ -126,6 +126,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\StuffManager.cs" />
     <Compile Include="Core\SphereBox.cs" />
     <Compile Include="gameplay\Enemies\Bolter.cs" />
     <Compile Include="gameplay\Enemies\EnemyAnim.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Core\Shot.cs" />
     <Compile Include="Core\ShotManager.cs" />
     <Compile Include="gameplay\BonusMaster.cs" />
+    <Compile Include="gameplay\Impact.cs" />
     <Compile Include="gameplay\LifeBar.cs" />
     <Compile Include="gameplay\Helpers\SinTrajectory.cs" />
     <Compile Include="gameplay\MovingFunctions.cs" />

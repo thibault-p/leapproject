@@ -136,7 +136,7 @@ namespace RopeMaster
             }
             if (k.IsKeyDown(Keys.LeftShift))
             {
-                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50, player.getPointShot());
+                shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle()*0.5f, 50, player.getPointShot());
             }
             if (k.IsKeyDown(Keys.Up))
             {
@@ -234,6 +234,7 @@ namespace RopeMaster
             enemyManager.Draw(spriteBatch);
             particuleManager.Draw(spriteBatch);
             shotManager.Draw(spriteBatch);
+            stuffManager.Draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin();
