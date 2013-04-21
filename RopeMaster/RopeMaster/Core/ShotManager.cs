@@ -66,7 +66,7 @@ namespace RopeMaster.Core
                 autofire = true;
                 autofireCooldown = 0;
             }
-            Rectangle r = Game1.Instance.Camera.ScreenVisible;
+            Rectangle r = Gamescreen.Instance.Camera.ScreenVisible;
             Rectangle hitb = new Rectangle(0, 0, 10, 10);
 
             foreach (Shot s in playerShots)
@@ -78,7 +78,7 @@ namespace RopeMaster.Core
                 }
                 else
                 {
-                    foreach (Enemy e in Game1.Instance.enemyManager.enemies)
+                    foreach (Enemy e in Gamescreen.Instance.enemyManager.enemies)
                     {
 
                         if (e.collideWith(s.getPosition(), 5))
@@ -96,7 +96,7 @@ namespace RopeMaster.Core
                             if (g.IsPointPerfectColliding(hitb, mapCollshot, ref rot, ref i_p))
                             {
                                 s.Exterminate = true;
-                                Game1.Instance.stuffManager.Add(new Impact(i_p, rot));
+                                Gamescreen.Instance.stuffManager.Add(new Impact(i_p, rot));
                             }
 
                         }

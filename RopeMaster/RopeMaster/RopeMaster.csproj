@@ -130,6 +130,7 @@
     <Compile Include="Core\Gamescreen.cs" />
     <Compile Include="Core\PresentScreen.cs" />
     <Compile Include="Core\State.cs" />
+    <Compile Include="Core\StateManager.cs" />
     <Compile Include="Core\StuffManager.cs" />
     <Compile Include="Core\SphereBox.cs" />
     <Compile Include="gameplay\Combobar.cs" />

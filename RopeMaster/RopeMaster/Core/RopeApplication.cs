@@ -25,21 +25,16 @@ namespace Glitch.Engine.Core
 
 
         public MagicContentManager magicContentManager;
-        public ShotManager shotManager;
+        
         private string _name;
         private string _version;
         private bool _isdebugMode;
         public Rectangle Screen { get; set; }
-        public InputManager inputManager;
-        public ParticuleManager particuleManager;
-        public EnemyManager enemyManager;
-        public StuffManager stuffManager;
-        public Camera2D Camera;
-        public Player player;
+  
         public RandomMachine randomizator;
         public int difficulty=1;
 
-        protected LifeBar lifeBar;
+ 
 
 
         /// <summary>
@@ -62,12 +57,9 @@ namespace Glitch.Engine.Core
             //_graphics = new GraphicsDeviceManager(this);
             // Initialize the resolution
             magicContentManager = new MagicContentManager(GameAssemblies, Content);
-            particuleManager = new ParticuleManager();
-            inputManager = new InputManager();
-            shotManager = new ShotManager();
-            stuffManager = new StuffManager();
-            enemyManager = new EnemyManager();
+
             randomizator = new RandomMachine(new System.DateTime().Millisecond);
+            base.LoadContent();
             //Xbox Live
 #if XBOX
             this.Components.Add(new GamerServicesComponent(this));
@@ -78,10 +70,6 @@ namespace Glitch.Engine.Core
         {
             magicContentManager.Initialize();
             base.LoadContent();
-            shotManager.Initialize();
-            particuleManager.Initialize();
-            enemyManager.Initialize();
-            lifeBar = new LifeBar(new Vector2(1200,50), 20);
         }
 
         /// <summary>
@@ -90,11 +78,7 @@ namespace Glitch.Engine.Core
         /// <param name="gameTime">Time passed since the last call to Update.</param>
         protected override void Update(GameTime gameTime)
         {
-            inputManager.Update(gameTime);
-            enemyManager.Update(gameTime);
-            shotManager.Update(gameTime);
-            stuffManager.Update(gameTime);
-            particuleManager.Update(gameTime);
+
 
             base.Update(gameTime);
 

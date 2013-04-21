@@ -155,7 +155,7 @@ namespace RopeMaster.gameplay.Enemies
             if (timersmoke >= TIMER_SMOKE)
             {
                 var rand = Game1.Instance.randomizator;
-                Game1.Instance.particuleManager.AddParticule(new Smoke(this.position + this.smokePos, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
+                Gamescreen.Instance.particuleManager.AddParticule(new Smoke(this.position + this.smokePos, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
                 timersmoke = 0;
                 smokePos.X = 66;
             }
@@ -183,14 +183,14 @@ namespace RopeMaster.gameplay.Enemies
                 {
                     this.position -= shake;
                     shake = Game1.Instance.randomizator.GetRandomVector2(0, 0, -2, 2);
-                    Game1.Instance.particuleManager.AddParticule(new Smoke(this.position + this.smokePos, Game1.Instance.randomizator.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), Game1.Instance.randomizator.GetRandomFloat(0.6f, 0.1f), Color.White, false));
+                    Gamescreen.Instance.particuleManager.AddParticule(new Smoke(this.position + this.smokePos, Game1.Instance.randomizator.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), Game1.Instance.randomizator.GetRandomFloat(0.6f, 0.1f), Color.White, false));
 
                     this.position += shake;
 
                 }
                 if (rushTimer > 3000)
                 {
-                    var a = Math.Atan2(Game1.Instance.player.getShotSource().Y - (this.position.Y + this.mouthPos.Y), Game1.Instance.player.getShotSource().X - (this.position.X + this.mouthPos.X));
+                    var a = Math.Atan2(Gamescreen.Instance.player.getShotSource().Y - (this.position.Y + this.mouthPos.Y), Gamescreen.Instance.player.getShotSource().X - (this.position.X + this.mouthPos.X));
                     this.velocity = new Vector2((float)Math.Cos(a), (float)Math.Sin(a)) * 1000;
                     rushstate = 1;// go left
                     rushTimer = 0;
@@ -240,7 +240,7 @@ namespace RopeMaster.gameplay.Enemies
                 if (mouthAnim > 100)
                 {
                     var rand = Game1.Instance.randomizator;
-                    Game1.Instance.particuleManager.AddParticule(new Smoke(this.position + this.mouthShot + this.gojPos, rand.GetRandomTrajectory(200, MathHelper.ToRadians(200), MathHelper.ToRadians(240)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
+                    Gamescreen.Instance.particuleManager.AddParticule(new Smoke(this.position + this.mouthShot + this.gojPos, rand.GetRandomTrajectory(200, MathHelper.ToRadians(200), MathHelper.ToRadians(240)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
                     mouthAnim = 0;
                     srcmouth.X += 68 * ((mouthphase % 2 == 0) ? 1 : -1);
                     if ((mouthphase > 0 & mouthphase < 6 & srcmouth.X == 308) || (srcmouth.X == 444)) mouthphase++;
@@ -271,10 +271,10 @@ namespace RopeMaster.gameplay.Enemies
                 var v = Vector2.One * 10;
                 for (int i = 0; i < nb; i++)
                 {
-                    Game1.Instance.particuleManager.AddParticule(new Smoke(this.position + this.mouthShot + this.gojPos + v, rand.GetRandomTrajectory(200, MathHelper.ToRadians(200), MathHelper.ToRadians(240)), rand.GetRandomFloat(0.7f, 1f), Color.White, false));
+                    Gamescreen.Instance.particuleManager.AddParticule(new Smoke(this.position + this.mouthShot + this.gojPos + v, rand.GetRandomTrajectory(200, MathHelper.ToRadians(200), MathHelper.ToRadians(240)), rand.GetRandomFloat(0.7f, 1f), Color.White, false));
                     var s = new Shot(this.position + gojPos + mouthShot, new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 0.5f, 200, 0, false, 1, 2);
                     s.angle = (float)(angle - Math.PI);
-                    Game1.Instance.shotManager.AddShotEnemy(s);
+                    Gamescreen.Instance.shotManager.AddShotEnemy(s);
                     angle += offset;
                 }
                 firephase++;
@@ -344,7 +344,7 @@ namespace RopeMaster.gameplay.Enemies
                     var p = this.position + bubbleSpawner;
 
                     Bubble b = new Bubble(p, 0, v * -500);
-                    Game1.Instance.enemyManager.enemiestoAdd.Add(b);
+                    Gamescreen.Instance.enemyManager.enemiestoAdd.Add(b);
                     this.bubbleList.Add(b);
                     bubbleCD = 0;
                     if (nbBubbles >= nbBubblesphase)

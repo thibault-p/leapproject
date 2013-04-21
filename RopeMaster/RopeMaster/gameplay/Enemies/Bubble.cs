@@ -74,7 +74,7 @@ namespace RopeMaster.gameplay.Enemies
                     this.hitbox.setPosition(this.position + origin);
                     return;
                 }
-                foreach (Enemy e in Game1.Instance.enemyManager.enemies)
+                foreach (Enemy e in Gamescreen.Instance.enemyManager.enemies)
                 {
 
                     if (e is Bubble)

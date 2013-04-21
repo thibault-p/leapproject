@@ -56,7 +56,7 @@ namespace RopeMaster.gameplay.Enemies
             var p = this.getPosition();
             tmp.setPosition(p);
             tmp.setTrajectory(trajectoty.compute);
-            Game1.Instance.enemyManager.Add(tmp);
+            Gamescreen.Instance.enemyManager.Add(tmp);
         }
 
 

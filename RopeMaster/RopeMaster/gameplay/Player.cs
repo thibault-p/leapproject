@@ -86,12 +86,12 @@ namespace RopeMaster.gameplay
             {
                 var loc = this.getPosition() + smokeLoc;
                 var rand = Game1.Instance.randomizator;
-                Game1.Instance.particuleManager.AddParticule(new Smoke(loc, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
+                Gamescreen.Instance.particuleManager.AddParticule(new Smoke(loc, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
                 if (burst > 0)
                 {
                     for (int i = 0; i < rand.GetRandomInt(5, 10); i++)
                     {
-                        Game1.Instance.particuleManager.AddParticule(new Smoke(loc, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
+                        Gamescreen.Instance.particuleManager.AddParticule(new Smoke(loc, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
                     }
                     burst--;
                 }
