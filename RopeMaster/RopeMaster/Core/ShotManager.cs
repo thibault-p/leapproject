@@ -66,7 +66,7 @@ namespace RopeMaster.Core
                 autofire = true;
                 autofireCooldown = 0;
             }
-            Rectangle r = Gamescreen.Instance.Camera.ScreenVisible;
+            Rectangle r = Gamescreen.Instance.camera.ScreenVisible;
             Rectangle hitb = new Rectangle(0, 0, 10, 10);
 
             foreach (Shot s in playerShots)
