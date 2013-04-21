@@ -24,6 +24,7 @@ namespace RopeMaster.Core
         private static MusicPlayer _instance;
         private float _volume;
 
+
         public MusicPlayer()
         {
             _instance = this;
@@ -33,14 +34,21 @@ namespace RopeMaster.Core
 
         public void PlayMusic(String songname)
         {
-             var song =Game1.Instance.magicContentManager.GetMusic(songname);
-             _instance.PlaySong(song.Song);
+            var song = Game1.Instance.magicContentManager.GetMusic(songname);
+            _instance.PlaySong(song.Song);
         }
+
+        public void StopMusic()
+        {
+            if (MediaState.Playing == MediaPlayer.State)
+                MediaPlayer.Stop();
+        }
+
 
 
         private void PlaySong(Song song)
         {
-    
+
             new Thread(new ThreadStart(() =>
             {
                 MediaPlayer.Volume = _volume;

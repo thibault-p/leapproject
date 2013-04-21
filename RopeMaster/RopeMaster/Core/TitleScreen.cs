@@ -11,9 +11,6 @@ namespace RopeMaster.Core
     [TextureContent(AssetName = "title", AssetPath = "gfx/screen/title")]
     public class TitleScreen : State
     {
-
-
-
         private Texture2D texture;
         private Vector2 position;
         private long timer;
@@ -65,8 +62,6 @@ namespace RopeMaster.Core
         public override void changeState()
         {
             Game1.Instance.StateManage.changeState(nextscreen);
-
-
         }
 
 
