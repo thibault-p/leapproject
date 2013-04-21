@@ -37,12 +37,11 @@ namespace RopeMaster
         Rectangle screen;
         LeapControl leapControl;
 
-        BonusMaster bonusmaster;
         EnemySpawner<Bubble> spawner;
 
         Gojira gojira;
         Combobar combobar;
-
+        GameManager gamemanager;
 
         public Game1() :
             base("Rope Master", "Content", "1.0")
@@ -90,9 +89,9 @@ namespace RopeMaster
             base.LoadContent();
             parallax = new Parallax();
             player = new Player();
-            bonusmaster = new BonusMaster();
             gojira = new Gojira();
             enemyManager.Add(gojira);
+            gamemanager = new GameManager();
             combobar = new Combobar(20);
             //spawner = new EnemySpawner<Bubble>(Vector2.One * 500, 10, 2000, new SinTrajectory(0.5f, 0, 2 * (float)Math.PI));
         }
@@ -150,15 +149,6 @@ namespace RopeMaster
             parallax.Update(gameTime);
             prevKey = k;
 
-            if (k.IsKeyDown(Keys.NumPad1))
-            {
-                bonusmaster.playAnim(0);
-            }
-
-            if (k.IsKeyDown(Keys.NumPad2))
-            {
-                bonusmaster.playAnim(1);
-            }
             if (k.IsKeyDown(Keys.Up))
             {
                 var p = gojira.getPosition();
@@ -171,15 +161,7 @@ namespace RopeMaster
             }
 
 
-            if (k.IsKeyDown(Keys.NumPad3))
-            {
-                bonusmaster.playAnim(2);
-            }
 
-            if (k.IsKeyDown(Keys.NumPad4))
-            {
-                bonusmaster.playAnim(3);
-            }
 
 
 
@@ -217,9 +199,8 @@ namespace RopeMaster
                 player.setIsCatched(false);
             }
             player.Update(gameTime);
-            bonusmaster.Update(gameTime);
             combobar.Update(gameTime);
-
+            gamemanager.Update(gameTime);
             //spawner.Update(gameTime);
 
         }
@@ -260,8 +241,8 @@ namespace RopeMaster
                 leapControl.Draw(spriteBatch);
 
             }
-            bonusmaster.Draw(spriteBatch);
             combobar.Draw(spriteBatch);
+            gamemanager.Draw(spriteBatch);
             spriteBatch.End();
 
 

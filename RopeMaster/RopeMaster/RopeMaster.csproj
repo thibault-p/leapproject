@@ -126,6 +126,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\GameManager.cs" />
     <Compile Include="Core\StuffManager.cs" />
     <Compile Include="Core\SphereBox.cs" />
     <Compile Include="gameplay\Combobar.cs" />

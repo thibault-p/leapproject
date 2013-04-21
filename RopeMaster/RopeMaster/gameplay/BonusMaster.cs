@@ -27,7 +27,7 @@ namespace RopeMaster.gameplay
             texture = Game1.Instance.magicContentManager.GetTexture("bonusmaster");
             srcRect = new Rectangle(0, 0, 128, 128);
             position = new Vector2(0,Game1.Instance.GraphicsDevice.Viewport.Height );
-            playing = true;
+            playing = false;
         }
 
 
@@ -70,12 +70,8 @@ namespace RopeMaster.gameplay
                         flipped = !flipped;
                     }
                     position.X += (flipped?-1:1) *0.5f;
-                    
-
                 }
             }
-
-
         }
 
 
