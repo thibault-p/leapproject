@@ -27,10 +27,13 @@ namespace RopeMaster.Core
         public int life;
         public int currentstate = 0;
         public long score = 0;
+        private Vector2 posScore, postime;
+        
+
+
 
         public GameManager():base()
         {
-            Initialize();
 
         }
 
@@ -43,6 +46,9 @@ namespace RopeMaster.Core
             score = 0;
             time = 0;
             font = Game1.Instance.magicContentManager.Font;
+            posScore = new Vector2(0, 0);
+            postime = new Vector2(0, 20);
+
         }
 
 
@@ -63,8 +69,8 @@ namespace RopeMaster.Core
         {
             var t = (timemax-time)/1000;
             int s =  (int)t%60;
-            spritebatch.DrawString(font, "Score: " + score.ToString("0000000000"), Vector2.Zero, Color.White);
-            spritebatch.DrawString(font, "Timeleft: " + (t/60 ) +":"+s.ToString("00"), Vector2.Zero, Color.White);
+            spritebatch.DrawString(font, "Score: " + score.ToString("0000000000"), posScore, Color.White);
+            spritebatch.DrawString(font, "Timeleft: " + (t/60 ) +":"+s.ToString("00"), postime, Color.White);
 
         }
 

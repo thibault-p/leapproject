@@ -31,6 +31,7 @@ namespace RopeMaster.Core
 
         public virtual void Initialyze()
         {
+            Game1.Instance.musicPlayer.StopMusic();
             color = Color.Black;
             color.A = 255;
             text_null = Game1.Instance.magicContentManager.GetTexture("null");

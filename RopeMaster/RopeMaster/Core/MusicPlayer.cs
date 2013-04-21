@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace RopeMaster.Core
 {
-
+    [SongContent(AssetName = "teleporter", AssetPath = "music/DANJYON_KIMURA_-_TELEPORTER", Artist = "Danjyon kimura", Name = "Space alone")]
     [SongContent(AssetName = "spacealone", AssetPath = "music/DANJYON_KIMURA_-_Space_Alone", Artist = "Danjyon kimura", Name = "Space alone")]
     public class MusicPlayer
     {

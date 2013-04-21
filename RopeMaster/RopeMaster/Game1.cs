@@ -61,7 +61,7 @@ namespace RopeMaster
             graphics.ApplyChanges();
             this.Screen = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             StateManage = new StateManager();
-
+           
             //controller = new Controller();
             inputManager = new InputManager();
             leapControl = new LeapControl();
@@ -84,6 +84,7 @@ namespace RopeMaster
    
             base.LoadContent();
             StateManage.Initialize();
+            StateManage.changeState(3);
 
         }
 

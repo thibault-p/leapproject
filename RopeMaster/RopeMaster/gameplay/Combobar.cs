@@ -20,7 +20,7 @@ namespace RopeMaster.gameplay
     {
 
         public int length;
-        public long combo;
+        public int combo;
         private long timer_combo;
         private Texture2D texture;
         private Vector2 position, posunit,posdozen, pospart;
@@ -36,10 +36,10 @@ namespace RopeMaster.gameplay
             combo = 0;
             texture = Game1.Instance.magicContentManager.GetTexture("combobar");
             srcMain = new Rectangle(0, 0, 92, 50);
-            srcunit = new Rectangle(117, 0, 18, 32);
-            srcdozen = new Rectangle(117, 0, 18, 32);
-            posunit = new Vector2(38, 11);
-            posdozen = new Vector2(18, 11);
+            srcunit = new Rectangle(117, 35, 18, 32);
+            srcdozen = new Rectangle(117, 35, 18, 32);
+            posunit = new Vector2(38, 12);
+            posdozen = new Vector2(18, 12);
             srcpart = new Rectangle(93,0,22, 52);
             pospart = new Vector2(92, 0);
             this.position = new Vector2(0, 720 - srcMain.Height);
@@ -51,7 +51,8 @@ namespace RopeMaster.gameplay
 
         public void AddCombo(int c)
         {
-            combo = Math.Min(combo + c, length * 100);
+            combo =(int) Math.Min(combo + c, length * 100);
+            timer_combo = 0;
         }
 
 
@@ -68,7 +69,7 @@ namespace RopeMaster.gameplay
 
         public int getMultiplicator()
         {
-            return (int)Math.Floor(combo / 100f);
+            return (int)Math.Floor(combo / 100f)+1;
         }
 
 
@@ -86,28 +87,60 @@ namespace RopeMaster.gameplay
 
         public void Update(GameTime gametime)
         {
-            combo++;
             timer_combo += gametime.ElapsedGameTime.Milliseconds;
             if (timer_combo > 1000)
             {
                 //combo counter decrease
-                if (timer_combo % 50 == 0)
-                {
+            
                     combo = Math.Max(0,combo-1);
                     
-                }
+                
             }
             //update roll
             var m = getMultiplicator();
+            Console.WriteLine(combo+"    "+ m);
             var unit = m % 10;
-            if (srcunit.Y != (unit) * 35)
+            if (unit == 9)
             {
-                srcunit.Y += ((srcunit.Y > (unit) * 35) ? 1 : 1);
+                if (srcunit.Y ==  35)
+                { //we are on 0
+                    srcunit.Y = 35*11;
+                }
+                
+            }else if(unit==0){
+                if (srcunit.Y == 10 * 35)
+                { //we are on 9
+                    srcunit.Y = 0;
+                }
+            }
+            if (srcunit.Y != (unit+1) * 35)
+            {
+                srcunit.Y += ((srcunit.Y > (unit+1) * 35) ? -1 : 1);
 
             }
+
+            //DOZEN////////////////////////////////////////////////////////
             var dozen = (int)Math.Floor(m/10f);
-            if (srcdozen.Y != (dozen) * 35)
-                srcdozen.Y += ((srcdozen.Y > (dozen) * 35) ? 1 : 1);
+            if (dozen == 9)
+            {
+                if (srcdozen.Y == 35)
+                { //we are on 0
+                    srcdozen.Y = 35 * 11;
+                }
+
+            }
+            else if (dozen == 0)
+            {
+                if (srcdozen.Y == 10 * 35)
+                { //we are on 9
+                    srcdozen.Y = 0;
+                }
+            }
+            if (srcdozen.Y != (dozen+1) * 35)
+                srcdozen.Y += ((srcdozen.Y > (dozen+1) * 35) ? -1 : 1);
+
+
+
 
             dstbar.Width = (int)((22f / 100f) * combo);
             bonusmaster.Update(gametime);
