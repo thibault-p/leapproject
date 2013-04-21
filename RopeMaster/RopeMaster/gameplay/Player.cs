@@ -24,7 +24,7 @@ namespace RopeMaster.gameplay
         private int burst = 0;
         private bool iscatched = false;
         private Radar radar;
-        protected Hitbox hitboxbig;
+        protected Hitbox hitboxbig,hitboxsmall;
         private Vector2 originp2;
         private Vector2 gunsrc;
 
@@ -35,16 +35,23 @@ namespace RopeMaster.gameplay
         {
 
             texture = Game1.Instance.magicContentManager.GetTexture("player");
+            rope = new VerletRope(20, 200, Vector2.Zero, Game1.Instance.magicContentManager.GetTexture("point"));
+            initiazlyze();
+        }
+
+
+        public void initiazlyze()
+        {
             sourcep1 = new Rectangle(0, 0, 80, 128);
             sourcep2 = new Rectangle(0, 128, 92, 128);
             time = 0;
             radar = new Radar();
-            rope = new VerletRope(20, 200, Vector2.Zero, Game1.Instance.magicContentManager.GetTexture("point"));
             rope.setOrigin(40, 46);
             origin = new Vector2(40, 30);
             originp2 = new Vector2(29, 11);
             gunsrc = new Vector2(12, 50);
             hitboxbig = new SphereBox(this.position, 25);
+            hitboxsmall = new SphereBox(this.rope.getAttachPosition(), 7);
             poswing = new Vector2(-20, -2);
             srcWing = new Rectangle(80, 0, 27, 18);
 
@@ -65,6 +72,7 @@ namespace RopeMaster.gameplay
             base.setPosition(x, y);
             radar.setPosition(x, y);
             hitboxbig.setPosition(this.position);
+
         }
 
         public Vector2 getShotSource()

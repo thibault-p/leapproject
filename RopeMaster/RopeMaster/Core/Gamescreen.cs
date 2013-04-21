@@ -70,7 +70,8 @@ namespace RopeMaster.Core
             shotManager.Initialize();
             particuleManager.Initialize();
             enemyManager.Initialize();
-            playing = false;
+            enemyManager.Add(gojira);
+            playing = true;
             //Game1.Instance.musicPlayer.PlayMusic("teleporter");
         }
 
@@ -133,9 +134,11 @@ namespace RopeMaster.Core
                 }
             }
             player.Update(gameTime);
-
+            gojira.Update(gameTime);
             particuleManager.Update(gameTime);
             enemyManager.Update(gameTime);
+            shotManager.Update(gameTime);
+            stuffManager.Update(gameTime);
             combobar.Update(gameTime);
             gamemanager.Update(gameTime);
 
@@ -155,6 +158,7 @@ namespace RopeMaster.Core
                         null, m);
             player.Draw(spriteBatch);
             enemyManager.Draw(spriteBatch);
+            gojira.Draw(spriteBatch);
             particuleManager.Draw(spriteBatch);
             shotManager.Draw(spriteBatch);
             stuffManager.Draw(spriteBatch);

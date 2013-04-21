@@ -91,14 +91,11 @@ namespace RopeMaster.gameplay
             if (timer_combo > 1000)
             {
                 //combo counter decrease
-            
                     combo = Math.Max(0,combo-1);
-                    
-                
+ 
             }
             //update roll
             var m = getMultiplicator();
-            Console.WriteLine(combo+"    "+ m);
             var unit = m % 10;
             if (unit == 9)
             {
