@@ -28,16 +28,16 @@ namespace RopeMaster
     /// </summary>
     public class Game1 : RopeApplication
     {
+
+      
         public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D tex;
         KeyboardState prevKey;
 
+ 
         
-        Rectangle screen;
-        LeapControl leapControl;
 
-        public StateManager stateManager;
 
         public Game1() :
             base("Rope Master", "Content", "1.0")
@@ -60,10 +60,10 @@ namespace RopeMaster
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             this.Screen = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
-            stateManager = new StateManager();
+            StateManage = new StateManager();
 
             //controller = new Controller();
- 
+            inputManager = new InputManager();
             leapControl = new LeapControl();
             LoadContent();
 
@@ -80,10 +80,9 @@ namespace RopeMaster
             Console.WriteLine("loadcontent");
             // TODO: use this.Content to load your game content here
             tex = Content.Load<Texture2D>("gfx/point");
-            screen = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+   
             base.LoadContent();
-
-            stateManager.Initialize();
+            StateManage.Initialize();
 
         }
 
@@ -104,9 +103,9 @@ namespace RopeMaster
         protected override void Update(GameTime gameTime)
         {
 
-
+            inputManager.Update(gameTime);
             leapControl.Update(gameTime);
-            stateManager.Update(gameTime);
+            StateManage.Update(gameTime);
 
 
 
@@ -121,7 +120,7 @@ namespace RopeMaster
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
-            stateManager.Draw(spriteBatch);
+            StateManage.Draw(spriteBatch);
 
         }
 

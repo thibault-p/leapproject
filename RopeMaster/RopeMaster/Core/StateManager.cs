@@ -18,8 +18,10 @@ namespace RopeMaster.Core
     public  class StateManager : Manager
     {
 
-        private State currentState;
 
+
+
+        private State currentState;
 
         public StateManager()
         {
@@ -28,12 +30,39 @@ namespace RopeMaster.Core
 
 
 
+
+
+
+
         public void Initialize()
         {
             Console.WriteLine("init");
-            currentState = new PresentScreen();
+            currentState = new LeapScreen(); ;
+            currentState.Initialyze();
 
         }
+
+
+        public void changeState(int screen)
+        {
+            switch (screen)
+            {
+                case 0: currentState = new LeapScreen();
+                    break;
+
+                case 1: currentState = new PresentScreen();
+                    break;
+                case 2: currentState = new TitleScreen();
+                    break;
+                case 3: currentState = new Gamescreen();
+                    break;
+            }
+            currentState.Initialyze();
+
+
+
+        }
+
 
         public void Update(GameTime gametime)
         {

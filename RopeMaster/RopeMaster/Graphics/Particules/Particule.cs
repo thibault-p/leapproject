@@ -10,7 +10,7 @@ namespace Glitch.Engine.Particules
     public abstract class Particule
     {
          /// <summary>
-        /// State
+        /// InputState
         /// </summary>
         public bool IsAlive { get; set; }
 

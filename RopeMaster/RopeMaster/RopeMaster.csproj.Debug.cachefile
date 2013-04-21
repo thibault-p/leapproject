@@ -19,5 +19,7 @@ Content\gfx\sprites\impact.xnb
 Content\gfx\sprites\gojira_normalmap.xnb
 Content\gfx\sprites\combobar.xnb
 Content\gfx\screen\presentscreen.xnb
+Content\gfx\screen\leap.xnb
+Content\gfx\misc\null.xnb
 Leap.dll
 Leapd.dll

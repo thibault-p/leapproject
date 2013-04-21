@@ -126,8 +126,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\TitleScreen.cs" />
     <Compile Include="Core\GameManager.cs" />
     <Compile Include="Core\Gamescreen.cs" />
+    <Compile Include="Core\LeapScreen.cs" />
     <Compile Include="Core\PresentScreen.cs" />
     <Compile Include="Core\State.cs" />
     <Compile Include="Core\StateManager.cs" />

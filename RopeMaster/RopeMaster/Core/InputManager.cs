@@ -23,7 +23,7 @@ namespace RopeMaster.Core
         private Buttons[] defaultconfig = { Buttons.A, Buttons.B, Buttons.RightTrigger, Buttons.A, Buttons.X };
 
 
-        public enum State
+        public enum InputState
         {
             On = 0,
             Off,
@@ -31,18 +31,18 @@ namespace RopeMaster.Core
             JustOff
         }
         private GamePadState previousState;
-        private State[] commandState;
+        private InputState[] commandState;
         private Buttons[] keyMapping;
 
 
         public InputManager()
         {
-            commandState = new State[5];
+            commandState = new InputState[5];
             keyMapping = new Buttons[5];
             keyMapping = defaultconfig;
             for (int i = 0; i < 5; i++)
             {
-                commandState[i] = State.Off;
+                commandState[i] = InputState.Off;
             }
         }
 
@@ -55,29 +55,40 @@ namespace RopeMaster.Core
                 {
                     if (g.IsButtonDown(keyMapping[i]) && previousState.IsButtonDown(keyMapping[i]))
                     {
-                        commandState[i] = State.On;
+                        commandState[i] = InputState.On;
                     }
                     else if (g.IsButtonUp(keyMapping[i]) && previousState.IsButtonDown(keyMapping[i]))
                     {
-                        commandState[i] = State.JustOff;
+                        commandState[i] = InputState.JustOff;
                     }
                     else if (g.IsButtonDown(keyMapping[i]) && previousState.IsButtonUp(keyMapping[i]))
                     {
-                        commandState[i] = State.JustOn;
+                        commandState[i] = InputState.JustOn;
                     }
                     else if (g.IsButtonUp(keyMapping[i]) && previousState.IsButtonUp(keyMapping[i]))
                     {
-                        commandState[i] = State.Off;
+                        commandState[i] = InputState.Off;
                     }
                 }
                 previousState = g;
             }
         }
 
-        public State getState(Commands cmd)
+        public InputState getState(Commands cmd)
         {
             return commandState[(int)cmd];
         }
+
+        public bool IsAnyKetPress()
+        {
+            for (int i = 0; i < commandState.Length; i++)
+            {
+                if (commandState[i] == InputState.On) return true;
+            }
+            return false;
+        }
+
+
 
     }
 

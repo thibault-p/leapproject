@@ -30,11 +30,11 @@ namespace Glitch.Engine.Core
         private string _version;
         private bool _isdebugMode;
         public Rectangle Screen { get; set; }
-  
+        public StateManager StateManage;
         public RandomMachine randomizator;
         public int difficulty=1;
-
- 
+        public InputManager inputManager;
+        public LeapControl leapControl;
 
 
         /// <summary>

@@ -22,8 +22,8 @@ namespace RopeMaster.Core
     public class Gamescreen : State
     {
 
-        public static Gamescreen Instance; 
-
+        public static Gamescreen Instance;
+        public Camera2D camera;
         Parallax parallax;
         Gojira gojira;
         Combobar combobar;
@@ -31,11 +31,11 @@ namespace RopeMaster.Core
         LeapControl leapControl;
         KeyboardState prevKey;
         public ShotManager shotManager;
-        public InputManager inputManager;
+        
         public ParticuleManager particuleManager;
         public EnemyManager enemyManager;
         public StuffManager stuffManager;
-        public Camera2D Camera;
+       
         public Player player;
 
 
@@ -51,15 +51,18 @@ namespace RopeMaster.Core
             parallax = new Parallax();
             player = new Player();
             gojira = new Gojira();
+            enemyManager = new EnemyManager();
+            enemyManager.Initialize();
             enemyManager.Add(gojira);
             gamemanager = new GameManager();
             combobar = new Combobar(20);
             particuleManager = new ParticuleManager();
-            inputManager = new InputManager();
+            camera = new Camera2D();
+
             shotManager = new ShotManager();
             stuffManager = new StuffManager();
             enemyManager = new EnemyManager();
-
+            leapControl = Game1.Instance.leapControl;
             shotManager.Initialize();
             particuleManager.Initialize();
             enemyManager.Initialize();
@@ -115,22 +118,22 @@ namespace RopeMaster.Core
 
 
 
-            if (inputManager.getState(InputManager.Commands.Down) == InputManager.State.JustOn)
+            if (Game1.Instance.inputManager.getState(InputManager.Commands.Down) == InputManager.InputState.JustOn)
             {
                 if (player.steerRope(1))
                     combobar.RemoveLenght();
 
             }
-            if (inputManager.getState(InputManager.Commands.Up) == InputManager.State.JustOn)
+            if (Game1.Instance.inputManager.getState(InputManager.Commands.Up) == InputManager.InputState.JustOn)
             {
                 if (player.steerRope(-1))
                     combobar.AddLength();
             }
-            if (inputManager.getState(InputManager.Commands.Fire) == InputManager.State.JustOn)
+            if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.InputState.JustOn)
             {
                 shotManager.playerFire(player.getShotSource(), player.getShotAngle(), 50, player.getPointShot());
             }
-            else if (inputManager.getState(InputManager.Commands.Fire) == InputManager.State.On)
+            else if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.InputState.On)
             {
                 shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50, player.getPointShot());
 
@@ -156,7 +159,7 @@ namespace RopeMaster.Core
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Microsoft.Xna.Framework.Matrix m = Camera.get_transformation(Game1.Instance.GraphicsDevice);
+            Microsoft.Xna.Framework.Matrix m = camera.get_transformation(Game1.Instance.GraphicsDevice);
 
             //paralax background wrapping
             parallax.Draw(spriteBatch);

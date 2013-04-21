@@ -22,25 +22,22 @@ namespace RopeMaster.Core
 
 
         private Texture2D texture;
-        private Rectangle rabbit, name, srcshadow,dstshadow,present,music;
-        private Vector2 posrabbit, origin, posname,pospresent,posmusic;
+        private Rectangle rabbit, name, srcshadow, dstshadow, present, music;
+        private Vector2 posrabbit, origin, posname, pospresent, posmusic;
         private long timer, timerwait;
 
         private int curAnim = 0;
         private bool animdone = false;
+        private bool done;
 
 
-        public PresentScreen()
-        {
-            Initialyze();
-        }
 
 
         public override void Initialyze()
         {
-
+            base.Initialyze();
             texture = Game1.Instance.magicContentManager.GetTexture("presentscreen");
-            rabbit = new Rectangle(0, 0, 50, 57);
+            rabbit = new Rectangle(0, 2, 50, 57);
             origin = new Vector2(25, 57);
             posrabbit = new Vector2(440, 0);
             name = new Rectangle(0, 176, 400, 40);
@@ -54,13 +51,21 @@ namespace RopeMaster.Core
             posmusic = new Vector2((1280 - 370) / 2, 460);
             curAnim = 1;
             timer = timerwait = 0;
+            speed = 10;
+            done = false;
+            fadeIn();
         }
 
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
             timer += gameTime.ElapsedGameTime.Milliseconds;
-          
+            var input = Game1.Instance.inputManager;
+            if (input.IsAnyKetPress())
+            {
+                done = true;
+            }
             {
                 if (timer > 100)
                 {
@@ -80,17 +85,17 @@ namespace RopeMaster.Core
                     timer = 0;
                 }
 
-                rabbit.Y = curAnim * 57;
-   
+                rabbit.Y = curAnim * 57 + 2;
+
                 if (posrabbit.Y <= 360)
                 {
                     posrabbit.Y += 4;
                     dstshadow.Width = (int)(posrabbit.Y / 360f * 100f);
-                    dstshadow.X = (int)(385f + (100f -dstshadow.Width ) / 2f);
+                    dstshadow.X = (int)(385f + (100f - dstshadow.Width) / 2f);
                 }
                 else if (curAnim == 1)
                 {
-                    dstshadow.X=1300;
+                    dstshadow.X = 1300;
                     rabbit.X = 0;
                     curAnim = 2;
                 }
@@ -99,28 +104,31 @@ namespace RopeMaster.Core
             if (animdone)
             {
                 timerwait += gameTime.ElapsedGameTime.Milliseconds;
-                if (timer > 3000)
+                if (timerwait > 3000)
                 {
-                    changeState();
+                    done = true;
                 }
-
+                if (done)
+                {
+                    fadeOut();
+                    if (color.A >= 255)
+                    {
+                        changeState();
+                    }
+                }
             }
-
-
-
-
         }
 
 
         public override void changeState()
         {
-
+            Game1.Instance.StateManage.changeState(3);
         }
 
 
         public override void Draw(SpriteBatch spritebatch)
         {
-            spritebatch.Begin(SpriteSortMode.Immediate,BlendState.AlphaBlend);
+            spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
             spritebatch.Draw(texture, dstshadow, srcshadow, Color.White);
             spritebatch.Draw(texture, posrabbit, rabbit, Color.White, 0, origin, 2, SpriteEffects.None, 0);
@@ -130,6 +138,7 @@ namespace RopeMaster.Core
                 spritebatch.Draw(texture, pospresent, present, Color.White);
                 spritebatch.Draw(texture, posmusic, music, Color.White);
             }
+            base.Draw(spritebatch);
             spritebatch.End();
         }
 
