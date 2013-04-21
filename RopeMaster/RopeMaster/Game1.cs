@@ -65,6 +65,7 @@ namespace RopeMaster
             //controller = new Controller();
             inputManager = new InputManager();
             leapControl = new LeapControl();
+            musicPlayer = new MusicPlayer();
             LoadContent();
 
         }

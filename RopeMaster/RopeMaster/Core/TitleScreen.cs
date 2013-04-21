@@ -8,7 +8,7 @@ using Glitch.Engine.Content;
 
 namespace RopeMaster.Core
 {
-    [TextureContent(AssetName = "leap", AssetPath = "gfx/screen/leap")]
+    [TextureContent(AssetName = "title", AssetPath = "gfx/screen/title")]
     public class TitleScreen : State
     {
 
@@ -18,15 +18,17 @@ namespace RopeMaster.Core
         private Vector2 position;
         private long timer;
         private bool done;
-
+        private int nextscreen;
 
 
         public override void Initialyze()
         {
-            texture = Game1.Instance.magicContentManager.GetTexture("leap");
-            position = new Vector2((1280 - 530) / 2, (720 - 266) / 2);
+            texture = Game1.Instance.magicContentManager.GetTexture("title");
+            position = Vector2.Zero;
             base.Initialyze();
             done = false;
+            nextscreen = 0;
+            Game1.Instance.musicPlayer.PlayMusic("spacealone");
             speed = 10;
             fadeIn();
 
@@ -39,13 +41,14 @@ namespace RopeMaster.Core
             if (input.IsAnyKetPress())
             {
                 done = true;
+                nextscreen = 3;
             }
 
 
 
 
             timer += gametime.ElapsedGameTime.Milliseconds;
-            if (timer > 3000)
+            if (timer > 20000)
             {
                 done = true;
             }
@@ -61,7 +64,7 @@ namespace RopeMaster.Core
 
         public override void changeState()
         {
-            Game1.Instance.StateManage.changeState(1);
+            Game1.Instance.StateManage.changeState(nextscreen);
 
 
         }
@@ -72,7 +75,7 @@ namespace RopeMaster.Core
         {
             spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
-            spritebatch.Draw(texture, position, Color.White);
+            spritebatch.Draw(texture, Game1.Instance.Screen, Color.White);
             base.Draw(spritebatch);
             spritebatch.End();
 

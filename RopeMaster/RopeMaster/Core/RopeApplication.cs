@@ -35,7 +35,7 @@ namespace Glitch.Engine.Core
         public int difficulty=1;
         public InputManager inputManager;
         public LeapControl leapControl;
-
+        public MusicPlayer musicPlayer;
 
         /// <summary>
         /// Constructor

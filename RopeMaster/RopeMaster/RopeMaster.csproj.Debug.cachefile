@@ -21,5 +21,12 @@ Content\gfx\sprites\combobar.xnb
 Content\gfx\screen\presentscreen.xnb
 Content\gfx\screen\leap.xnb
 Content\gfx\misc\null.xnb
+Content\gfx\screen\title.xnb
+Content\music\DANJYON_KIMURA_-_COUNT_END.xnb
+Content\music\DANJYON_KIMURA_-_Space_Alone.xnb
+Content\music\DANJYON_KIMURA_-_TELEPORTER.xnb
+Content\music\DANJYON_KIMURA_-_COUNT_END.wma
+Content\music\DANJYON_KIMURA_-_Space_Alone.wma
+Content\music\DANJYON_KIMURA_-_TELEPORTER.wma
 Leap.dll
 Leapd.dll

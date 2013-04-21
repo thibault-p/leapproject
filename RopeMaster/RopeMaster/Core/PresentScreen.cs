@@ -122,7 +122,7 @@ namespace RopeMaster.Core
 
         public override void changeState()
         {
-            Game1.Instance.StateManage.changeState(3);
+            Game1.Instance.StateManage.changeState(2);
         }
 
 
