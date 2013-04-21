@@ -208,7 +208,13 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="gfx\screen\Gameover.png">
+      <Name>Gameover</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="music\DANJYON_KIMURA_-_COUNT_END.mp3">
       <Name>DANJYON_KIMURA_-_COUNT_END</Name>

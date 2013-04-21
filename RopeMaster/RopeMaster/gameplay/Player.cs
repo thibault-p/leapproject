@@ -29,7 +29,7 @@ namespace RopeMaster.gameplay
         private Vector2 gunsrc;
 
 
-        private int die;
+        public int die;
 
         private VerletRope rope;
 
@@ -169,13 +169,16 @@ namespace RopeMaster.gameplay
         public void KillBig()
         {
             Console.WriteLine("BIG ");
-            velocity = new Vector2(-100, 400); ;
+            velocity = new Vector2(-100, 400);
+            die = 1;
         }
 
         public void KillSmall()
         {
             Console.WriteLine("small");
             rope.broken = true;
+            velocity = new Vector2(-100, 400);
+            die = 2;
 
         }
 
@@ -193,6 +196,10 @@ namespace RopeMaster.gameplay
 
 
 
+         public bool isDead()
+        {
+            return (rope.getAttachPosition().Y > 800 && this.position.Y > 800);
+        }
 
 
 

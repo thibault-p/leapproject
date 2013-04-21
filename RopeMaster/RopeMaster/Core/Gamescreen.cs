@@ -39,8 +39,8 @@ namespace RopeMaster.Core
         public Player player;
 
         public bool playing;
-
-
+        public bool gameover;
+        public int liferemains;
 
         public Gamescreen()
         {
@@ -71,8 +71,10 @@ namespace RopeMaster.Core
             particuleManager.Initialize();
             enemyManager.Initialize();
             enemyManager.Add(gojira);
+            liferemains = 2;
             playing = true;
-            //Game1.Instance.musicPlayer.PlayMusic("teleporter");
+            gameover = false;
+            Game1.Instance.musicPlayer.PlayMusic("teleporter");
         }
 
 
@@ -80,12 +82,11 @@ namespace RopeMaster.Core
         public override void Update(GameTime gameTime)
         {
             parallax.moveHorizontal(1);
-            if (playing)
+            if (playing && player.die==0)
             {
                 // Allows the game to exit
                 KeyboardState k = Keyboard.GetState();
-                parallax.Update(gameTime);
-
+           
                 prevKey = k;
 
                 if (k.IsKeyDown(Keys.Up))
@@ -133,7 +134,9 @@ namespace RopeMaster.Core
                     player.setIsCatched(false);
                 }
             }
+            parallax.Update(gameTime);
             player.Update(gameTime);
+            if (player.isDead()) newPlayer();
             gojira.Update(gameTime);
             particuleManager.Update(gameTime);
             enemyManager.Update(gameTime);
@@ -141,8 +144,35 @@ namespace RopeMaster.Core
             stuffManager.Update(gameTime);
             combobar.Update(gameTime);
             gamemanager.Update(gameTime);
+            if (gameover && color.A == 255)
+            {
+                Game1.Instance.StateManage.changeState(4);
+            }
+        }
+
+
+        private void newPlayer()
+        {
+
+            liferemains--;
+            if (liferemains < 0)
+            {
+                fadeOut();
+                gameover = true;
+            }
+            else
+            {
+                player = new Player();
+                playing = true;
+            }
+
 
         }
+
+
+
+    
+
 
         public override void Draw(SpriteBatch spriteBatch)
         {

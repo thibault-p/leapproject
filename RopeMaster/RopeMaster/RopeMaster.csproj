@@ -126,6 +126,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\GameOverscreen.cs" />
     <Compile Include="Core\MusicPlayer.cs" />
     <Compile Include="Core\TitleScreen.cs" />
     <Compile Include="Core\GameManager.cs" />

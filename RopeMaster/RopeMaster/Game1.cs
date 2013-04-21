@@ -84,7 +84,7 @@ namespace RopeMaster
    
             base.LoadContent();
             StateManage.Initialize();
-            StateManage.changeState(3);
+            StateManage.changeState(0);
 
         }
 
