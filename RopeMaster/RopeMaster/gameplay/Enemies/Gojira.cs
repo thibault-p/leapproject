@@ -72,6 +72,9 @@ namespace RopeMaster.gameplay.Enemies
         private int eyephase;
         private long eyeCD;
         private int eyefrm = 0;
+
+
+
         public Gojira()
             : base()
         {

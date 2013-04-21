@@ -108,14 +108,35 @@ namespace RopeMaster.Core
             }
             playerShots.RemoveAll(c => c.Exterminate);
 
+            var big = (SphereBox) Gamescreen.Instance.player.getBigHitbox();
+            var small = (SphereBox)Gamescreen.Instance.player.getSmallHitbox();
 
             foreach (Shot s in ennemiesShots)
             {
                 s.Update(gameTime);
-                if (!r.Contains((int)s.getPosition().X, (int)s.getPosition().Y))
+                var pos = s.getPosition();
+                if (!r.Contains((int)pos.X, (int)pos.Y))
                 {
                     s.Exterminate = true;
                 }
+                else
+                {
+                    if (big.collide(pos, s.shotWidth))
+                    {
+                        Gamescreen.Instance.player.KillBig();
+                        s.Exterminate = true;
+                    }
+                    if (small.collide(pos, s.shotWidth))
+                    {
+                        Gamescreen.Instance.player.KillSmall();
+                        s.Exterminate = true;
+                    }
+
+
+                }
+                
+
+
             }
 
             ennemiesShots.RemoveAll(c => c.Exterminate);

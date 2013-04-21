@@ -26,6 +26,8 @@ namespace RopeMaster
         protected Rectangle srcRect;
         public int length;
 
+        public bool broken;
+
         public VerletRope(int _div, int _length, Vector2 _pos, Texture2D _tex)
         {
             length = _length;
@@ -37,7 +39,7 @@ namespace RopeMaster
             {
                 sticks[i] = new Stick(new Vector2(50, 50 + delta * i));
             }
-
+            broken = false;
             origin = new Vector2(5, 5);
             srcRect = new Rectangle(0, 0, 10, 10);
         }
@@ -82,13 +84,15 @@ namespace RopeMaster
             float dt = 1 / 60f;
             for (int i = 0; i < this.div; i++)
             {
-                int weight = (i == this.div - 1) ? 1000 : 100;
+                int weight = (i == this.div - 1) ? ((broken)?100:1000) : 100;
+                
                 sticks[i].setAcc(0, gravity * (weight));
                 sticks[i].verlet(dt);
             }
             for (int j = 0; j < div; j++)
                 for (int i = 1; i < this.div; i++)
                 {
+                    if (broken && i == div - 1) continue;
                     var s1 = sticks[i];
                     var s2 = sticks[i - 1];
                     var dx = (s1.getPosition().X - s2.getPosition().X);

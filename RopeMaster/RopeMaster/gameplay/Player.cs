@@ -15,7 +15,7 @@ namespace RopeMaster.gameplay
     public class Player : Entity
     {
         private Rectangle sourcep1;
-        private Rectangle sourcep2;
+        private Rectangle sourcep2, srcnode;
         private Rectangle srcWing;
         private Vector2 poswing;
         private Texture2D texture;
@@ -25,8 +25,11 @@ namespace RopeMaster.gameplay
         private bool iscatched = false;
         private Radar radar;
         protected Hitbox hitboxbig,hitboxsmall;
-        private Vector2 originp2;
+        private Vector2 originp2, originnode;
         private Vector2 gunsrc;
+
+
+        private int die;
 
         private VerletRope rope;
 
@@ -35,26 +38,30 @@ namespace RopeMaster.gameplay
         {
 
             texture = Game1.Instance.magicContentManager.GetTexture("player");
-            rope = new VerletRope(20, 200, Vector2.Zero, Game1.Instance.magicContentManager.GetTexture("point"));
+           
             initiazlyze();
         }
 
 
         public void initiazlyze()
         {
-            sourcep1 = new Rectangle(0, 0, 80, 128);
-            sourcep2 = new Rectangle(0, 128, 92, 128);
+            sourcep1 = new Rectangle(0, 0, 80, 105);
+            sourcep2 = new Rectangle(0, 154, 58, 84);
+            srcnode = new Rectangle(0, 110, 20, 21);
             time = 0;
             radar = new Radar();
-            rope.setOrigin(40, 46);
             origin = new Vector2(40, 30);
-            originp2 = new Vector2(29, 11);
+            originp2 = new Vector2(29, 10);
+            originnode = new Vector2(10, 10);
             gunsrc = new Vector2(12, 50);
+            rope = new VerletRope(20, 200, Vector2.Zero, Game1.Instance.magicContentManager.GetTexture("point"));
+            rope.setOrigin(40, 46);
             hitboxbig = new SphereBox(this.position, 25);
-            hitboxsmall = new SphereBox(this.rope.getAttachPosition(), 7);
+            hitboxsmall = new SphereBox(this.rope.getAttachPosition(), 8);
             poswing = new Vector2(-20, -2);
             srcWing = new Rectangle(80, 0, 27, 18);
-
+            velocity = Vector2.Zero;
+            die = 0;
             this.setPosition(50, 50);
         }
 
@@ -72,7 +79,7 @@ namespace RopeMaster.gameplay
             base.setPosition(x, y);
             radar.setPosition(x, y);
             hitboxbig.setPosition(this.position);
-
+            hitboxsmall.setPosition(this.rope.getAttachPosition());
         }
 
         public Vector2 getShotSource()
@@ -93,38 +100,85 @@ namespace RopeMaster.gameplay
 
         public override void Update(GameTime gameTime)
         {
-            time += gameTime.ElapsedGameTime.Milliseconds;
-            wingtime += gameTime.ElapsedGameTime.Milliseconds;
-            if (wingtime > 150)
+            base.Update(gameTime);
+            if (die!=0)
             {
-                wingtime = 0;
-                srcWing.X += 27;
-                if (srcWing.X > 161) srcWing.X = 80;
-            }
-
-
-            if (time > 300)
-            {
-                var loc = this.getPosition() + smokeLoc;
-                var rand = Game1.Instance.randomizator;
-                Gamescreen.Instance.particuleManager.AddParticule(new Smoke(loc, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
-                if (burst > 0)
+                if(die==1) // the big one
                 {
-                    for (int i = 0; i < rand.GetRandomInt(5, 10); i++)
-                    {
-                        Gamescreen.Instance.particuleManager.AddParticule(new Smoke(loc, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
-                    }
-                    burst--;
+            
+
+
+
                 }
-                time = 0;
+
+
+
             }
-            if (!iscatched)
+
+            else
             {
-                radar.Update(gameTime);
+
+                time += gameTime.ElapsedGameTime.Milliseconds;
+                wingtime += gameTime.ElapsedGameTime.Milliseconds;
+                if (wingtime > 150)
+                {
+                    wingtime = 0;
+                    srcWing.X += 27;
+                    if (srcWing.X > 161) srcWing.X = 80;
+                }
+
+
+                if (time > 300)
+                {
+                    var loc = this.getPosition() + smokeLoc;
+                    var rand = Game1.Instance.randomizator;
+                    Gamescreen.Instance.particuleManager.AddParticule(new Smoke(loc, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
+                    if (burst > 0)
+                    {
+                        for (int i = 0; i < rand.GetRandomInt(5, 10); i++)
+                        {
+                            Gamescreen.Instance.particuleManager.AddParticule(new Smoke(loc, rand.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
+                        }
+                        burst--;
+                    }
+                    time = 0;
+                }
+                if (!iscatched)
+                {
+                    radar.Update(gameTime);
+                }
+
             }
             rope.setOrigin((int)this.position.X, (int)this.position.Y + 36);
             rope.Update(gameTime);
         }
+
+
+        public Hitbox getBigHitbox()
+        {
+            return this.hitboxbig;
+        }
+
+        public Hitbox getSmallHitbox()
+        {
+            return this.hitboxsmall;
+        }
+
+
+
+        public void KillBig()
+        {
+            Console.WriteLine("BIG ");
+            velocity = new Vector2(-100, 400); ;
+        }
+
+        public void KillSmall()
+        {
+            Console.WriteLine("small");
+            rope.broken = true;
+
+        }
+
 
 
 
@@ -166,6 +220,7 @@ namespace RopeMaster.gameplay
             spriteBatch.Draw(texture, this.getPosition(), sourcep1, Color.White, 0, origin, 1, SpriteEffects.None, 0);
             spriteBatch.Draw(texture, position + poswing, srcWing, Color.White);
             spriteBatch.Draw(texture, this.rope.getAttachPosition(), sourcep2, Color.White, rope.getAttachAngleF(), originp2, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, this.rope.getAttachPosition(), srcnode, Color.White, rope.getAttachAngleF(), originnode, 1, SpriteEffects.None, 0);
         }
     }
 }
