@@ -32,15 +32,11 @@ namespace RopeMaster
       
         public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D tex;
-        KeyboardState prevKey;
 
- 
-        
 
 
         public Game1() :
-            base("Rope Master", "Content", "1.0")
+            base("PiyPiyo", "Content", "1.0")
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -62,7 +58,7 @@ namespace RopeMaster
             this.Screen = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             StateManage = new StateManager();
            
-            //controller = new Controller();
+
             inputManager = new InputManager();
             leapControl = new LeapControl();
             musicPlayer = new MusicPlayer();
@@ -80,11 +76,9 @@ namespace RopeMaster
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Console.WriteLine("loadcontent");
             // TODO: use this.Content to load your game content here
-            tex = Content.Load<Texture2D>("gfx/point");
-   
             base.LoadContent();
             StateManage.Initialize();
-            StateManage.changeState(5);
+            StateManage.changeState(2);
 
         }
 
@@ -108,10 +102,6 @@ namespace RopeMaster
             inputManager.Update(gameTime);
             leapControl.Update(gameTime);
             StateManage.Update(gameTime);
-
-
-
-            //spawner.Update(gameTime);
 
         }
 

@@ -24,14 +24,14 @@ namespace RopeMaster.Core
         protected Color color;
         protected int fade;
         protected int speed = 1;
-
+        protected bool stopmusic = true;
 
 
 
 
         public virtual void Initialyze()
         {
-            Game1.Instance.musicPlayer.StopMusic();
+            if(stopmusic) Game1.Instance.musicPlayer.StopMusic();
             color = Color.Black;
             color.A = 255;
             text_null = Game1.Instance.magicContentManager.GetTexture("null");

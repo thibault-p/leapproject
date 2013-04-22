@@ -26,8 +26,12 @@ Content\music\DANJYON_KIMURA_-_COUNT_END.xnb
 Content\music\DANJYON_KIMURA_-_Space_Alone.xnb
 Content\music\DANJYON_KIMURA_-_TELEPORTER.xnb
 Content\gfx\screen\Gameover.xnb
+Content\gfx\screen\home.xnb
+Content\gfx\screen\home_title.xnb
+Content\gfx\screen\highscore.xnb
 Content\music\DANJYON_KIMURA_-_COUNT_END.wma
 Content\music\DANJYON_KIMURA_-_Space_Alone.wma
 Content\music\DANJYON_KIMURA_-_TELEPORTER.wma
+scores.txt
 Leap.dll
 Leapd.dll

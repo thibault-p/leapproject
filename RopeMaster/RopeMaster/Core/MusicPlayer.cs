@@ -23,25 +23,32 @@ namespace RopeMaster.Core
 
         private static MusicPlayer _instance;
         private float _volume;
-
+        private string current_song;
 
         public MusicPlayer()
         {
             _instance = this;
             _volume = 0.5f;
+            current_song = "";
             MediaPlayer.IsRepeating = true;
         }
 
         public void PlayMusic(String songname)
         {
             var song = Game1.Instance.magicContentManager.GetMusic(songname);
+            if (current_song.CompareTo(songname) == 0) return;
+            current_song = songname;
             _instance.PlaySong(song.Song);
         }
 
         public void StopMusic()
         {
             if (MediaState.Playing == MediaPlayer.State)
+            {
                 MediaPlayer.Stop();
+                current_song = "";
+            }
+
         }
 
 

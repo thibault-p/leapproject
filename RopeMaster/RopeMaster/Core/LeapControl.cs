@@ -28,7 +28,7 @@ namespace RopeMaster.Core
         {
             Is = false;
             position = last = Vector2.Zero;
-            //controller = new Controller();
+            controller = new Controller();
             points = new List<Vector2>();
         }
 
@@ -80,6 +80,10 @@ namespace RopeMaster.Core
         }
 
 
+        public List<Vector2> getAllPoints()
+        {
+            return this.points;
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {

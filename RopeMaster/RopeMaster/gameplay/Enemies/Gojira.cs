@@ -124,7 +124,7 @@ namespace RopeMaster.gameplay.Enemies
             }
             else if (eyeclosed && timereye > 100)
             {
-                eyeclosed =false;
+                eyeclosed = false;
                 timereye = 0;
             }
 
@@ -232,6 +232,15 @@ namespace RopeMaster.gameplay.Enemies
             maphitbox.GetData(0, src, collider, 0, 300 * 256);
             normaltex.GetData(0, src, normalMap, 0, 300 * 256);
         }
+
+
+        private void warmdown(GameTime gameTime)
+        {
+
+
+
+        }
+
 
 
         private void breathFire(GameTime gameTime)
