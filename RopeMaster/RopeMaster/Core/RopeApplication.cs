@@ -13,6 +13,7 @@ using RopeMaster.gameplay;
 using Glitch.Engine.Particules;
 using Glitch.Engine.Util;
 using RopeMaster.gameplay.Enemies;
+using System.Collections.Generic;
 
 namespace Glitch.Engine.Core
 {
@@ -22,7 +23,7 @@ namespace Glitch.Engine.Core
     public abstract class RopeApplication : Game
     {
         public static RopeApplication Instance;
-
+        public static string SCORE_FILE = "./scores.txt";
 
         public MagicContentManager magicContentManager;
         
@@ -116,7 +117,10 @@ namespace Glitch.Engine.Core
             set { Instance._isdebugMode = value; }
         }
 
-
+        public static int Compare(KeyValuePair<long, string> a, KeyValuePair<long, string> b)
+        {
+            return a.Key.CompareTo(b.Key);
+        }
         protected abstract Assembly[] GameAssemblies { get; }
     }
 }

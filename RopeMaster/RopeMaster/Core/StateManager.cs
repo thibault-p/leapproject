@@ -37,8 +37,7 @@ namespace RopeMaster.Core
         public void Initialize()
         {
             Console.WriteLine("init");
-            currentState = new LeapScreen(); ;
-            currentState.Initialyze();
+            //changeState(3);
 
         }
 
@@ -57,6 +56,8 @@ namespace RopeMaster.Core
                 case 3: currentState = new Gamescreen();
                     break;
                 case 4: currentState = new GameOverscreen();
+                    break;
+                case 5: currentState = new HallofFameScreen();
                     break;
             }
             currentState.Initialyze();
