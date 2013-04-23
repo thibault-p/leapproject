@@ -77,7 +77,7 @@ namespace RopeMaster.gameplay.Enemies
 
         Color color = Color.White;
 
-
+        private int tonguephase;
         public bool dead = false;
 
 
@@ -85,7 +85,7 @@ namespace RopeMaster.gameplay.Enemies
             : base()
         {
             nbBubblesphase = 2;
-            hp = 10;
+            hp = 100;
             dead = false;
             bubbleList = new List<Bubble>(nbBubblesphase + 1);
             srcbody = new Rectangle(0, 0, 172, 172);
@@ -277,6 +277,7 @@ namespace RopeMaster.gameplay.Enemies
             if (tonguetimer > 300)
             {
                 tonguetimer = 0;
+                tonguephase++;
                 srctongue.X += srctongue.Width;
                 if (srctongue.X > 100) srctongue.X = 0;
                 if (dead)
@@ -284,7 +285,10 @@ namespace RopeMaster.gameplay.Enemies
                     Gamescreen.Instance.particuleManager.AddParticule(new Blood(this.position + this.mouthShot + this.gojPos, Game1.Instance.randomizator.GetRandomTrajectory(200, MathHelper.ToRadians(170), MathHelper.ToRadians(200)), Game1.Instance.randomizator.GetRandomFloat(0.6f, 1f), Color.White, false));
             }
 
-
+            if (!dead && tonguephase > 6)
+            {
+                changePhase();
+            }
 
         }
 
@@ -451,6 +455,7 @@ namespace RopeMaster.gameplay.Enemies
             {
                 //reinit phase
                 eyephase = 1;
+                tonguephase=0;
                 animfire = true;
                 mouthAnim = 0;
                 mouthphase = 0;

@@ -26,8 +26,8 @@ namespace RopeMaster.Core
         public Camera2D camera;
         Parallax parallax;
         Gojira gojira;
-        Combobar combobar;
-        GameManager gamemanager;
+        public Combobar combobar;
+        public GameManager gamemanager;
         LeapControl leapControl;
         KeyboardState prevKey;
         public ShotManager shotManager;
@@ -154,23 +154,28 @@ namespace RopeMaster.Core
             //GAMEOVER
             if (gameover && color.A == 255)
             {
+                Game1.Instance.score = gamemanager.score;
                 Game1.Instance.StateManage.changeState(4);
             }
             if (!gameover && gamemanager.time >=GameManager.timemax)
             {
                 fadeOut();
                 gameover = true;
+
             }
             if (!gameover && gojira.hp <= 0 && gojira.getPosition().Y>750)
             {
                 fadeOut();
                 gameover = true;
+          
             }
 
 
 
 
         }
+
+
 
 
         private void newPlayer()

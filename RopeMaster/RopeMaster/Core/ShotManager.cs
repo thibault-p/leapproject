@@ -90,6 +90,7 @@ namespace RopeMaster.Core
                         }
                         if (e is Gojira)
                         {
+                            
                             var g = (Gojira)e;
                             float rot = 42;
                             Vector2 i_p=Vector2.Zero;
@@ -99,12 +100,16 @@ namespace RopeMaster.Core
                             {
                                 s.Exterminate = true;
                                 Gamescreen.Instance.stuffManager.Add(new Impact(i_p, rot));
+                                Gamescreen.Instance.combobar.AddCombo(10, "Hit!");
+                                
                             }
-                            if (g.tonguebox != null)
+                            if (!g.dead && g.tonguebox != null)
                             {
                                 if (g.tonguebox.collide(s.getPosition(), 5))
                                 {
                                     g.hit(10);
+                                    Gamescreen.Instance.combobar.AddCombo(20, "Painful Hit!");
+                                    Gamescreen.Instance.gamemanager.score+=(Gamescreen.Instance.combobar.getMultiplicator() * 2000);
                                     s.Exterminate = true;
                                     Gamescreen.Instance.particuleManager.AddParticule(new Blood(s.getPosition(), Game1.Instance.randomizator.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), Game1.Instance.randomizator.GetRandomFloat(0.6f, 1f), Color.White, false));
 

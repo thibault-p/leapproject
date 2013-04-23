@@ -27,13 +27,15 @@ namespace RopeMaster.gameplay
         private Rectangle srcMain, srcunit, srcdozen, srcpart, dstbar,srcbar;
 
         private BonusMaster bonusmaster;
-
+        private string description;
+        private long desctimer;
 
 
         public Combobar(int len)
         {
             length = len;
             combo = 0;
+            description = "";
             texture = Game1.Instance.magicContentManager.GetTexture("combobar");
             srcMain = new Rectangle(0, 0, 92, 50);
             srcunit = new Rectangle(117, 35, 18, 32);
@@ -46,13 +48,16 @@ namespace RopeMaster.gameplay
             dstbar = new Rectangle((int)(this.position.X+pospart.X), (int)(this.position.Y),0 ,52);
             srcbar = new Rectangle(0, 50, 1, 52);
             bonusmaster = new BonusMaster();
+            desctimer = 0;
         }
 
 
-        public void AddCombo(int c)
+        public void AddCombo(int c, string desc)
         {
             combo =(int) Math.Min(combo + c, length * 100);
             timer_combo = 0;
+            desctimer = 0;
+            description = desc;
         }
 
 
@@ -92,6 +97,7 @@ namespace RopeMaster.gameplay
             {
                 //combo counter decrease
                     combo = Math.Max(0,combo-1);
+                    description = "";
  
             }
             //update roll
@@ -159,7 +165,9 @@ namespace RopeMaster.gameplay
                 spritebatch.Draw(texture, this.position + p, srcpart, Color.White);
                 p.X+= srcpart.Width;
             }
-
+            p.X+=15;
+            p.Y += 25;
+            spritebatch.DrawString(Game1.Instance.magicContentManager.Font, description,this.position  +p, Color.White);
         }
 
 

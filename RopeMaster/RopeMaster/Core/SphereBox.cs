@@ -19,6 +19,13 @@ namespace RopeMaster.Core
 
 
 
+        public  int dist(Vector2 p2, int r)
+        {
+            float d = Vector2.Distance(this.position, p2);
+            //Console.WriteLine("Colide ? " + (d <= r + rayon));
+            return (int)d-( r + rayon);
+        }
+
 
 
         public override bool collide(Vector2 p2, int r)
