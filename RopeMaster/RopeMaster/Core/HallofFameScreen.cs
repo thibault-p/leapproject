@@ -9,37 +9,48 @@ using Glitch.Engine.Content;
 
 namespace RopeMaster.Core
 {
-     [TextureContent(AssetName = "highscore", AssetPath = "gfx/screen/highscore")]
+    [TextureContent(AssetName = "highscore", AssetPath = "gfx/screens/highscore")]
+    [TextureContent(AssetName = "homescreen", AssetPath = "gfx/screens/home")]
+    [TextureContent(AssetName = "halloffame", AssetPath = "gfx/screens/halloffame")]
     public class HallofFameScreen : State
     {
 
-
+        private List<RopeMaster.Core.TitleScreen.Star> stars;
         private SpriteFont font;
-        private Texture2D texture;
-        private Vector2 position;
+        private Texture2D texture, back, text;
+
+        private Vector2 position, postext;
         private long timer;
         private bool done;
         private List<ScoreEntry> entries;
         private List<KeyValuePair<long, string>> scores;
+        private int n;
 
         public override void Initialyze()
         {
-            stopmusic = false;
+            n = 0;
+            postext = new Vector2(320, 20);
+            stars = new List<RopeMaster.Core.TitleScreen.Star>();
             font = Game1.Instance.magicContentManager.Font;
             scores = new List<KeyValuePair<long, string>>(10);
             entries = new List<ScoreEntry>(10);
             texture = Game1.Instance.magicContentManager.GetTexture("highscore");
-            Game1.Instance.musicPlayer.PlayMusic("spacealone");
+            back =  Game1.Instance.magicContentManager.GetTexture("homescreen");
+            text = Game1.Instance.magicContentManager.GetTexture("halloffame");
             position = new Vector2((1280 - 530) / 2, (720 - 266) / 2);
             base.Initialyze();
             done = false;
+            Game1.Instance.musicPlayer.PlayMusic("spacealone");
             speed = 10;
             fadeIn();
             readFile();
             scores.Sort(Game1.Compare);
-
-
-
+            int r = 1;
+            foreach (KeyValuePair<long, string> v in scores)
+            {
+                initScore(r++, v);
+            }
+            entries[0].playing = true;
         }
         public override void Update(GameTime gametime)
         {
@@ -51,11 +62,32 @@ namespace RopeMaster.Core
                 done = true;
             }
 
+            foreach (Vector2 v in Game1.Instance.leapControl.getAllPoints())
+            {
+                if (position.X == 0 || position.X == 1280 || position.Y == 0) continue;
+                stars.Add(new RopeMaster.Core.TitleScreen.Star(v));
+            }
 
 
+            foreach (RopeMaster.Core.TitleScreen.Star s in stars)
+            {
+                s.Update(gametime);
+            }
+            stars.RemoveAll(c => c.killMe());
+
+
+            if (n < entries.Count && entries[n].nameposition.X >= 240)
+            {
+                entries[n].playing = false;
+                n++;
+                if (n < entries.Count)
+                    entries[n].playing = true;
+
+            }
+            foreach (ScoreEntry s in entries) { s.Update(gametime); }
 
             timer += gametime.ElapsedGameTime.Milliseconds;
-            if (timer > 5000)
+            if (timer > 10000)
             {
                 done = true;
             }
@@ -73,8 +105,8 @@ namespace RopeMaster.Core
         {
 
             var ns = font.MeasureString("XXth - " + p.Value);
-            var ss= font.MeasureString(" " + p.Key);
-            entries.Add(new ScoreEntry(r,p.Value,p.Key,ns,ss));
+            var ss = font.MeasureString(" " + p.Key);
+            entries.Add(new ScoreEntry(r, p.Value, p.Key, ns, ss));
         }
 
 
@@ -125,56 +157,31 @@ namespace RopeMaster.Core
         public override void Draw(SpriteBatch spritebatch)
         {
             spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            spritebatch.Draw(texture, Game1.Instance.Screen,Color.White);
             Vector2 pos = Vector2.Zero;
-            foreach ( ScoreEntry s in entries){
-                var t = "th";
-                spritebatch.DrawString(font, s.rank+t, pos, Color.Black);
-                pos.Y += 25;
-
+            spritebatch.Draw(back, Game1.Instance.Screen, Color.White);
+            
+      
+            
+            //draw stars
+            foreach (RopeMaster.Core.TitleScreen.Star s in stars)
+            {
+                spritebatch.Draw(Game1.Instance.magicContentManager.EmptyTexture, s.dst, s.color);
             }
-            //spritebatch.Draw(texture, position, Color.White);
+
+
+            spritebatch.Draw(texture, Game1.Instance.Screen, Color.White);
+            spritebatch.Draw(text, postext, Color.White);
+            foreach (ScoreEntry s in entries)
+            {
+                spritebatch.DrawString(font, s.name, s.nameposition, Color.White);
+                spritebatch.DrawString(font, " " + s.score, s.scorposition, Color.White);
+            }
             base.Draw(spritebatch);
             spritebatch.End();
 
         }
 
 
-        public class Star
-        {
-
-            public Color color = Color.White;
-            public Vector2 position;
-            public Rectangle dst;
-            private int speed = 30;
-
-
-            public Star(Vector2 pos)
-            {
-
-                position = pos;
-                var w = Game1.Instance.randomizator.GetRandomInt(2, 4);
-                dst = new Rectangle((int)pos.X, (int)pos.Y, w, w);
-                speed -= Game1.Instance.randomizator.GetRandomInt(2, 10);
-            }
-
-
-            public void Update(GameTime gameTime)
-            {
-                int t = color.A;
-                t = Math.Max(0, t - speed);
-
-                color.A = (byte)t;
-
-
-            }
-
-            public bool killMe()
-            {
-                return color.A == 0;
-            }
-
-        }
 
         public class ScoreEntry
         {
@@ -186,13 +193,24 @@ namespace RopeMaster.Core
             public Rectangle box;
 
 
-            public ScoreEntry(int r,string n, long s, Vector2 npos, Vector2 spos)
+            public ScoreEntry(int r, string n, long s, Vector2 npos, Vector2 spos)
             {
                 rank = r;
-                name = n;
+
+                var t = "th";
+                switch (r)
+                {
+                    case 1: t = "st"; break;
+                    case 2: t = "nd"; break;
+                    case 3: t = "rd"; break;
+                }
+                name = r + t + " - " + n;
                 score = s;
-                nameposition = npos;
-                scorposition = spos;
+                var size = npos + spos;
+                nameposition = new Vector2(240, r * npos.Y+160);
+                scorposition = new Vector2(1040 - spos.X, r * spos.Y+160);
+                nameposition.X -= 1040;
+                scorposition.X -= 1040;
                 playing = false;
             }
 
@@ -200,12 +218,13 @@ namespace RopeMaster.Core
             {
                 if (playing)
                 {
-
+                    nameposition.X += 40;
+                    scorposition.X += 40;
 
                 }
             }
 
-            
+
         }
 
     }

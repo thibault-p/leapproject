@@ -172,6 +172,7 @@
     <Compile Include="Gamepad.cs" />
     <Compile Include="Content\MagicContentManager.cs" />
     <Compile Include="Graphics\Parallax.cs" />
+    <Compile Include="Graphics\particules\Blood.cs" />
     <Compile Include="Graphics\particules\Particule.cs" />
     <Compile Include="Graphics\particules\ParticuleManager.cs" />
     <Compile Include="Graphics\particules\smoke.cs" />

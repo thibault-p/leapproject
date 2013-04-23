@@ -8,7 +8,7 @@ using Glitch.Engine.Content;
 
 namespace RopeMaster.Core
 {
-    [TextureContent(AssetName = "leap", AssetPath = "gfx/screen/leap")]
+    [TextureContent(AssetName = "leap", AssetPath = "gfx/screens/leap")]
     public class LeapScreen : State
     {
 

@@ -8,9 +8,9 @@ using Glitch.Engine.Content;
 
 namespace RopeMaster.Core
 {
-    [TextureContent(AssetName = "homescreen", AssetPath = "gfx/screen/home")]
-    [TextureContent(AssetName = "title", AssetPath = "gfx/screen/title")]
-    [TextureContent(AssetName = "hometitle", AssetPath = "gfx/screen/home_title")]
+    [TextureContent(AssetName = "homescreen", AssetPath = "gfx/screens/home")]
+    [TextureContent(AssetName = "title", AssetPath = "gfx/screens/title")]
+    [TextureContent(AssetName = "hometitle", AssetPath = "gfx/screens/home_title")]
     public class TitleScreen : State
     {
         private Texture2D texture, title,start;

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Glitch.Engine.Content;
 using RopeMaster.gameplay.Enemies;
 using RopeMaster.gameplay;
+using Glitch.Graphics.particules;
 
 namespace RopeMaster.Core
 {
@@ -28,7 +29,7 @@ namespace RopeMaster.Core
 
         private Texture2D texture;
         private Rectangle srcRectPlayer;
-        private Rectangle srcFire;
+        private Rectangle srcFire, srcPlasma;
 
         private Color[] mapCollshot;
 
@@ -38,6 +39,7 @@ namespace RopeMaster.Core
             playerShots = new List<Shot>();
             srcRectPlayer = new Rectangle(0, 0, 10, 10);
             srcFire = new Rectangle(0, 10, 16, 16);
+            srcPlasma = new Rectangle(0, 36, 64, 64);
             ennemiesShots = new List<Shot>();
             mapCollshot = new Color[srcRectPlayer.Width * srcRectPlayer.Height];
         }
@@ -97,6 +99,17 @@ namespace RopeMaster.Core
                             {
                                 s.Exterminate = true;
                                 Gamescreen.Instance.stuffManager.Add(new Impact(i_p, rot));
+                            }
+                            if (g.tonguebox != null)
+                            {
+                                if (g.tonguebox.collide(s.getPosition(), 5))
+                                {
+                                    g.hit(10);
+                                    s.Exterminate = true;
+                                    Gamescreen.Instance.particuleManager.AddParticule(new Blood(s.getPosition(), Game1.Instance.randomizator.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), Game1.Instance.randomizator.GetRandomFloat(0.6f, 1f), Color.White, false));
+
+                                }
+
                             }
 
                         }
@@ -169,6 +182,12 @@ namespace RopeMaster.Core
                     case 1:
                         srcFire.X = srcFire.Width * s.current;
                         spriteBatch.Draw(texture, s.getPosition(), srcFire, Color.White, s.angle, s.getOrigin(), 1, SpriteEffects.None, 0f);
+                        break;
+                    case 2:
+                        srcPlasma.X = srcPlasma.Width * s.current;
+                        spriteBatch.Draw(texture, s.getPosition(), srcPlasma, Color.White, s.angle, s.getOrigin(), 1, SpriteEffects.None, 0f);
+                        break;
+                    default: Console.WriteLine("ohoh");
                         break;
                 }
             }

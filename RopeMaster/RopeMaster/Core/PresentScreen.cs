@@ -15,7 +15,7 @@ using Glitch.Engine.Content;
 
 namespace RopeMaster.Core
 {
-    [TextureContent(AssetName = "presentscreen", AssetPath = "gfx/screen/presentscreen")]
+    [TextureContent(AssetName = "presentscreen", AssetPath = "gfx/screens/presentscreen")]
     public class PresentScreen : State
     {
 

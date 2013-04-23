@@ -28,10 +28,10 @@ namespace RopeMaster.gameplay.Enemies
 
 
 
-        private Rectangle srcbody, srcboat, srcsmoker, srcmast, srcwheel, srcmouth;
+        private Rectangle srcbody, srcboat, srcsmoker, srcmast, srcwheel, srcmouth, srctongue;
         private Rectangle srcEye;
 
-        private Vector2 eyePos, mastPos, gojPos, smokePos, wheelPos, wheelOrg, mouthPos;
+        private Vector2 eyePos, mastPos, gojPos, smokePos, wheelPos, wheelOrg, mouthPos, tonguePos, hitboxpos = new Vector2(42, 109);
         private Texture2D texture1, texture2, maphitbox;
         private long timersmoke;
 
@@ -64,7 +64,8 @@ namespace RopeMaster.gameplay.Enemies
         private Vector2 shake;
         private long rushTimer;
         private int rushstate;
-
+        public Hitbox tonguebox;
+        public long tonguetimer;
 
         private long timereye;
         private bool eyeclosed = false;
@@ -74,11 +75,18 @@ namespace RopeMaster.gameplay.Enemies
         private int eyefrm = 0;
 
 
+        Color color = Color.White;
+
+
+        public bool dead = false;
+
 
         public Gojira()
             : base()
         {
             nbBubblesphase = 2;
+            hp = 10;
+            dead = false;
             bubbleList = new List<Bubble>(nbBubblesphase + 1);
             srcbody = new Rectangle(0, 0, 172, 172);
             srcEye = new Rectangle(340, 119, 57, 65);
@@ -95,6 +103,8 @@ namespace RopeMaster.gameplay.Enemies
             srcmouth = new Rectangle(172, 0, 68, 60);
             mouthPos = new Vector2(27, 53);
             mouthShot = new Vector2(32, 78);
+            tonguePos = new Vector2(9, 74);
+            srctongue = new Rectangle(1, 172, 63, 55);
             texture1 = Game1.Instance.magicContentManager.GetTexture("gojira");
             texture2 = Game1.Instance.magicContentManager.GetTexture("boat");
             maphitbox = Game1.Instance.magicContentManager.GetTexture("gojira_hitbox");
@@ -102,14 +112,17 @@ namespace RopeMaster.gameplay.Enemies
             this.position = new Vector2(800, 150);
             this.bubbleSpawner = new Vector2(30, 249);
             eyephase = 2;
-            hp = 50;
+            tonguetimer = 0;
             eyeCD = 0;
 
             collider = new Color[300 * 256];
             normalMap = new Color[300 * 256];
             generateMap(true);
             rectcollider = new Rectangle((int)this.position.X, (int)this.position.Y, 300, 256);
+
         }
+
+
 
 
 
@@ -152,6 +165,15 @@ namespace RopeMaster.gameplay.Enemies
                 }
                 eyeCD = 0;
             }
+            if (tonguebox != null)
+            {
+                tonguebox.setPosition(position + gojPos + hitboxpos);
+            }
+
+
+            dead = (hp <= 0);
+            if (dead)
+                velocity = new Vector2(-1,1)*50;
 
             timersmoke += gametime.ElapsedGameTime.Milliseconds;
             if (timersmoke % 60 == 0) smokePos.X++;
@@ -168,12 +190,19 @@ namespace RopeMaster.gameplay.Enemies
                     break;
                 case 2: breathFire(gametime);
                     break;
-                case 3: rush(gametime);
+                case 3: warmdown(gametime);
+                    break;
+                case 4: rush(gametime);
                     break;
                 default: Idle(gametime);
                     break;
             }
         }
+
+
+
+
+
 
 
         private void rush(GameTime gametime)
@@ -234,8 +263,26 @@ namespace RopeMaster.gameplay.Enemies
         }
 
 
+        public override void hit(int damage)
+        {
+            this.hp -= damage;
+        }
+
+
         private void warmdown(GameTime gameTime)
         {
+            tonguetimer += gameTime.ElapsedGameTime.Milliseconds;
+
+  
+            if (tonguetimer > 300)
+            {
+                tonguetimer = 0;
+                srctongue.X += srctongue.Width;
+                if (srctongue.X > 100) srctongue.X = 0;
+                if (dead)
+                for (int i = 0; i < 3; i++)
+                    Gamescreen.Instance.particuleManager.AddParticule(new Blood(this.position + this.mouthShot + this.gojPos, Game1.Instance.randomizator.GetRandomTrajectory(200, MathHelper.ToRadians(170), MathHelper.ToRadians(200)), Game1.Instance.randomizator.GetRandomFloat(0.6f, 1f), Color.White, false));
+            }
 
 
 
@@ -249,7 +296,7 @@ namespace RopeMaster.gameplay.Enemies
             if (animfire)
             {
                 mouthAnim += gameTime.ElapsedGameTime.Milliseconds;
-                if (mouthAnim > 100)
+                if (mouthAnim > 200)
                 {
                     var rand = Game1.Instance.randomizator;
                     Gamescreen.Instance.particuleManager.AddParticule(new Smoke(this.position + this.mouthShot + this.gojPos, rand.GetRandomTrajectory(200, MathHelper.ToRadians(200), MathHelper.ToRadians(240)), rand.GetRandomFloat(0.4f, 0.7f), Color.White, false));
@@ -355,9 +402,9 @@ namespace RopeMaster.gameplay.Enemies
                     Vector2 v = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
                     var p = this.position + bubbleSpawner;
 
-                    Bubble b = new Bubble(p, 0, v * -500);
-                    Gamescreen.Instance.enemyManager.enemiestoAdd.Add(b);
-                    this.bubbleList.Add(b);
+                    Bubble b = new Bubble(p, 0, v * -1);
+                    Gamescreen.Instance.shotManager.AddShotEnemy(b);
+
                     bubbleCD = 0;
                     if (nbBubbles >= nbBubblesphase)
                     {
@@ -388,23 +435,19 @@ namespace RopeMaster.gameplay.Enemies
         private void changePhase()
         {
             shootPhase = (shootPhase + 1) % 4;
-            if (shootPhase == 0)
+            if (!dead & shootPhase == 0)
             {
                 //drop bubble
                 eyephase = 2;
-                foreach (Bubble b in bubbleList)
-                {
-                    b.drop(500);
-                }
-                bubbleList.Clear();
+
             }
-            else if (shootPhase == 1)
+            else if (!dead & shootPhase == 1)
             {
 
                 wheelmoving = false;
                 nbBubbles = 0;
             }
-            else if (shootPhase == 2)
+            else if (!dead & shootPhase == 2)
             {
                 //reinit phase
                 eyephase = 1;
@@ -416,8 +459,15 @@ namespace RopeMaster.gameplay.Enemies
                 fireCD = 0;
                 generateMap(false);
             }
-            else if (shootPhase == 3)
+            else if (dead | shootPhase == 3) // warm down
             {
+                tonguebox = new SphereBox(this.position + gojPos + hitboxpos, 30);
+                eyephase = 0;
+            }
+            else if (!dead & shootPhase == 4)
+            {
+                eyephase = 1;
+                tonguebox = null;
                 rushstate = 0;
                 rushTimer = 0;
                 velocity = Vector2.Zero;
@@ -432,7 +482,8 @@ namespace RopeMaster.gameplay.Enemies
         public override void Draw(SpriteBatch spritebatch)
         {
             spritebatch.Draw(texture2, this.position + mastPos, srcmast, Color.White);
-            spritebatch.Draw(texture1, this.position + gojPos, srcbody, Color.White);
+            if (shootPhase == 3) spritebatch.Draw(texture1, this.position + gojPos + tonguePos, srctongue, color);
+            spritebatch.Draw(texture1, this.position + gojPos, srcbody, color);
             spritebatch.Draw(texture2, this.position, srcboat, Color.White);
             spritebatch.Draw(texture2, this.position + smokePos, srcsmoker, Color.White);
             spritebatch.Draw(texture2, this.position + wheelPos, srcwheel, Color.White, -rotation, wheelOrg, 1, SpriteEffects.None, 0);

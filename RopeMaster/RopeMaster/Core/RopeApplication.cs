@@ -38,6 +38,8 @@ namespace Glitch.Engine.Core
         public LeapControl leapControl;
         public MusicPlayer musicPlayer;
 
+        public long score;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -119,7 +121,7 @@ namespace Glitch.Engine.Core
 
         public static int Compare(KeyValuePair<long, string> a, KeyValuePair<long, string> b)
         {
-            return a.Key.CompareTo(b.Key);
+            return b.Key.CompareTo(a.Key);
         }
         protected abstract Assembly[] GameAssemblies { get; }
     }

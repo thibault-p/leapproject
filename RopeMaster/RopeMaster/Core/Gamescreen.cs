@@ -41,6 +41,7 @@ namespace RopeMaster.Core
         public bool playing;
         public bool gameover;
         public int liferemains;
+        public LifeBar lifebar;
 
         public Gamescreen()
         {
@@ -52,6 +53,7 @@ namespace RopeMaster.Core
         public override void Initialyze()
         {
             base.Initialyze();
+            Game1.Instance.score = 0;
             parallax = new Parallax();
             player = new Player();
             gojira = new Gojira();
@@ -66,6 +68,7 @@ namespace RopeMaster.Core
             shotManager = new ShotManager();
             stuffManager = new StuffManager();
             enemyManager = new EnemyManager();
+            lifebar = new LifeBar(new Vector2(1200, 20), 1000);
             leapControl = Game1.Instance.leapControl;
             shotManager.Initialize();
             particuleManager.Initialize();
@@ -74,7 +77,7 @@ namespace RopeMaster.Core
             liferemains = 2;
             playing = true;
             gameover = false;
-            Game1.Instance.musicPlayer.PlayMusic("teleporter");
+            //Game1.Instance.musicPlayer.PlayMusic("teleporter");
         }
 
 
@@ -138,16 +141,35 @@ namespace RopeMaster.Core
             player.Update(gameTime);
             if (player.isDead()) newPlayer();
             gojira.Update(gameTime);
+            lifebar.setHP(gojira.hp);
+            lifebar.Update(gameTime);
             particuleManager.Update(gameTime);
             enemyManager.Update(gameTime);
             shotManager.Update(gameTime);
             stuffManager.Update(gameTime);
             combobar.Update(gameTime);
             gamemanager.Update(gameTime);
+
+
+            //GAMEOVER
             if (gameover && color.A == 255)
             {
                 Game1.Instance.StateManage.changeState(4);
             }
+            if (!gameover && gamemanager.time >=GameManager.timemax)
+            {
+                fadeOut();
+                gameover = true;
+            }
+            if (!gameover && gojira.hp <= 0 && gojira.getPosition().Y>750)
+            {
+                fadeOut();
+                gameover = true;
+            }
+
+
+
+
         }
 
 
@@ -202,6 +224,7 @@ namespace RopeMaster.Core
 
             }
             combobar.Draw(spriteBatch);
+            lifebar.Draw(spriteBatch);
             gamemanager.Draw(spriteBatch);
             spriteBatch.End();
 

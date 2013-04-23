@@ -15,7 +15,7 @@ using Glitch.Engine.Content;
 
 namespace RopeMaster.Core
 {
-     [TextureContent(AssetName = "gameover", AssetPath = "gfx/screen/Gameover")]
+     [TextureContent(AssetName = "gameover", AssetPath = "gfx/screens/Gameover")]
     public class GameOverscreen : State
     {
  
@@ -66,7 +66,7 @@ namespace RopeMaster.Core
 
         public override void changeState()
         {
-            Game1.Instance.StateManage.changeState(0);
+            Game1.Instance.StateManage.changeState(5);
 
 
         }

@@ -28,7 +28,7 @@ namespace RopeMaster.Core
         private void initialyze(Vector2 pos, Vector2 velo)
         {
             this.position = pos;
-            this.velocity = velo * 500;
+            this.velocity = velo*400 ;
             this.origin = Vector2.Zero;
         }
 
