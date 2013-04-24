@@ -71,6 +71,7 @@ namespace RopeMaster.Core
         public override void Draw(SpriteBatch spritebatch)
         {
             spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+          
 
             spritebatch.Draw(texture, position, Color.White);
             base.Draw(spritebatch);

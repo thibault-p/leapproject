@@ -28,7 +28,7 @@ namespace RopeMaster.Core
         {
             Is = false;
             position = last = Vector2.Zero;
-            controller = new Controller();
+            //controller = new Controller();
             points = new List<Vector2>();
         }
 
