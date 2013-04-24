@@ -78,7 +78,7 @@ namespace RopeMaster
             // TODO: use this.Content to load your game content here
             base.LoadContent();
             StateManage.Initialize();
-            StateManage.changeState(0);
+            StateManage.changeState(3);
 
         }
 
