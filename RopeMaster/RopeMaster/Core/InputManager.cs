@@ -20,7 +20,7 @@ namespace RopeMaster.Core
             Down
         }
 
-        private Buttons[] defaultconfig = { Buttons.A, Buttons.B, Buttons.RightTrigger, Buttons.A, Buttons.X };
+        private Buttons[] defaultconfig = { Buttons.A, Buttons.B, Buttons.LeftTrigger, Buttons.RightTrigger, Buttons.X };
 
 
         public enum InputState
