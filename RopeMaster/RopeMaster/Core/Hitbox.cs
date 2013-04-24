@@ -23,7 +23,10 @@ namespace RopeMaster.Core
         }
 
 
-
+        public virtual Vector2 getPosition()
+        {
+            return position;
+        }
 
 
         public abstract bool collide(Vector2 p2, int r);

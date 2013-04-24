@@ -37,8 +37,8 @@ namespace RopeMaster.Core
         public ShotManager()
         {
             playerShots = new List<Shot>();
-            srcRectPlayer = new Rectangle(0, 0, 10, 10);
-            srcFire = new Rectangle(0, 10, 16, 16);
+            srcRectPlayer = new Rectangle(0, 0, 13, 10);
+            srcFire = new Rectangle(0, 10, 23, 23);
             srcPlasma = new Rectangle(0, 36, 64, 64);
             ennemiesShots = new List<Shot>();
             mapCollshot = new Color[srcRectPlayer.Width * srcRectPlayer.Height];
@@ -128,7 +128,7 @@ namespace RopeMaster.Core
 
             var big = (SphereBox) Gamescreen.Instance.player.getBigHitbox();
             var small = (SphereBox)Gamescreen.Instance.player.getSmallHitbox();
-
+            var cancel = (SphereBox)Gamescreen.Instance.player.getCancelHitbox();
             foreach (Shot s in ennemiesShots)
             {
                 s.Update(gameTime);
@@ -143,12 +143,20 @@ namespace RopeMaster.Core
                     {
                         Gamescreen.Instance.player.KillBig();
                         s.Exterminate = true;
+                        Gamescreen.Instance.combobar.combo = 0;
                     }
                     if (small.collide(pos, s.shotWidth))
                     {
                         Gamescreen.Instance.player.KillSmall();
                         s.Exterminate = true;
+                        Gamescreen.Instance.combobar.combo = 0;
                     }
+                    if (cancel.collide(pos, s.shotWidth))
+                    {
+                        s.Exterminate = true;
+                        Gamescreen.Instance.combobar.AddCombo(5, "Cancel !");
+                    }
+
 
 
                 }

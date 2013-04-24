@@ -24,7 +24,7 @@ namespace RopeMaster.gameplay
         private int burst = 0;
         private bool iscatched = false;
         private Radar radar;
-        protected Hitbox hitboxbig,hitboxsmall;
+        protected Hitbox hitboxbig,hitboxsmall, hitboxcancel;
         private Vector2 originp2, originnode;
         private Vector2 gunsrc;
 
@@ -48,6 +48,7 @@ namespace RopeMaster.gameplay
             sourcep1 = new Rectangle(0, 0, 80, 105);
             sourcep2 = new Rectangle(0, 154, 58, 84);
             srcnode = new Rectangle(0, 110, 20, 21);
+            hitboxcancel = new SphereBox(new Vector2(29, 10)+position,28);
             time = 0;
             radar = new Radar();
             origin = new Vector2(40, 30);
@@ -76,16 +77,14 @@ namespace RopeMaster.gameplay
 
         public override void setPosition(int x, int y)
         {
+            if (x < 32 || x > 1248 || y < 32 || y > 680) return;
             base.setPosition(x, y);
-            radar.setPosition(x, y);
-            hitboxbig.setPosition(this.position);
-            hitboxsmall.setPosition(this.rope.getAttachPosition());
         }
 
         public Vector2 getShotSource()
         {
             var r = rope.getAttachAngleF();
-            Vector2 v = gunsrc;
+            Vector2 v = gunsrc; 
             v.X *= (float)Math.Sin(r);
             v.Y *= (float)Math.Cos(r);
             return rope.getAttachPosition() + v;
@@ -150,7 +149,16 @@ namespace RopeMaster.gameplay
 
             }
             rope.setOrigin((int)this.position.X, (int)this.position.Y + 36);
+
+
+
             rope.Update(gameTime);
+            //up hitbox
+            radar.setPosition(this.position);
+            hitboxbig.setPosition(this.position);
+            hitboxsmall.setPosition(this.rope.getAttachPosition());
+            hitboxcancel.setPosition(this.rope.getAttachPosition() + new Vector2((float)Math.Sin(-rope.getAttachAngleF()) * 40, (float)Math.Cos(-rope.getAttachAngleF()) * 40));
+
         }
 
 
@@ -159,6 +167,10 @@ namespace RopeMaster.gameplay
             return this.hitboxbig;
         }
 
+        public Hitbox getCancelHitbox()
+        {
+            return this.hitboxcancel;
+        }
         public Hitbox getSmallHitbox()
         {
             return this.hitboxsmall;
@@ -171,6 +183,17 @@ namespace RopeMaster.gameplay
             Console.WriteLine("BIG ");
             velocity = new Vector2(-100, 400);
             die = 1;
+            sourcep1 = new Rectangle(160, 0, 80, 105);
+            float a = 0;
+            float off = (float)(2*Math.PI)/10f;
+           
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine(new Vector2((float)Math.Cos(a), (float)Math.Sin(a)));
+                Gamescreen.Instance.particuleManager.AddParticule(new Feather(position + new Vector2((float)Math.Cos(a), (float)Math.Sin(a)) * 32, new Vector2((float)Math.Cos(a), (float)Math.Sin(a)) * 10, 1, Color.White, false));
+                a+=off;
+                
+            }
         }
 
         public void KillSmall()
@@ -225,9 +248,11 @@ namespace RopeMaster.gameplay
             var rotation = rope.getAttachAngle();
             rope.Draw(spriteBatch);
             spriteBatch.Draw(texture, this.getPosition(), sourcep1, Color.White, 0, origin, 1, SpriteEffects.None, 0);
-            spriteBatch.Draw(texture, position + poswing, srcWing, Color.White);
+            if(die%2==0) spriteBatch.Draw(texture, position + poswing, srcWing, Color.White);
             spriteBatch.Draw(texture, this.rope.getAttachPosition(), sourcep2, Color.White, rope.getAttachAngleF(), originp2, 1, SpriteEffects.None, 0);
             spriteBatch.Draw(texture, this.rope.getAttachPosition(), srcnode, Color.White, rope.getAttachAngleF(), originnode, 1, SpriteEffects.None, 0);
+
+            spriteBatch.Draw(texture, this.hitboxcancel.getPosition(), new Rectangle(60,176,60,60), Color.White, rope.getAttachAngleF(), new Vector2(30,30), 1, SpriteEffects.None, 0);
         }
     }
 }

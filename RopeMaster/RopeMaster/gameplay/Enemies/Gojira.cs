@@ -84,7 +84,7 @@ namespace RopeMaster.gameplay.Enemies
         public Gojira()
             : base()
         {
-            nbBubblesphase = 2;
+            nbBubblesphase = 10;
             hp = 100;
             dead = false;
             bubbleList = new List<Bubble>(nbBubblesphase + 1);
@@ -322,8 +322,8 @@ namespace RopeMaster.gameplay.Enemies
             if (fireCD > 400)
             {
 
-                var nb = (int)(firephase / 8) + 3;
-                if (nb == 5)
+                var nb = (int)(firephase / 8) + 4;
+                if (nb == 6)
                 {
                     changePhase();
                     return;
@@ -335,7 +335,7 @@ namespace RopeMaster.gameplay.Enemies
                 for (int i = 0; i < nb; i++)
                 {
                     Gamescreen.Instance.particuleManager.AddParticule(new Smoke(this.position + this.mouthShot + this.gojPos + v, rand.GetRandomTrajectory(200, MathHelper.ToRadians(200), MathHelper.ToRadians(240)), rand.GetRandomFloat(0.7f, 1f), Color.White, false));
-                    var s = new Shot(this.position + gojPos + mouthShot, new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 0.5f, 200, 0, false, 1, 2);
+                    var s = new Shot(this.position + gojPos + mouthShot, new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 0.5f, 200, 0, false, 1, 3);
                     s.angle = (float)(angle - Math.PI);
                     Gamescreen.Instance.shotManager.AddShotEnemy(s);
                     angle += offset;
@@ -392,7 +392,7 @@ namespace RopeMaster.gameplay.Enemies
                 if (bubbleCD > 200)
                 {
                     var rand = Game1.Instance.randomizator;
-                    nextangle = rand.GetRandomFloat(0 + Math.PI / 64, Math.PI - Math.PI / 64);
+                    nextangle = rand.GetRandomFloat(0 + Math.PI / 10, Math.PI - Math.PI / 10);
                     wheelmoving = true;
                     wheelway = (rotation > nextangle) ? -1 : 1;
                 }
@@ -406,7 +406,7 @@ namespace RopeMaster.gameplay.Enemies
                     Vector2 v = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
                     var p = this.position + bubbleSpawner;
 
-                    Bubble b = new Bubble(p, 0, v * -1);
+                    Bubble b = new Bubble(p, 0, v * -0.8f);
                     Gamescreen.Instance.shotManager.AddShotEnemy(b);
 
                     bubbleCD = 0;
@@ -418,7 +418,7 @@ namespace RopeMaster.gameplay.Enemies
                 }
                 else
                 {
-                    rotation += wheelway * 0.05f;
+                    rotation += wheelway * 0.02f;
                 }
             }
         }
@@ -438,7 +438,7 @@ namespace RopeMaster.gameplay.Enemies
 
         private void changePhase()
         {
-            shootPhase = (shootPhase + 1) % 4;
+            shootPhase = (shootPhase + 1) % 5;
             if (!dead & shootPhase == 0)
             {
                 //drop bubble

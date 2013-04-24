@@ -14,12 +14,12 @@ namespace RopeMaster.gameplay.Enemies
     public class Bubble : Shot
     {
         
-  
 
         public Bubble(Vector2 pos, int maxX, Vector2 dir)
             : base(pos, dir, 1, 0, false, 2,3)
         {
             shotWidth = 32;
+
 
         }
 
