@@ -15,6 +15,7 @@ namespace RopeMaster
 
     public class VerletRope
     {
+        public Vector2 position;
         public Stick[] sticks;
         public static float gravity = 9.8f;
         public static float pm = 1;
@@ -74,13 +75,15 @@ namespace RopeMaster
 
         public void setOrigin(int x, int y)
         {
-
-            sticks[fixeddiv].fixPosition(x, y);
+            position.X = x;
+            position.Y = y;
+           
 
         }
 
         public void Update(GameTime gameTime)
         {
+            sticks[fixeddiv].fixPosition((int)position.X, (int)position.Y);
             float dt = 1 / 60f;
             for (int i = 0; i < this.div; i++)
             {
