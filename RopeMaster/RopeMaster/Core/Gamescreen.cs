@@ -74,10 +74,10 @@ namespace RopeMaster.Core
             particuleManager.Initialize();
             enemyManager.Initialize();
             enemyManager.Add(gojira);
-            liferemains = 2;
+            liferemains = 9000;
             playing = true;
             gameover = false;
-            //Game1.Instance.musicPlayer.PlayMusic("teleporter");
+            Game1.Instance.musicPlayer.PlayMusic("teleporter");
         }
 
 

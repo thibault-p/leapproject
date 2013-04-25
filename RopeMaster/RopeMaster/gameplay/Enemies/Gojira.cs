@@ -85,7 +85,7 @@ namespace RopeMaster.gameplay.Enemies
             : base()
         {
             nbBubblesphase = 10;
-            hp = 100;
+            hp = 1000;
             dead = false;
             bubbleList = new List<Bubble>(nbBubblesphase + 1);
             srcbody = new Rectangle(0, 0, 172, 172);
@@ -285,7 +285,7 @@ namespace RopeMaster.gameplay.Enemies
                     Gamescreen.Instance.particuleManager.AddParticule(new Blood(this.position + this.mouthShot + this.gojPos, Game1.Instance.randomizator.GetRandomTrajectory(200, MathHelper.ToRadians(170), MathHelper.ToRadians(200)), Game1.Instance.randomizator.GetRandomFloat(0.6f, 1f), Color.White, false));
             }
 
-            if (!dead && tonguephase > 6)
+            if (!dead && tonguephase > 30)
             {
                 changePhase();
             }

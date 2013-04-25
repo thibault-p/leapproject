@@ -63,7 +63,7 @@ namespace RopeMaster.gameplay
             srcWing = new Rectangle(80, 0, 27, 18);
             velocity = Vector2.Zero;
             die = 0;
-            this.setPosition(50, 50);
+            this.setPosition(300, 250);
         }
 
 
@@ -240,7 +240,7 @@ namespace RopeMaster.gameplay
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (!iscatched)
+            if (!iscatched && die==0)
             {
                 radar.Draw(spriteBatch);
 
@@ -252,7 +252,7 @@ namespace RopeMaster.gameplay
             spriteBatch.Draw(texture, this.rope.getAttachPosition(), sourcep2, Color.White, rope.getAttachAngleF(), originp2, 1, SpriteEffects.None, 0);
             spriteBatch.Draw(texture, this.rope.getAttachPosition(), srcnode, Color.White, rope.getAttachAngleF(), originnode, 1, SpriteEffects.None, 0);
 
-            spriteBatch.Draw(texture, this.hitboxcancel.getPosition(), new Rectangle(60,176,60,60), Color.White, rope.getAttachAngleF(), new Vector2(30,30), 1, SpriteEffects.None, 0);
+            //spriteBatch.Draw(texture, this.hitboxcancel.getPosition(), new Rectangle(60,176,60,60), Color.White, rope.getAttachAngleF(), new Vector2(30,30), 1, SpriteEffects.None, 0);
         }
     }
 }

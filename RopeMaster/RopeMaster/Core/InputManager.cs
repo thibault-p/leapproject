@@ -16,8 +16,8 @@ namespace RopeMaster.Core
             Validate = 0,
             Cancel,
             Fire,
-            Up,
-            Down
+            Down,
+            Up
         }
 
         private Buttons[] defaultconfig = { Buttons.A, Buttons.B, Buttons.LeftTrigger, Buttons.RightTrigger, Buttons.X };

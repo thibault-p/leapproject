@@ -12,16 +12,12 @@ Content\gfx\sprites\onyx.xnb
 Content\gfx\sprites\gojira.xnb
 Content\gfx\sprites\boat.xnb
 Content\gfx\sprites\bubble.xnb
-Content\font\default.xnb
 Content\gfx\sprites\lifebar.xnb
 Content\gfx\sprites\gojira_hitbox.xnb
 Content\gfx\sprites\impact.xnb
 Content\gfx\sprites\gojira_normalmap.xnb
 Content\gfx\sprites\combobar.xnb
 Content\gfx\misc\null.xnb
-Content\music\DANJYON_KIMURA_-_COUNT_END.xnb
-Content\music\DANJYON_KIMURA_-_Space_Alone.xnb
-Content\music\DANJYON_KIMURA_-_TELEPORTER.xnb
 Content\gfx\screens\Gameover.xnb
 Content\gfx\screens\halloffame.xnb
 Content\gfx\screens\highscore.xnb
@@ -30,6 +26,10 @@ Content\gfx\screens\home_title.xnb
 Content\gfx\screens\leap.xnb
 Content\gfx\screens\presentscreen.xnb
 Content\gfx\screens\title.xnb
+Content\font\default.xnb
+Content\music\DANJYON_KIMURA_-_COUNT_END.xnb
+Content\music\DANJYON_KIMURA_-_Space_Alone.xnb
+Content\music\DANJYON_KIMURA_-_TELEPORTER.xnb
 Content\music\DANJYON_KIMURA_-_COUNT_END.wma
 Content\music\DANJYON_KIMURA_-_Space_Alone.wma
 Content\music\DANJYON_KIMURA_-_TELEPORTER.wma

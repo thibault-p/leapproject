@@ -54,7 +54,7 @@ namespace RopeMaster.Core
 
             timer += gametime.ElapsedGameTime.Milliseconds;
             if (timer % 400== 0) displayed = !displayed;
-            if (timer > 50000)
+            if (timer > 15000)
             {
                 done = true;
             }

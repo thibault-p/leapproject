@@ -28,7 +28,7 @@ namespace RopeMaster.Core
         {
             Is = false;
             position = last = Vector2.Zero;
-            //controller = new Controller();
+            controller = new Controller();
             points = new List<Vector2>();
         }
 
@@ -58,6 +58,8 @@ namespace RopeMaster.Core
 
         private bool bestPosition(FingerList list)
         {
+            if (Gamescreen.Instance == null) return false;
+            if (Gamescreen.Instance.player == null) return false;
             double best = 9000;
             last = Gamescreen.Instance.player.getPosition();
             foreach (Finger f in list)
