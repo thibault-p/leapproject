@@ -198,7 +198,7 @@ namespace RopeMaster.Core
                         break;
                     case 2:
                         srcPlasma.X = srcPlasma.Width * s.current;
-                        spriteBatch.Draw(texture, s.getPosition(), srcPlasma, Color.White, s.angle, s.getOrigin(), 1, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(texture, s.getPosition(), srcPlasma, Color.White, s.angle, s.getOrigin(), s.scale, SpriteEffects.None, 0f);
                         break;
                     default: Console.WriteLine("ohoh");
                         break;

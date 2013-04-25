@@ -14,7 +14,7 @@ namespace RopeMaster.Core
     {
         public int shotWidth = 4;
         public static int framerate = 150;
-
+        public float scale;
         public bool PlayerShot { get; set; }
         public int damage;
         public bool Exterminate = false;
