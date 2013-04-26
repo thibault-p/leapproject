@@ -104,7 +104,7 @@ namespace RopeMaster.gameplay.Enemies
             mouthPos = new Vector2(27, 53);
             mouthShot = new Vector2(32, 78);
             tonguePos = new Vector2(9, 74);
-            srctongue = new Rectangle(1, 172, 63, 55);
+            srctongue = new Rectangle(1, 173, 63, 55);
             texture1 = Game1.Instance.magicContentManager.GetTexture("gojira");
             texture2 = Game1.Instance.magicContentManager.GetTexture("boat");
             maphitbox = Game1.Instance.magicContentManager.GetTexture("gojira_hitbox");
