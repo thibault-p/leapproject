@@ -57,7 +57,7 @@ namespace RopeMaster.Core
 
             base.Update(gametime);
             var input = Game1.Instance.inputManager;
-            if (input.IsAnyKetPress())
+            if (  input.IsAnyKetPress())
             {
                 done = true;
             }

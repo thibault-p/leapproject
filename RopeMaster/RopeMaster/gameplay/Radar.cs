@@ -76,7 +76,7 @@ namespace RopeMaster.gameplay
             scale = time / 500f;
         }
 
-        public void Draw(SpriteBatch spritebatch)
+        public override void Draw(SpriteBatch spritebatch)
         {
             spritebatch.Draw(texture, this.position, rdrsrc, Color.White * alpha, 0, center, scale, SpriteEffects.None, 0);
             spritebatch.Draw(texture, this.position + txtpos, txtsrc, Color.White);

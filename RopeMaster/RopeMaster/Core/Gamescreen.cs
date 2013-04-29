@@ -68,7 +68,7 @@ namespace RopeMaster.Core
             shotManager = new ShotManager();
             stuffManager = new StuffManager();
             enemyManager = new EnemyManager();
-            lifebar = new LifeBar(new Vector2(1200, 20), 1000);
+            lifebar = new LifeBar(new Vector2(1200, 20), 8);
             leapControl = Game1.Instance.leapControl;
             shotManager.Initialize();
             particuleManager.Initialize();
@@ -116,15 +116,15 @@ namespace RopeMaster.Core
                 }
                 if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.InputState.JustOn)
                 {
-                    shotManager.playerFire(player.getShotSource(), player.getShotAngle(), 50, player.getPointShot());
+                    shotManager.playerFire(player.getShotSource(), player.getShotAngle(), 1, player.getPointShot());
                 }
                 else if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.InputState.On)
                 {
-                    shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 50, player.getPointShot());
+                    shotManager.playerAutoFire(player.getShotSource(), player.getShotAngle(), 1, player.getPointShot());
 
                 }
 
-
+                
                 if (leapControl.Is)
                 {
                     var p = leapControl.getPosition();
@@ -190,6 +190,7 @@ namespace RopeMaster.Core
             else
             {
                 player = new Player();
+                combobar.length = 10;
                 playing = true;
             }
 

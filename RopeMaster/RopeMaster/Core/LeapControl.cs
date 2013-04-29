@@ -66,7 +66,7 @@ namespace RopeMaster.Core
             {
 
                 Vector v2 = controller.CalibratedScreens[0].Intersect(f, true);
-                
+
                 var px = controller.CalibratedScreens[0].WidthPixels * v2.x;
                 var py = controller.CalibratedScreens[0].HeightPixels - controller.CalibratedScreens[0].HeightPixels * v2.y;
                 points.Add(new Vector2(px, py));
@@ -95,7 +95,7 @@ namespace RopeMaster.Core
         public void Draw(SpriteBatch spriteBatch)
         {
             if (controller == null) return;
-        
+
             foreach (Vector2 v in points)
                 spriteBatch.Draw(Game1.Instance.magicContentManager.GetTexture("point"), v, Color.Red);
 

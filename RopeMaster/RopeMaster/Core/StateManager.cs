@@ -53,6 +53,8 @@ namespace RopeMaster.Core
                     break;
                 case 2: currentState = new TitleScreen();
                     break;
+                case 6: currentState = new HowtoScreen();
+                    break;
                 case 3: currentState = new Gamescreen();
                     break;
                 case 4: currentState = new GameOverscreen();

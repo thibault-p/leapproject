@@ -90,10 +90,10 @@ namespace RopeMaster.Core
                         }
                         if (e is Gojira)
                         {
-                            
+
                             var g = (Gojira)e;
                             float rot = 42;
-                            Vector2 i_p=Vector2.Zero;
+                            Vector2 i_p = Vector2.Zero;
                             hitb.X = (int)s.getPosition().X - 5;
                             hitb.Y = (int)s.getPosition().Y - 5;
                             if (g.IsPointPerfectColliding(hitb, mapCollshot, ref rot, ref i_p))
@@ -101,15 +101,17 @@ namespace RopeMaster.Core
                                 s.Exterminate = true;
                                 Gamescreen.Instance.stuffManager.Add(new Impact(i_p, rot));
                                 Gamescreen.Instance.combobar.AddCombo(10, "Hit!");
-                                
+                                Gamescreen.Instance.gamemanager.score += (Gamescreen.Instance.combobar.getMultiplicator() * 100);
+                                    
+
                             }
                             if (!g.dead && g.tonguebox != null)
                             {
                                 if (g.tonguebox.collide(s.getPosition(), 5))
                                 {
-                                    g.hit(10);
+                                    g.hit(1);
                                     Gamescreen.Instance.combobar.AddCombo(20, "Painful Hit!");
-                                    Gamescreen.Instance.gamemanager.score+=(Gamescreen.Instance.combobar.getMultiplicator() * 2000);
+                                    Gamescreen.Instance.gamemanager.score += (Gamescreen.Instance.combobar.getMultiplicator() * 2000);
                                     s.Exterminate = true;
                                     Gamescreen.Instance.particuleManager.AddParticule(new Blood(s.getPosition(), Game1.Instance.randomizator.GetRandomTrajectory(200, MathHelper.ToRadians(180), MathHelper.ToRadians(190)), Game1.Instance.randomizator.GetRandomFloat(0.6f, 1f), Color.White, false));
 
@@ -126,9 +128,10 @@ namespace RopeMaster.Core
             }
             playerShots.RemoveAll(c => c.Exterminate);
 
-            var big = (SphereBox) Gamescreen.Instance.player.getBigHitbox();
+            var big = (SphereBox)Gamescreen.Instance.player.getBigHitbox();
             var small = (SphereBox)Gamescreen.Instance.player.getSmallHitbox();
             var cancel = (SphereBox)Gamescreen.Instance.player.getCancelHitbox();
+
             foreach (Shot s in ennemiesShots)
             {
                 s.Update(gameTime);
@@ -139,32 +142,38 @@ namespace RopeMaster.Core
                 }
                 else
                 {
-                    if (big.collide(pos, s.shotWidth))
+                    if (Gamescreen.Instance.player.die == 0 && !Gamescreen.Instance.player.godmode)
                     {
-                        Gamescreen.Instance.player.KillBig();
-                        s.Exterminate = true;
-                        Gamescreen.Instance.combobar.combo = 0;
+                        if (big.collide(pos, s.shotWidth))
+                        {
+                            Gamescreen.Instance.player.KillBig();
+                            Gamescreen.Instance.gamemanager.time += 10;
+                            s.Exterminate = true;
+                            Gamescreen.Instance.combobar.combo = 0;
+                        }
+                        /* if (small.collide(pos, s.shotWidth))
+                         {
+                             Gamescreen.Instance.player.KillSmall();
+                             s.Exterminate = true;
+                             Gamescreen.Instance.combobar.combo = 0;
+                         }*/
+                        if (cancel.collide(pos, s.shotWidth))
+                        {
+                            s.Exterminate = true;
+                            Gamescreen.Instance.combobar.AddCombo(5, "Cancel !");
+                            Gamescreen.Instance.gamemanager.score += (Gamescreen.Instance.combobar.getMultiplicator() * 100);
+                                    
+                        }
                     }
-                    if (small.collide(pos, s.shotWidth))
-                    {
-                        Gamescreen.Instance.player.KillSmall();
-                        s.Exterminate = true;
-                        Gamescreen.Instance.combobar.combo = 0;
-                    }
-                    if (cancel.collide(pos, s.shotWidth))
-                    {
-                        s.Exterminate = true;
-                        Gamescreen.Instance.combobar.AddCombo(5, "Cancel !");
-                    }
-
 
 
                 }
-                
+
+
+
 
 
             }
-
             ennemiesShots.RemoveAll(c => c.Exterminate);
 
 

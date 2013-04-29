@@ -81,11 +81,18 @@ namespace RopeMaster.gameplay.Enemies
         public bool dead = false;
 
 
+
+        public bool ismoving;
+
+        
+
+
+
         public Gojira()
             : base()
         {
             nbBubblesphase = 10;
-            hp = 1000;
+            hp = 8;
             dead = false;
             bubbleList = new List<Bubble>(nbBubblesphase + 1);
             srcbody = new Rectangle(0, 0, 172, 172);
@@ -112,9 +119,10 @@ namespace RopeMaster.gameplay.Enemies
             this.position = new Vector2(800, 150);
             this.bubbleSpawner = new Vector2(30, 249);
             eyephase = 2;
+            ismoving = true;
             tonguetimer = 0;
             eyeCD = 0;
-
+            this.velocity = new Vector2(0, 100);
             collider = new Color[300 * 256];
             normalMap = new Color[300 * 256];
             generateMap(true);
@@ -128,6 +136,23 @@ namespace RopeMaster.gameplay.Enemies
 
         public override void Update(GameTime gametime)
         {
+            if (shootPhase != 4 && ismoving)
+            {
+                if (this.position.Y < 120)
+                {
+                    this.velocity = new Vector2(0, 50);
+
+                }else if (this.position.Y > 400)
+                {
+                    this.velocity = new Vector2(0, -50);
+
+                }
+
+            }
+
+
+
+
             base.Update(gametime);
             timereye += gametime.ElapsedGameTime.Milliseconds;
             if (!eyeclosed && timereye > 1200)
@@ -223,7 +248,7 @@ namespace RopeMaster.gameplay.Enemies
                 if (rushTimer > 3000)
                 {
                     var a = Math.Atan2(Gamescreen.Instance.player.getShotSource().Y - (this.position.Y + this.mouthPos.Y), Gamescreen.Instance.player.getShotSource().X - (this.position.X + this.mouthPos.X));
-                    this.velocity = new Vector2((float)Math.Cos(a), (float)Math.Sin(a)) * 1000;
+                    this.velocity = new Vector2(-700,0);
                     rushstate = 1;// go left
                     rushTimer = 0;
                 }
@@ -442,7 +467,9 @@ namespace RopeMaster.gameplay.Enemies
             if (!dead & shootPhase == 0)
             {
                 //drop bubble
-                eyephase = 2;
+                eyephase = 2; 
+                this.velocity = new Vector2(0, 50);
+                ismoving = true;
 
             }
             else if (!dead & shootPhase == 1)
@@ -450,6 +477,8 @@ namespace RopeMaster.gameplay.Enemies
 
                 wheelmoving = false;
                 nbBubbles = 0;
+                this.velocity = new Vector2(0, 50);
+                ismoving = true;
             }
             else if (!dead & shootPhase == 2)
             {
@@ -466,11 +495,14 @@ namespace RopeMaster.gameplay.Enemies
             }
             else if (dead | shootPhase == 3) // warm down
             {
+                ismoving = false;
                 tonguebox = new SphereBox(this.position + gojPos + hitboxpos, 30);
                 eyephase = 0;
+                velocity = Vector2.Zero;
             }
             else if (!dead & shootPhase == 4)
             {
+                
                 eyephase = 1;
                 tonguebox = null;
                 rushstate = 0;

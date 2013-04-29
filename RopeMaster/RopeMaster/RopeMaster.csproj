@@ -126,6 +126,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\HowtoScreen.cs" />
     <Compile Include="Core\GameOverscreen.cs" />
     <Compile Include="Core\HallofFameScreen.cs" />
     <Compile Include="Core\MusicPlayer.cs" />
@@ -187,14 +188,17 @@
     <Content Include="GameThumbnail.png" />
     <Compile Include="gameplay\Helpers\Trajectory.cs" />
     <Compile Include="Core\Hitbox.cs" />
+    <None Include="LeapCSharp.NET4.0.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="scores.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Leap.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Leapd.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

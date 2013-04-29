@@ -46,7 +46,7 @@ namespace RopeMaster.Core
             if (input.IsAnyKetPress())
             {
                 done = true;
-                nextscreen = 3;
+                nextscreen = 6;
             }
 
 

@@ -53,7 +53,7 @@ namespace RopeMaster
             // TODO: Add your initialization logic here
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
             this.Screen = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             StateManage = new StateManager();
@@ -99,6 +99,11 @@ namespace RopeMaster
         protected override void Update(GameTime gameTime)
         {
 
+            MouseState ms = Mouse.GetState();
+            if (ms.MiddleButton == ButtonState.Pressed)
+            {
+                this.Exit();
+            }
             inputManager.Update(gameTime);
             leapControl.Update(gameTime);
             StateManage.Update(gameTime);

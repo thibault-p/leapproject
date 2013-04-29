@@ -35,7 +35,7 @@ namespace RopeMaster.Core
 
         public override void Initialyze()
         {
-            Game1.Instance.score = 1337;
+
             texture = Game1.Instance.magicContentManager.GetTexture("gameover");
             nulltex = Game1.Instance.magicContentManager.EmptyTexture;
             position = new Vector2((1280 - 530) / 2, (720 - 266) / 2);
@@ -43,6 +43,7 @@ namespace RopeMaster.Core
             base.Initialyze();
             done = false;
             writing = false;
+
             speed = 10;
             timer = 0;
             blink = true;
@@ -62,13 +63,16 @@ namespace RopeMaster.Core
         {
             KeyboardState kb = Keyboard.GetState();
             if (prev.IsKeyUp(Keys.A) && kb.IsKeyDown(Keys.A)) changeletter(-1);
+            if (Game1.Instance.inputManager.getState(InputManager.Commands.Up) == InputManager.InputState.JustOn) changeletter(-1);
             if (prev.IsKeyUp(Keys.Q) && kb.IsKeyDown(Keys.Q)) changeletter(1);
+            if (Game1.Instance.inputManager.getState(InputManager.Commands.Down) == InputManager.InputState.JustOn) changeletter(1);
             if (prev.IsKeyUp(Keys.Space) && kb.IsKeyDown(Keys.Space)) validletter();
+            if (Game1.Instance.inputManager.getState(InputManager.Commands.Fire) == InputManager.InputState.JustOn) validletter();
 
             prev = kb;
             base.Update(gametime);
             var input = Game1.Instance.inputManager;
-            if (input.IsAnyKetPress())
+            if (!this.writing && input.IsAnyKetPress())
             {
                 done = true;
             }
@@ -85,6 +89,7 @@ namespace RopeMaster.Core
             }
             if (done)
             {
+                
                 fadeOut();
                 if (color.A >= 255)
                     changeState();
@@ -132,6 +137,35 @@ namespace RopeMaster.Core
         }
 
 
+        private void writeFile()
+        {
+            TextWriter writeFile = null;
+            try
+            {
+                string line;
+                writeFile = new StreamWriter(Game1.SCORE_FILE);
+                scores.Sort(Game1.Compare);
+                for (int i = 0; i < 10; i++)
+                {
+                    writeFile.WriteLine(scores[i].Value + "=" + scores[i].Key);
+
+                }
+                writeFile.Flush();
+                writeFile.Close();
+                writeFile = null;
+            }
+            catch (IOException e)
+            {
+                if (writeFile != null)
+                {
+                    writeFile.Close();
+                }
+            }
+        }
+
+
+
+
 
         private void validletter()
         {
@@ -147,6 +181,7 @@ namespace RopeMaster.Core
                     name = "PIYO_PIYO";
                 }
                 done = true;
+                writeFile();
             }
 
         }
@@ -185,7 +220,7 @@ namespace RopeMaster.Core
             {
                 Vector2 p = position;
                 p.Y += 300;
-                spritebatch.DrawString(Game1.Instance.magicContentManager.Font, "Enter your name for posterity",p,Color.Wheat);
+                spritebatch.DrawString(Game1.Instance.magicContentManager.Font, "Enter your name for posterity", p, Color.Wheat);
 
                 p.Y += 40;
                 for (int i = 0; i < name.Length; i++)
