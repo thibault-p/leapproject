@@ -30,9 +30,11 @@ Content\gfx\screens\home_title.xnb
 Content\gfx\screens\leap.xnb
 Content\gfx\screens\presentscreen.xnb
 Content\gfx\screens\title.xnb
+Content\gfx\screens\howto.xnb
 Content\music\DANJYON_KIMURA_-_COUNT_END.wma
 Content\music\DANJYON_KIMURA_-_Space_Alone.wma
 Content\music\DANJYON_KIMURA_-_TELEPORTER.wma
+LeapCSharp.NET4.0.dll
 scores.txt
 Leap.dll
 Leapd.dll

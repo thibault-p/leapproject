@@ -43,6 +43,7 @@ namespace RopeMaster.Core
         public int liferemains;
         public LifeBar lifebar;
 
+        private GamePadState padstate;
         public Gamescreen()
         {
             Instance = this;
@@ -136,6 +137,12 @@ namespace RopeMaster.Core
                     var m = Mouse.GetState();
                     player.setIsCatched(false);
                 }
+                var gs = GamePad.GetState(PlayerIndex.One);
+                var lastpos = player.getPosition();
+                lastpos += (gs.ThumbSticks.Left*10)*new Vector2(1,-1);
+                player.setPosition(lastpos);
+
+
             }
             parallax.Update(gameTime);
             player.Update(gameTime);
